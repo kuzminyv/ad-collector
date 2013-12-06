@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="18870608-7070-4629-a88a-3829d0e3711a" ChangeDateTime="10/27/2013 11:42:27">
+    <Property Name="ElementName" Value="[dbo].[Ads].[Header]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Ads]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Title" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="1025254b-0468-408f-a9c2-f5fa4c77b104" ChangeDateTime="10/27/2013 11:42:33">
+    <Property Name="ElementName" Value="[dbo].[Ads].[Text]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Ads]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Description" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="bd5f4014-ca36-48b4-ba07-c2fdf6859c4d" ChangeDateTime="10/27/2013 11:43:02">
+    <Property Name="ElementName" Value="[dbo].[Ads].[Date]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Ads]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="PublishDate" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="8d04ba32-5c71-48ff-9489-fb78e01077b4" ChangeDateTime="10/27/2013 11:58:50">
+    <Property Name="ElementName" Value="[dbo].[RealtyAds].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[RealtyAds]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AdId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="58198397-2396-4dd9-962b-ba712e37fb49" ChangeDateTime="10/27/2013 12:01:11">
+    <Property Name="ElementName" Value="[dbo].[RealtyAds].[Living]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[RealtyAds]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LivingSpace" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="72a4661b-e2e3-49bd-b530-424480761d4e" ChangeDateTime="10/27/2013 12:07:51">
+    <Property Name="ElementName" Value="[dbo].[AdLinks].[Ad]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[AdLinks]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AdId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="e37ef5bf-fa59-45c3-88fb-ee7d59cde3fd" ChangeDateTime="11/07/2013 09:02:48">
+    <Property Name="ElementName" Value="[dbo].[AdHistoryItems].[Date]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[AdHistoryItems]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AdDate" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="59808b15-4088-4595-afdb-59141b66c9ae" ChangeDateTime="11/13/2013 17:48:35">
+    <Property Name="ElementName" Value="[dbo].[AdsRealty].[LivingSpace]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[AdsRealty]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LivingSize" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="ea907cfd-56ec-474f-9ebf-b06e4ae54342" ChangeDateTime="11/13/2013 17:48:43">
+    <Property Name="ElementName" Value="[dbo].[AdsRealty].[Floors]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[AdsRealty]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="FloorsCount" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a68a1a14-e6ea-4718-aea0-ef29a92e490d" ChangeDateTime="11/13/2013 18:22:02">
+    <Property Name="ElementName" Value="[dbo].[Metadata].[IsFavorit]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Metadata]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="IsFavorite" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="99d25681-bb62-404b-9077-31c1a30b7990" ChangeDateTime="11/13/2013 18:51:58">
+    <Property Name="ElementName" Value="[dbo].[AdsRealty].[LivingSize]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[AdsRealty]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="LivingSpace" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="de0334c2-2f9e-4f3c-8ef7-9d003b808504" ChangeDateTime="11/15/2013 19:19:24">
+    <Property Name="ElementName" Value="[dbo].[AdHistoryItems].[AdDate]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[AdHistoryItems]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AdPublishDate" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="412f8f60-52d2-4a5a-aa0c-bc14755af0c3" ChangeDateTime="12/05/2013 19:29:47">
+    <Property Name="ElementName" Value="[dbo].[Ads].[Url]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Ads]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ConnectorId" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="889398df-8e9d-4e1e-ba76-f831bae5573b" ChangeDateTime="12/05/2013 20:36:47">
+    <Property Name="ElementName" Value="[dbo].[Ads].[ConnectorId]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Ads]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Url" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="ca8e090f-17d5-4789-83b8-c65b64610bc1" ChangeDateTime="12/05/2013 20:38:48">
+    <Property Name="ElementName" Value="[dbo].[Ads].[SourceUrl]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Ads]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ConnectorId" />
+  </Operation>
+</Operations>

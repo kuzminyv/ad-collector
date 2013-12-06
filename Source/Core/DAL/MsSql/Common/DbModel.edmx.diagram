@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d37ad518e30a40349ff792db547d3bf4" Name="Diagram1" ZoomLevel="64">
+        <EntityTypeShape EntityType="AdCollectorDBModel.DbAdLink" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="AdCollectorDBModel.DbAd" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
+        <EntityTypeShape EntityType="AdCollectorDBModel.DbAdsRealty" Width="1.5" PointX="3" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="AdCollectorDBModel.DbLogEntry" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AdCollectorDBModel.DbSetting" Width="1.5" PointX="5.75" PointY="3.75" IsExpanded="true" />
+        <AssociationConnector Association="AdCollectorDBModel.FK_AdLinks_ToAds" ManuallyRouted="false" />
+        <AssociationConnector Association="AdCollectorDBModel.FK_AdLinks_ToTable" ManuallyRouted="false" />
+        <InheritanceConnector EntityType="AdCollectorDBModel.DbAdsRealty" />
+        <EntityTypeShape EntityType="AdCollectorDBModel.DbAdHistoryItem" Width="1.5" PointX="0.75" PointY="6.75" />
+        <AssociationConnector Association="AdCollectorDBModel.FK_AdHistoryItems_ToAds" />
+        <EntityTypeShape EntityType="AdCollectorDBModel.DbMetadata" Width="1.5" PointX="8" PointY="3.75" />
+        <AssociationConnector Association="AdCollectorDBModel.FK_Metadata_ToAds" />
+        <EntityTypeShape EntityType="AdCollectorDBModel.DbAdImage" Width="1.5" PointX="2.625" PointY="6.75" />
+        <EntityTypeShape EntityType="AdCollectorDBModel.DbStreet" Width="1.5" PointX="8" PointY="6.375" />
+        <AssociationConnector Association="AdCollectorDBModel.FK_AdImages_ToAds" />
+        <EntityTypeShape EntityType="AdCollectorDBModel.Connector" Width="1.5" PointX="2.1522964640298379" PointY="19.883229890783891" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

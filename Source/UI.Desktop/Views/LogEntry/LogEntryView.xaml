@@ -1,0 +1,107 @@
+﻿<UserControl
+	x:Class="UI.Desktop.Views.LogEntryView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	mc:Ignorable="d"
+	d:DesignHeight="70"
+	d:DesignWidth="421">
+	<UserControl.Resources>
+        <BooleanToVisibilityConverter
+            x:Key="BoolToVisibilityConverter"/>
+        
+		<DataTemplate
+			x:Key="contentTemplate">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition
+						Height="70" />
+				</Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="45"/>
+                    <ColumnDefinition
+                        Width="110"/>
+                    <ColumnDefinition
+                        Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Image
+                    Grid.Column="0"
+                    x:Name="imgSeverity"
+                    Width="32"
+                    Height="32"
+                    Source="/images/information32.png"/>
+
+                <StackPanel
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    Margin="5">
+                    <TextBlock
+                        Text="{Binding Time, StringFormat='dd MMM yyyy'}"/>
+
+                    <TextBlock
+                        Text="{Binding Time, StringFormat=t}"/>
+                </StackPanel>
+
+                <StackPanel
+                    Grid.Column="2">
+                    <TextBlock
+                        Height="50"
+                        TextAlignment="Justify"
+                        TextWrapping="Wrap"
+                        TextTrimming="CharacterEllipsis"
+                        Text="{Binding Message}"/>
+                
+				    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Bottom">
+			            <Hyperlink
+						    Command="{Binding CopyDetailsToClipboardCommand}">
+				            <TextBlock
+							    FontSize="12"
+							    Text="Copy Details" />
+			            </Hyperlink>
+		            </TextBlock>
+                </StackPanel>
+                
+			</Grid>
+			<DataTemplate.Triggers>
+				<DataTrigger
+					Binding="{Binding Severity}"
+					Value="Error">
+					<Setter
+						TargetName="imgSeverity"
+						Property="Source"
+						Value="/images/error32.png" />
+				</DataTrigger>
+                <DataTrigger
+					Binding="{Binding Severity}"
+					Value="Information">
+                    <Setter
+						TargetName="imgSeverity"
+						Property="Source"
+						Value="/images/information32.png" />
+                </DataTrigger>
+                <DataTrigger
+					Binding="{Binding Severity}"
+					Value="Warning">
+                    <Setter
+						TargetName="imgSeverity"
+						Property="Source"
+						Value="/images/warning32.png" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+		</DataTemplate>
+	</UserControl.Resources>
+	
+	<ContentControl
+		Content="{Binding}"
+		ContentTemplate="{StaticResource contentTemplate}">
+		
+	</ContentControl>
+</UserControl>

@@ -1,0 +1,90 @@
+﻿<views:BaseWindow 
+    xmlns:toolkit="clr-namespace:Xceed.Wpf.Toolkit;assembly=Xceed.Wpf.Toolkit" 
+	x:Class="UI.Desktop.Views.LinkedAdsView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:views ="clr-namespace:UI.Desktop.Views"
+	Title="Linked Ads"
+	Height="400"
+	Width="700"
+    SnapsToDevicePixels="True"
+    x:Name="window"
+	WindowStartupLocation="CenterScreen"
+				  Icon="/UI.Desktop;component/Images/ButterFly16.ico">
+    <Window.Resources>
+        <Style
+			x:Key="ListboxItemStyle"
+			TargetType="{x:Type ListBoxItem}">
+            <Setter
+				Property="Template">
+                <Setter.Value>
+                    <ControlTemplate
+						TargetType="{x:Type ListBoxItem}">
+                        <Grid>
+                            <Border
+								Margin="2"
+								Padding="2"
+								CornerRadius="3"
+								BorderBrush="SkyBlue"
+								Background="{TemplateBinding Background}"
+								BorderThickness="2"/>
+                            <ContentPresenter
+								Margin="8,5" />
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition
+										Property="IsMouseOver"
+										Value="True" />
+                                    <Condition
+										Property="IsSelected"
+										Value="False" />
+                                </MultiTrigger.Conditions>
+                                <Setter
+									Property="Background"
+									Value="AliceBlue" />
+                            </MultiTrigger>
+                            <Trigger
+								Property="IsSelected"
+								Value="True">
+                                <Setter
+									Property="Background"
+									Value="LightBlue" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style
+			x:Key="ListBoxStyle"
+			TargetType="{x:Type ListBox}">
+            <Setter
+				Property="ItemContainerStyle"
+				Value="{StaticResource ListboxItemStyle}" />
+            <Setter
+				Property="Margin"
+				Value="3,3,2,1" />
+        </Style>
+
+        <DataTemplate x:Key="AdTemplate">
+            <views:AdItemView/>
+        </DataTemplate>
+    </Window.Resources>
+    <Grid
+		HorizontalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <ListBox			
+			Style="{StaticResource ListBoxStyle}"
+			HorizontalContentAlignment="Stretch"
+			ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+			ItemTemplate="{StaticResource AdTemplate}"
+			ItemsSource="{Binding Items}"
+			SelectedItem="{Binding SelectedItem}"/>
+    </Grid>
+</views:BaseWindow>

@@ -1,0 +1,555 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="AdCollectorDBModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityContainer Name="AdCollectorDBModelStoreContainer">
+          <EntitySet Name="AdHistoryItems" EntityType="AdCollectorDBModel.Store.AdHistoryItems" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AdImages" EntityType="AdCollectorDBModel.Store.AdImages" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AdLinks" EntityType="AdCollectorDBModel.Store.AdLinks" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Ads" EntityType="AdCollectorDBModel.Store.Ads" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="AdsRealty" EntityType="AdCollectorDBModel.Store.AdsRealty" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Connectors" EntityType="AdCollectorDBModel.Store.Connectors" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="LogEntries" EntityType="AdCollectorDBModel.Store.LogEntries" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Metadata" EntityType="AdCollectorDBModel.Store.Metadata" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Settings" EntityType="AdCollectorDBModel.Store.Settings" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Streets" EntityType="AdCollectorDBModel.Store.Streets" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_AdHistoryItems_ToAds" Association="AdCollectorDBModel.Store.FK_AdHistoryItems_ToAds">
+            <End Role="Ads" EntitySet="Ads" />
+            <End Role="AdHistoryItems" EntitySet="AdHistoryItems" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AdImages_ToAds" Association="AdCollectorDBModel.Store.FK_AdImages_ToAds">
+            <End Role="Ads" EntitySet="Ads" />
+            <End Role="AdImages" EntitySet="AdImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AdLinks_ToAds" Association="AdCollectorDBModel.Store.FK_AdLinks_ToAds">
+            <End Role="Ads" EntitySet="Ads" />
+            <End Role="AdLinks" EntitySet="AdLinks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AdLinks_ToTable" Association="AdCollectorDBModel.Store.FK_AdLinks_ToTable">
+            <End Role="Ads" EntitySet="Ads" />
+            <End Role="AdLinks" EntitySet="AdLinks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AdsRealty_ToAds" Association="AdCollectorDBModel.Store.FK_AdsRealty_ToAds">
+            <End Role="Ads" EntitySet="Ads" />
+            <End Role="AdsRealty" EntitySet="AdsRealty" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Metadata_ToAds" Association="AdCollectorDBModel.Store.FK_Metadata_ToAds">
+            <End Role="Ads" EntitySet="Ads" />
+            <End Role="Metadata" EntitySet="Metadata" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="AdHistoryItems">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="AdId" Type="int" Nullable="false" />
+          <Property Name="AdPublishDate" Type="datetime2" Nullable="false" />
+          <Property Name="Price" Type="float" Nullable="false" />
+          <Property Name="AdCollectDate" Type="datetime2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AdImages">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="AdId" Type="int" Nullable="false" />
+          <Property Name="Url" Type="nvarchar" MaxLength="1000" />
+          <Property Name="PreviewUrl" Type="nvarchar" MaxLength="1000" />
+        </EntityType>
+        <EntityType Name="AdLinks">
+          <Key>
+            <PropertyRef Name="AdId" />
+            <PropertyRef Name="LinkedAdId" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="AdId" Type="int" Nullable="false" />
+          <Property Name="LinkedAdId" Type="int" Nullable="false" />
+          <Property Name="LinkType" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Ads">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="nvarchar" MaxLength="250" />
+          <Property Name="Description" Type="nvarchar" MaxLength="250" />
+          <Property Name="PublishDate" Type="datetime2" Nullable="false" />
+          <Property Name="CollectDate" Type="datetime2" Nullable="false" />
+          <Property Name="Url" Type="nvarchar" />
+          <Property Name="Price" Type="float" Nullable="false" />
+          <Property Name="IdOnWebSite" Type="nvarchar" MaxLength="250" />
+          <Property Name="IsSuspicious" Type="bit" Nullable="false" />
+          <Property Name="ConnectorId" Type="nvarchar" MaxLength="1000" />
+          <Property Name="CreationDate" Type="datetime2" />
+        </EntityType>
+        <EntityType Name="AdsRealty">
+          <Key>
+            <PropertyRef Name="AdId" />
+          </Key>
+          <Property Name="AdId" Type="int" Nullable="false" />
+          <Property Name="Address" Type="nvarchar" MaxLength="500" />
+          <Property Name="RoomsCount" Type="int" Nullable="false" />
+          <Property Name="Floor" Type="int" Nullable="false" />
+          <Property Name="FloorsCount" Type="int" Nullable="false" />
+          <Property Name="LivingSpace" Type="float" Nullable="false" />
+          <Property Name="IsNewBuilding" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Connectors">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" Nullable="false" MaxLength="1000" />
+          <Property Name="Disabled" Type="bit" Nullable="false" />
+          <Property Name="LastCheckDate" Type="datetime2" />
+        </EntityType>
+        <EntityType Name="LogEntries">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Severity" Type="int" Nullable="false" />
+          <Property Name="Time" Type="datetime2" Nullable="false" />
+          <Property Name="Message" Type="nvarchar" Nullable="false" MaxLength="1000" />
+          <Property Name="Details" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Metadata">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="AdId" Type="int" Nullable="false" />
+          <Property Name="IsFavorite" Type="bit" Nullable="false" />
+          <Property Name="Note" Type="nvarchar" MaxLength="2000" />
+        </EntityType>
+        <EntityType Name="Settings">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="50" />
+          <Property Name="Value" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Streets">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="LocationId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
+        </EntityType>
+        <Association Name="FK_AdHistoryItems_ToAds">
+          <End Role="Ads" Type="AdCollectorDBModel.Store.Ads" Multiplicity="1" />
+          <End Role="AdHistoryItems" Type="AdCollectorDBModel.Store.AdHistoryItems" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ads">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AdHistoryItems">
+              <PropertyRef Name="AdId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AdImages_ToAds">
+          <End Role="Ads" Type="AdCollectorDBModel.Store.Ads" Multiplicity="1" />
+          <End Role="AdImages" Type="AdCollectorDBModel.Store.AdImages" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ads">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AdImages">
+              <PropertyRef Name="AdId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AdLinks_ToAds">
+          <End Role="Ads" Type="AdCollectorDBModel.Store.Ads" Multiplicity="1" />
+          <End Role="AdLinks" Type="AdCollectorDBModel.Store.AdLinks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ads">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AdLinks">
+              <PropertyRef Name="AdId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AdLinks_ToTable">
+          <End Role="Ads" Type="AdCollectorDBModel.Store.Ads" Multiplicity="1" />
+          <End Role="AdLinks" Type="AdCollectorDBModel.Store.AdLinks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ads">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AdLinks">
+              <PropertyRef Name="LinkedAdId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AdsRealty_ToAds">
+          <End Role="Ads" Type="AdCollectorDBModel.Store.Ads" Multiplicity="1" />
+          <End Role="AdsRealty" Type="AdCollectorDBModel.Store.AdsRealty" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Ads">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AdsRealty">
+              <PropertyRef Name="AdId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Metadata_ToAds">
+          <End Role="Ads" Type="AdCollectorDBModel.Store.Ads" Multiplicity="1" />
+          <End Role="Metadata" Type="AdCollectorDBModel.Store.Metadata" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ads">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Metadata">
+              <PropertyRef Name="AdId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AdCollectorDBModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="AdCollectorDBEntities" p1:LazyLoadingEnabled="false">
+          <EntitySet Name="AdLinks" EntityType="AdCollectorDBModel.DbAdLink" />
+          <EntitySet Name="Ads" EntityType="AdCollectorDBModel.DbAd" />
+          <EntitySet Name="LogEntries" EntityType="AdCollectorDBModel.DbLogEntry" />
+          <EntitySet Name="Settings" EntityType="AdCollectorDBModel.DbSetting" />
+          <AssociationSet Name="FK_AdLinks_ToAds" Association="AdCollectorDBModel.FK_AdLinks_ToAds">
+            <End Role="Ads" EntitySet="Ads" />
+            <End Role="AdLinks" EntitySet="AdLinks" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AdLinks_ToTable" Association="AdCollectorDBModel.FK_AdLinks_ToTable">
+            <End Role="Ads" EntitySet="Ads" />
+            <End Role="AdLinks" EntitySet="AdLinks" />
+          </AssociationSet>
+          <EntitySet Name="DbAdHistoryItems" EntityType="AdCollectorDBModel.DbAdHistoryItem" />
+          <AssociationSet Name="FK_AdHistoryItems_ToAds" Association="AdCollectorDBModel.FK_AdHistoryItems_ToAds">
+            <End Role="DbAd" EntitySet="Ads" />
+            <End Role="AdHistoryItem" EntitySet="DbAdHistoryItems" />
+          </AssociationSet>
+          <EntitySet Name="DbMetadatas" EntityType="AdCollectorDBModel.DbMetadata" />
+          <AssociationSet Name="FK_Metadata_ToAds" Association="AdCollectorDBModel.FK_Metadata_ToAds">
+            <End Role="DbAd" EntitySet="Ads" />
+            <End Role="Metadata" EntitySet="DbMetadatas" />
+          </AssociationSet>
+          <EntitySet Name="DbAdImages" EntityType="AdCollectorDBModel.DbAdImage" />
+          <EntitySet Name="DbStreets" EntityType="AdCollectorDBModel.DbStreet" />
+          <AssociationSet Name="FK_AdImages_ToAds" Association="AdCollectorDBModel.FK_AdImages_ToAds">
+            <End Role="DbAd" EntitySet="Ads" />
+            <End Role="AdImage" EntitySet="DbAdImages" />
+          </AssociationSet>
+          <EntitySet Name="Connectors" EntityType="AdCollectorDBModel.Connector" />
+        </EntityContainer>
+        <EntityType Name="DbAdLink">
+          <Key>
+            <PropertyRef Name="AdId" />
+            <PropertyRef Name="LinkedAdId" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="AdId" Type="Int32" Nullable="false" />
+          <Property Name="LinkedAdId" Type="Int32" Nullable="false" />
+          <Property Name="LinkType" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Ad" Relationship="AdCollectorDBModel.FK_AdLinks_ToAds" FromRole="AdLinks" ToRole="Ads" />
+          <NavigationProperty Name="Ad1" Relationship="AdCollectorDBModel.FK_AdLinks_ToTable" FromRole="AdLinks" ToRole="Ads" />
+        </EntityType>
+        <EntityType Name="DbAd">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="250" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="250" Unicode="true" FixedLength="false" />
+          <Property Name="PublishDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="CollectDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="Price" Type="Double" Nullable="false" />
+          <Property Name="IdOnWebSite" Type="String" MaxLength="250" Unicode="true" FixedLength="false" />
+          <Property Name="IsSuspicious" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="AdLinks" Relationship="AdCollectorDBModel.FK_AdLinks_ToAds" FromRole="Ads" ToRole="AdLinks" />
+          <NavigationProperty Name="AdLinks1" Relationship="AdCollectorDBModel.FK_AdLinks_ToTable" FromRole="Ads" ToRole="AdLinks" />
+          <NavigationProperty Name="AdHistoryItems" Relationship="AdCollectorDBModel.FK_AdHistoryItems_ToAds" FromRole="DbAd" ToRole="AdHistoryItem" />
+          <NavigationProperty Name="Metadatas" Relationship="AdCollectorDBModel.FK_Metadata_ToAds" FromRole="DbAd" ToRole="Metadata" />
+          <NavigationProperty Name="AdImages" Relationship="AdCollectorDBModel.FK_AdImages_ToAds" FromRole="DbAd" ToRole="AdImage" />
+          <Property Type="String" Name="ConnectorId" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="DateTime" Name="CreationDate" Precision="7" />
+          <Property Type="String" Name="Url" Unicode="true" MaxLength="4000" FixedLength="false" Nullable="true" />
+        </EntityType>
+        <EntityType Name="DbAdsRealty" BaseType="AdCollectorDBModel.DbAd">
+          <Property Name="Address" Type="String" MaxLength="500" Unicode="true" FixedLength="false" />
+          <Property Name="RoomsCount" Type="Int32" Nullable="false" />
+          <Property Name="Floor" Type="Int32" Nullable="false" />
+          <Property Type="Int32" Name="FloorsCount" Nullable="false" />
+          <Property Type="Double" Name="LivingSpace" Nullable="false" />
+          <Property Type="Boolean" Name="IsNewBuilding" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DbLogEntry">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Severity" Type="Int32" Nullable="false" />
+          <Property Name="Time" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="Message" Type="String" Nullable="false" MaxLength="1000" Unicode="true" FixedLength="false" />
+          <Property Name="Details" Type="String" MaxLength="Max" Unicode="true" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="DbSetting">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Value" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK_AdLinks_ToAds">
+          <End Role="Ads" Type="AdCollectorDBModel.DbAd" Multiplicity="1" />
+          <End Role="AdLinks" Type="AdCollectorDBModel.DbAdLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ads">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AdLinks">
+              <PropertyRef Name="AdId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AdLinks_ToTable">
+          <End Role="Ads" Type="AdCollectorDBModel.DbAd" Multiplicity="1" />
+          <End Role="AdLinks" Type="AdCollectorDBModel.DbAdLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Ads">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AdLinks">
+              <PropertyRef Name="LinkedAdId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DbAdHistoryItem">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="AdId" Nullable="false" />
+          <Property Type="Double" Name="Price" Nullable="false" />
+          <Property Type="DateTime" Name="AdCollectDate" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Ad" Relationship="AdCollectorDBModel.FK_AdHistoryItems_ToAds" FromRole="AdHistoryItem" ToRole="DbAd" />
+          <Property Type="DateTime" Name="AdPublishDate" Nullable="false" Precision="7" />
+        </EntityType>
+        <Association Name="FK_AdHistoryItems_ToAds">
+          <End Type="AdCollectorDBModel.DbAd" Role="DbAd" Multiplicity="1" />
+          <End Type="AdCollectorDBModel.DbAdHistoryItem" Role="AdHistoryItem" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbAd">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AdHistoryItem">
+              <PropertyRef Name="AdId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DbMetadata">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="Int32" Name="AdId" Nullable="false" />
+          <Property Type="String" Name="Note" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Ad" Relationship="AdCollectorDBModel.FK_Metadata_ToAds" FromRole="Metadata" ToRole="DbAd" />
+          <Property Type="Boolean" Name="IsFavorite" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Metadata_ToAds">
+          <End Type="AdCollectorDBModel.DbAd" Role="DbAd" Multiplicity="1" />
+          <End Type="AdCollectorDBModel.DbMetadata" Role="Metadata" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbAd">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Metadata">
+              <PropertyRef Name="AdId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="DbAdImage">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="AdId" Nullable="false" />
+          <Property Type="String" Name="Url" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Ad" Relationship="AdCollectorDBModel.FK_AdImages_ToAds" FromRole="AdImage" ToRole="DbAd" />
+          <Property Type="String" Name="PreviewUrl" MaxLength="1000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="DbStreet">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Type="Int32" Name="LocationId" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_AdImages_ToAds">
+          <End Type="AdCollectorDBModel.DbAd" Role="DbAd" Multiplicity="1" />
+          <End Type="AdCollectorDBModel.DbAdImage" Role="AdImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="DbAd">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AdImage">
+              <PropertyRef Name="AdId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Connector">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="String" Name="Id" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Type="Boolean" Name="Disabled" Nullable="false" />
+          <Property Type="DateTime" Name="LastCheckDate" Precision="7" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AdCollectorDBModelStoreContainer" CdmEntityContainer="AdCollectorDBEntities">
+          <EntitySetMapping Name="AdLinks">
+            <EntityTypeMapping TypeName="AdCollectorDBModel.DbAdLink">
+              <MappingFragment StoreEntitySet="AdLinks">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AdId" ColumnName="AdId" />
+                <ScalarProperty Name="LinkedAdId" ColumnName="LinkedAdId" />
+                <ScalarProperty Name="LinkType" ColumnName="LinkType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Ads">
+            <EntityTypeMapping TypeName="IsTypeOf(AdCollectorDBModel.DbAd)">
+              <MappingFragment StoreEntitySet="Ads">
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
+                <ScalarProperty Name="ConnectorId" ColumnName="ConnectorId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="IsSuspicious" ColumnName="IsSuspicious" />
+                <ScalarProperty Name="IdOnWebSite" ColumnName="IdOnWebSite" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="CollectDate" ColumnName="CollectDate" />
+                <ScalarProperty Name="PublishDate" ColumnName="PublishDate" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+              </MappingFragment>
+            </EntityTypeMapping>
+            <EntityTypeMapping TypeName="IsTypeOf(AdCollectorDBModel.DbAdsRealty)">
+              <MappingFragment StoreEntitySet="AdsRealty">
+                <ScalarProperty Name="IsNewBuilding" ColumnName="IsNewBuilding" />
+                <ScalarProperty Name="LivingSpace" ColumnName="LivingSpace" />
+                <ScalarProperty Name="FloorsCount" ColumnName="FloorsCount" />
+                <ScalarProperty Name="Id" ColumnName="AdId" />
+                <ScalarProperty Name="Floor" ColumnName="Floor" />
+                <ScalarProperty Name="RoomsCount" ColumnName="RoomsCount" />
+                <ScalarProperty Name="Address" ColumnName="Address" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LogEntries">
+            <EntityTypeMapping TypeName="AdCollectorDBModel.DbLogEntry">
+              <MappingFragment StoreEntitySet="LogEntries">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Severity" ColumnName="Severity" />
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="Message" ColumnName="Message" />
+                <ScalarProperty Name="Details" ColumnName="Details" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Settings">
+            <EntityTypeMapping TypeName="AdCollectorDBModel.DbSetting">
+              <MappingFragment StoreEntitySet="Settings">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DbAdHistoryItems">
+            <EntityTypeMapping TypeName="AdCollectorDBModel.DbAdHistoryItem">
+              <MappingFragment StoreEntitySet="AdHistoryItems">
+                <ScalarProperty Name="AdPublishDate" ColumnName="AdPublishDate" />
+                <ScalarProperty Name="AdCollectDate" ColumnName="AdCollectDate" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="AdId" ColumnName="AdId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DbMetadatas">
+            <EntityTypeMapping TypeName="AdCollectorDBModel.DbMetadata">
+              <MappingFragment StoreEntitySet="Metadata">
+                <ScalarProperty Name="IsFavorite" ColumnName="IsFavorite" />
+                <ScalarProperty Name="Note" ColumnName="Note" />
+                <ScalarProperty Name="AdId" ColumnName="AdId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DbAdImages">
+            <EntityTypeMapping TypeName="AdCollectorDBModel.DbAdImage">
+              <MappingFragment StoreEntitySet="AdImages">
+                <ScalarProperty Name="PreviewUrl" ColumnName="PreviewUrl" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+                <ScalarProperty Name="AdId" ColumnName="AdId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DbStreets">
+            <EntityTypeMapping TypeName="AdCollectorDBModel.DbStreet">
+              <MappingFragment StoreEntitySet="Streets">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Connectors">
+            <EntityTypeMapping TypeName="AdCollectorDBModel.Connector">
+              <MappingFragment StoreEntitySet="Connectors">
+                <ScalarProperty Name="LastCheckDate" ColumnName="LastCheckDate" />
+                <ScalarProperty Name="Disabled" ColumnName="Disabled" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

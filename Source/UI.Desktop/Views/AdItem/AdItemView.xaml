@@ -1,0 +1,171 @@
+﻿<UserControl
+	x:Class="UI.Desktop.Views.AdItemView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:utils="clr-namespace:UI.Desktop.Utils"
+	mc:Ignorable="d"
+	d:DesignHeight="98"
+	d:DesignWidth="421">
+	<UserControl.Resources>
+        <utils:BoolToVisibilityConverter
+            x:Key="BoolToVisibilityConverter"/>
+        
+		<DataTemplate
+			x:Key="contentTemplate">
+			<Grid>
+				<Grid.RowDefinitions>
+					<RowDefinition
+						Height="20" />
+					<RowDefinition
+						Height="50" />
+					<RowDefinition
+						Height="20" />
+				</Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition
+                        Width="50*"/>
+                    <ColumnDefinition
+                        Width="50*"/>
+                </Grid.ColumnDefinitions>
+
+				<TextBlock>
+			        <Hyperlink
+						Command="{Binding OpenUrlCommand}"
+						CommandParameter="{Binding DetailsUrl}">
+				        <TextBlock
+                            x:Name="tbDetails"
+							FontWeight="Bold"
+							FontSize="12"
+							Text="{Binding Header}"
+                            TextTrimming="CharacterEllipsis"/>
+			        </Hyperlink>
+		        </TextBlock>
+                
+                <StackPanel
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+                    <TextBlock
+                        Margin="0, 0, 20, 0">
+			            <Hyperlink
+						    Command="{Binding OpenUrlCommand}"
+						    CommandParameter="{Binding YandexMapsUrl}">
+				            <TextBlock
+							    FontWeight="Bold"
+							    FontSize="12"
+							    Text="View on Map" />
+			            </Hyperlink>
+		            </TextBlock>
+                    <TextBlock
+                        Text="{Binding Id}"/>
+                </StackPanel>
+                
+                <TextBlock
+					Name="tkAdText"
+					Grid.Row="1"
+                    Grid.ColumnSpan="2"
+					TextWrapping="Wrap"
+					Text="{Binding Text}">
+				</TextBlock>
+
+                <Grid
+					Grid.Row="2"
+                    Grid.ColumnSpan="2">
+                    <Grid.ColumnDefinitions>
+						<ColumnDefinition
+							Width="200" />
+						<ColumnDefinition
+							Width="50*" />
+					</Grid.ColumnDefinitions>
+
+					<StackPanel
+						Grid.Column="0"
+                        Grid.ColumnSpan="2"
+						Orientation="Horizontal">
+						<TextBlock
+							FontWeight="Bold"
+							Text="Дата: " />
+						<TextBlock
+							FontWeight="Bold"
+							Text="{Binding Date, StringFormat='dd MMM yyyy'}" />
+                        <TextBlock
+                            Margin="10 0 0 0"
+							FontWeight="Bold"
+                            Foreground="Red"
+							Text="Advertised"
+                            Visibility="{Binding Suspect, Converter={StaticResource BoolToVisibilityConverter}, ConverterParameter=hidden}"/>
+
+                        <TextBlock
+                            Margin="10 0 0 0"
+                            Width="100">
+			                <Hyperlink
+						        Command="{Binding ShowLinkedAdsCommand}"
+						        CommandParameter="{Binding Model}">
+				                <TextBlock
+							        FontWeight="Bold"
+							        FontSize="12"
+                                    Foreground="Red"
+							        Text="{Binding LinkedAdsInfo}" />
+			                </Hyperlink>
+		                </TextBlock>
+
+                        <TextBlock
+                            Margin="10 0 0 0"
+                            Width="100">
+			                <Hyperlink
+						        Command="{Binding ShowAdHistoryCommand}"
+						        CommandParameter="{Binding Model}">
+				                <TextBlock
+							        FontWeight="Bold"
+							        FontSize="12"
+                                    Foreground="Red"
+							        Text="{Binding AdHistoryInfo}" />
+			                </Hyperlink>
+		                </TextBlock>
+
+                        <TextBlock>
+				            <Hyperlink
+						        Command="{Binding OpenUrlCommand}"
+						        CommandParameter="{Binding SourceUrl}">
+					            <TextBlock
+							        Text="{Binding SourceUrl}" />
+    				        </Hyperlink>
+    	        		</TextBlock>
+                        <TextBlock Margin="20 0 0 0" Text="Collected: " />
+                        <TextBlock Text="{Binding CollectDate, StringFormat='dd MMM yyyy'}" />
+
+                    </StackPanel>
+
+				</Grid>
+			</Grid>
+			<DataTemplate.Triggers>
+				<DataTrigger
+					Binding="{Binding IsNew}"
+					Value="True">
+					<Setter
+						TargetName="tkAdText"
+						Property="FontWeight"
+						Value="Bold" />
+				</DataTrigger>
+                <DataTrigger
+					Binding="{Binding IsNewBuilding}"
+					Value="True">
+                    <Setter
+						TargetName="tbDetails"
+						Property="Foreground"
+						Value="Green" />
+                </DataTrigger>
+            </DataTemplate.Triggers>
+		</DataTemplate>
+	</UserControl.Resources>
+	
+	<ContentControl
+		Content="{Binding}"
+		ContentTemplate="{StaticResource contentTemplate}">
+		
+	</ContentControl>
+</UserControl>

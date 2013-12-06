@@ -1,0 +1,249 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{C0D106B8-FE41-432E-A516-1764474613E5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Core</RootNamespace>
+    <AssemblyName>Core</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\Output\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AutoMapper.3.0.0\lib\net40\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper.Net4, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AutoMapper.3.0.0\lib\net40\AutoMapper.Net4.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.6.0.1\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.0.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\Lib\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BLL\Common\OperationState.cs" />
+    <Compile Include="BLL\Common\TaskHelper.cs" />
+    <Compile Include="BLL\Managers\AdHistoryManager.cs" />
+    <Compile Include="BLL\Managers\AdLinksManager.cs" />
+    <Compile Include="BLL\Managers\AdsManager.cs" />
+    <Compile Include="BLL\Managers\CheckForNewAdsState.cs" />
+    <Compile Include="BLL\Managers.cs" />
+    <Compile Include="BLL\Managers\StreetsManager.cs" />
+    <Compile Include="BLL\Managers\ExportManager.cs" />
+    <Compile Include="BLL\Managers\LogEntriesManager.cs" />
+    <Compile Include="BLL\Managers\MetadataManager.cs" />
+    <Compile Include="BLL\Managers\SettingsManager.cs" />
+    <Compile Include="Connectors\BasicConnector.cs" />
+    <Compile Include="Connectors\Realty\CnRealtySarbc.cs" />
+    <Compile Include="Connectors\Realty\CnKvadrat64.cs" />
+    <Compile Include="Connectors\Realty\CnRealtySarbcNewBuildings.cs" />
+    <Compile Include="Connectors\Realty\CnAvito.cs" />
+    <Compile Include="Connectors\Realty\CnKvadrat64NewBuildings.cs" />
+    <Compile Include="Connectors\Realty\CnIrr.cs" />
+    <Compile Include="DAL\API\IAdImagesRepository.cs" />
+    <Compile Include="DAL\API\IStreetsRepository.cs" />
+    <Compile Include="DAL\API\IMetadataRepository.cs" />
+    <Compile Include="DAL\API\IAdHistoryItemsRepository.cs" />
+    <Compile Include="DAL\API\IAdLinksRepository.cs" />
+    <Compile Include="DAL\API\IAdsRepository.cs" />
+    <Compile Include="DAL\API\IRepository.cs" />
+    <Compile Include="DAL\Binary\AdLinksRepository.cs" />
+    <Compile Include="DAL\Binary\AdsRepository.cs" />
+    <Compile Include="DAL\Binary\Common\BinaryRepository.cs" />
+    <Compile Include="DAL\Binary\Common\EntitiesSerializer.cs" />
+    <Compile Include="DAL\Binary\AdHistoryItemsRepository.cs" />
+    <Compile Include="DAL\Binary\AdImagesRepository.cs" />
+    <Compile Include="DAL\Binary\StreetsRepository.cs" />
+    <Compile Include="DAL\Binary\MetadataRepository.cs" />
+    <Compile Include="DAL\Common\Filter.cs" />
+    <Compile Include="DAL\Common\Query.cs" />
+    <Compile Include="DAL\Common\QueryResult.cs" />
+    <Compile Include="DAL\API\ILogEntriesRepository.cs" />
+    <Compile Include="DAL\MsSql\AdHistoryItemsRepository.cs" />
+    <Compile Include="DAL\MsSql\AdLinksRepository.cs" />
+    <Compile Include="DAL\MsSql\AdsRealtyRepository.cs" />
+    <Compile Include="DAL\MsSql\AdsRepository.cs" />
+    <Compile Include="DAL\MsSql\Common\Connector.cs">
+      <DependentUpon>DbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\MsSql\Common\DbAd.cs">
+      <DependentUpon>DbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\MsSql\Common\DbAdHistoryItem.cs">
+      <DependentUpon>DbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\MsSql\Common\DbAdImage.cs">
+      <DependentUpon>DbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\MsSql\Common\DbAdLink.cs">
+      <DependentUpon>DbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\MsSql\Common\DbAdsRealty.cs">
+      <DependentUpon>DbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\MsSql\Common\DbLogEntry.cs">
+      <DependentUpon>DbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\MsSql\Common\DbMetadata.cs">
+      <DependentUpon>DbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\MsSql\Common\DbModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DbModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\MsSql\Common\DbModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\MsSql\Common\DbModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DbModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\MsSql\Common\DbSetting.cs">
+      <DependentUpon>DbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\MsSql\Common\DbStreet.cs">
+      <DependentUpon>DbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\MsSql\Common\MsSqlRepository.cs" />
+    <Compile Include="DAL\MsSql\AdImagesRepository.cs" />
+    <Compile Include="DAL\MsSql\StreetsRepository.cs" />
+    <Compile Include="DAL\MsSql\MetadataRepository.cs" />
+    <Compile Include="DAL\MsSql\LogEntriesRepository.cs" />
+    <Compile Include="DAL\MsSql\SettingsRepository.cs" />
+    <Compile Include="DAL\RepositoryFactory.cs" />
+    <Compile Include="DAL\Common\SortOrder.cs" />
+    <Compile Include="DAL\Common\Sort.cs" />
+    <Compile Include="DAL\Binary\LogEntriesRepository.cs" />
+    <Compile Include="DAL\Repositories.cs" />
+    <Compile Include="DAL\Binary\SettingsRepository.cs" />
+    <Compile Include="DAL\Common\DbProvider.cs" />
+    <Compile Include="DAL\API\ISettingsRepository.cs" />
+    <Compile Include="Entities\AdHistoryItem.cs" />
+    <Compile Include="Entities\AdLink.cs" />
+    <Compile Include="Entities\AdRealty.cs" />
+    <Compile Include="Entities\AdImage.cs" />
+    <Compile Include="Entities\Common\OptionalAttribute.cs" />
+    <Compile Include="Entities\Enums\DetailsDownloadStatus.cs" />
+    <Compile Include="Entities\Street.cs" />
+    <Compile Include="Entities\Metadata.cs" />
+    <Compile Include="Entities\Enums\BuildingType.cs" />
+    <Compile Include="Entities\UI\Web\AdsListItem.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\Enums\LinkType.cs" />
+    <Compile Include="Entities\Enums\SeverityLevel.cs" />
+    <Compile Include="Entities\LogEntry.cs" />
+    <Compile Include="Entities\Setting.cs" />
+    <Compile Include="Entities\Settings.cs" />
+    <Compile Include="Expressions\BoundExpressionSelector.cs" />
+    <Compile Include="Expressions\Bound\BoundSelector.cs" />
+    <Compile Include="Expressions\Bound\BoundExpression.cs" />
+    <Compile Include="Expressions\Bound\BoundExpressionCondition.cs" />
+    <Compile Include="Expressions\Bound\BoundExpressionToken.cs" />
+    <Compile Include="Expressions\EmptySelector.cs" />
+    <Compile Include="Expressions\FilterSelector.cs" />
+    <Compile Include="Expressions\Match.cs" />
+    <Compile Include="Expressions\Selector.cs" />
+    <Compile Include="Expressions\StringRange.cs" />
+    <Compile Include="Expressions\Bound\BoundSelectorResult.cs" />
+    <Compile Include="Expressions\Bound\BoundExpressionGroup.cs" />
+    <Compile Include="Expressions\Bound\BoundMatch.cs" />
+    <Compile Include="Expressions\XPathSelector.cs" />
+    <Compile Include="Utils\BufferedAction.cs" />
+    <Compile Include="Utils\BinaryReaderEx.cs" />
+    <Compile Include="Connectors\Auto\Cn64AutoRu.cs" />
+    <Compile Include="Connectors\Auto\CnAutosaratovRu.cs" />
+    <Compile Include="BLL\Managers\ConnectorsManager.cs" />
+    <Compile Include="Connectors\IConnector.cs" />
+    <Compile Include="Utils\DynamicLinq.cs" />
+    <Compile Include="Utils\HtmlUtils.cs" />
+    <Compile Include="Utils\RuntimeCompiler.cs" />
+    <Compile Include="Utils\WebHelper.cs" />
+    <Compile Include="Entities\Ad.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="DAL\MsSql\Common\DbModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>DbModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="App.Config" />
+    <None Include="DAL\MsSql\Common\DbModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DbModel.edmx</DependentUpon>
+      <LastGenOutput>DbModel.Context.cs</LastGenOutput>
+    </None>
+    <None Include="DAL\MsSql\Common\DbModel.edmx.diagram">
+      <DependentUpon>DbModel.edmx</DependentUpon>
+    </None>
+    <None Include="DAL\MsSql\Common\DbModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>DbModel.edmx</DependentUpon>
+      <LastGenOutput>DbModel.cs</LastGenOutput>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="$(SolutionDir)\.nuget\nuget.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

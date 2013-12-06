@@ -1,0 +1,85 @@
+﻿<Window x:Class="UI.Studio.MainWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:local="clr-namespace:UI.Studio"
+                 xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+                 xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
+                 xmlns:s="clr-namespace:System;assembly=mscorlib"
+                 xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
+                 xmlns:views ="clr-namespace:UI.Studio.Views" Closing="Window_Closing">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Height="20">
+
+        </StackPanel>
+
+        <xcad:DockingManager Grid.Row="1"
+                           AllowMixedOrientation="True"
+                           BorderBrush="Black"
+                           BorderThickness="1"
+                             x:Name="dockingManager">
+            <xcad:LayoutRoot x:Name="_layoutRoot">
+                <xcad:LayoutPanel Orientation="Horizontal">
+                    <xcad:LayoutDocumentPaneGroup >
+                        <xcad:LayoutDocumentPane>
+                            <xcad:LayoutDocument ContentId="connector" Title="Connector">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <GridSplitter Grid.Row="1" 
+                                          HorizontalAlignment="Stretch" 
+                                          VerticalAlignment="Top"
+                                          Background="LightGray" 
+                                          ShowsPreview="true"
+                                          Height="5"/>
+                                    <avalonedit:TextEditor Grid.Row="0" x:Name="sourceText"  SyntaxHighlighting="XML" ShowLineNumbers="True"/>
+                                    <ContentControl Grid.Row="1" VerticalAlignment="Stretch">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition
+                                                Height="Auto"/>
+                                                <RowDefinition
+                                                Height="*"/>
+                                            </Grid.RowDefinitions>
+                                            <StackPanel Height="30"  Grid.Row="0" Orientation="Horizontal">
+                                                <Button Content="Save" x:Name="btnSave" Click="btnSave_Click"/>
+                                                <Button Content="Match" x:Name="btnMatch" Click="btnMatch_Click"/>
+                                                <Button Content="Parse" x:Name="btnParse" Click="btnParse_Click"  />
+                                                <CheckBox x:Name="chkDetails" Content="Details"/>
+                                                <CheckBox x:Name="chkRealtime" Content="Realtime"/>
+                                                <CheckBox x:Name="chkThrowError" Content="Throw on error"/>
+                                            </StackPanel>
+                                            <avalonedit:TextEditor Grid.Row="1" x:Name="connectorDefinition"  SyntaxHighlighting="C#"  ShowLineNumbers="True"/>
+                                        </Grid>
+                                    </ContentControl>
+                                </Grid>
+                            </xcad:LayoutDocument>
+                        </xcad:LayoutDocumentPane>
+                    </xcad:LayoutDocumentPaneGroup >
+                    <xcad:LayoutAnchorablePaneGroup DockWidth="300">
+                        <xcad:LayoutAnchorablePane>
+                            <xcad:LayoutAnchorable ContentId="journal" Title="Result">
+                                <views:MatchListView x:Name="resultView"/>
+                            </xcad:LayoutAnchorable>
+                        </xcad:LayoutAnchorablePane>
+                    </xcad:LayoutAnchorablePaneGroup>
+                </xcad:LayoutPanel>
+                <xcad:LayoutRoot.BottomSide>
+                    <xcad:LayoutAnchorSide>
+                        <xcad:LayoutAnchorGroup>
+                            <xcad:LayoutAnchorable Title="Errors">
+                                <TextBox AcceptsReturn="True" x:Name="txtErrors"/>
+                            </xcad:LayoutAnchorable>
+                        </xcad:LayoutAnchorGroup>
+                    </xcad:LayoutAnchorSide>
+                </xcad:LayoutRoot.BottomSide>
+            </xcad:LayoutRoot>
+        </xcad:DockingManager>
+    </Grid>
+</Window>

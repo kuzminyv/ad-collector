@@ -1,0 +1,41 @@
+﻿<UserControl
+	x:Class="UI.Desktop.Views.ProgressView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:utils="clr-namespace:UI.Desktop.Utils"
+	mc:Ignorable="d"
+	d:DesignHeight="70"
+	d:DesignWidth="400"
+    Padding="5">
+	<UserControl.Resources>
+        <utils:BoolToVisibilityConverter
+            x:Key="BoolToVisibilityConverter"/>
+        
+	</UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition
+                Height="*"/>
+            <RowDefinition
+                Height="30"/>
+        </Grid.RowDefinitions>
+        <ProgressBar 
+            Grid.Row="0"
+            Height="20" Value="{Binding Progress}"/>
+        <TextBlock
+            Grid.Row="0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            FontWeight="Bold"
+            Text="{Binding ProgressText}"/>
+        <Button
+            Grid.Row="1"
+            Height="25"
+            Width="100"
+            HorizontalAlignment="Right"
+            Content="Cancel"
+            Command="{Binding CancelCommand}"/>
+    </Grid>
+</UserControl>
