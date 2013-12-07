@@ -81,6 +81,17 @@ namespace Core.Expressions
             }
         }
 
+        public IEnumerable<Match> GetByPath(string path)
+        {
+            foreach (Match match in Match.Flat(this))
+            {
+                if (match.Path.StartsWith(path))
+                {
+                    yield return match;
+                }
+            }
+        }
+
         public Match AddMatch(Match match)
         {
             _matches.Add(match);
@@ -117,9 +128,38 @@ namespace Core.Expressions
             }
         }
 
+        /// <summary>
+        /// Returns tree of matches as plain list
+        /// </summary>
+        /// <param name="match"></param>
+        /// <returns></returns>
+        public static IEnumerable<Match> Flat(Match match)
+        {
+            if (match.Count() > 0)
+            {
+                foreach (var child in match)
+                {
+                    foreach (var m in Flat(child))
+                    {
+                        yield return m;
+                    }
+                }
+            }
+            else
+            {
+                yield return match;
+            }
+        }
+
         public override string ToString()
         {
-            return Name + " : " + (Value == null ? "" : Value.ToString());
+            StringBuilder stringBulder = new StringBuilder();
+
+            foreach (var match in Match.Flat(this))
+            {
+                stringBulder.AppendFormat("{0} : {1};", match.Name, match.Value);
+            }
+            return stringBulder.ToString();
         }
     }
 }

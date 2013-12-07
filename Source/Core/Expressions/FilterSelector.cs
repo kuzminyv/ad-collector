@@ -21,6 +21,15 @@ namespace Core.Expressions
             return MatchAtom(input);
         }
 
+        public override IEnumerable<Match> Match(Match match)
+        {
+            if (string.IsNullOrEmpty(MatchFilter) || MatchFilter == match.Name)
+            {
+                return Match(match.Value);
+            }
+            return new Match[0];
+        }
+
         public FilterSelector(string name, Selector selector, Func<string, string> filterFn)
             : base(name, selector)
         {

@@ -31,7 +31,7 @@ namespace UI.Studio
     /// </summary>
     public partial class MainWindow : Window
     {
-        public string connectorPath = @"..\..\..\Core\Connectors\Realty\CnIrr.cs";
+        public string connectorPath = @"..\..\..\Core\Connectors\Realty\CnKvadrat64.cs";
         private AsyncOperation<object, object> _runConnectorOperation;
 
         private class OperationOptions
@@ -91,7 +91,7 @@ namespace UI.Studio
 
                 var model = new MatchListViewModel();
                 model.Items = new ObservableCollection<MatchItemViewModel>(
-                    selector.Match(text).SelectMany(m => FlatMatch(m))
+                    selector.Match(text).SelectMany(m => Match.Flat(m))
                                         .Select(m => new MatchItemViewModel(m)));
                 resultView.DataContext = model;
 
@@ -126,23 +126,6 @@ namespace UI.Studio
             return null;
         }
 
-        public IEnumerable<Match> FlatMatch(Match match)
-        {
-            if (match.Count() > 0)
-            {
-                foreach (var child in match)
-                {
-                    foreach (var m in FlatMatch(child))
-                    {
-                        yield return m;
-                    }
-                }
-            }
-            else
-            {
-                yield return match;
-            }
-        }
 
         private void ClearErrors()
         {

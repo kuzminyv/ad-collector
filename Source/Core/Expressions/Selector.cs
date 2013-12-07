@@ -8,6 +8,15 @@ namespace Core.Expressions
 {
     public abstract class Selector
     {
+        private readonly string _matchFilter;
+        public string MatchFilter
+        {
+            get
+            {
+                return _matchFilter;
+            }
+        }
+
         private readonly string _name;
         public string Name
         {
@@ -28,23 +37,38 @@ namespace Core.Expressions
 
         public virtual IEnumerable<Match> Match(string input)
         {
-            var thisMatch = MatchAtom(input);
-            foreach (var match in thisMatch)
+            return Match(new Match("", input));
+        }
+
+        public virtual IEnumerable<Match> Match(Match match)
+        {
+            if (string.IsNullOrEmpty(MatchFilter) || match.Name == MatchFilter)
             {
-                foreach (var selector in Selectors)
+                var thisMatch = MatchAtom(match.Value);
+                foreach (var m in thisMatch)
                 {
-                    var childMatch = selector.Match(match.Value);
-                    match.AddMatchRange(childMatch);
+                    foreach (var selector in Selectors)
+                    {
+                        var childMatch = selector.Match(m);
+                        m.AddMatchRange(childMatch);
+                    }
                 }
+                return thisMatch;
             }
-            return thisMatch;
+            return new Match[0];
         }
 
         public abstract IEnumerable<Match> MatchAtom(string input);
 
         public Selector(string name, params Selector[] selectors)
+            : this(name, null, selectors)
+        { 
+        }
+
+        public Selector(string name, string matchFilter, params Selector[] selectors)
         {
             _name = name;
+            _matchFilter = matchFilter;
             _selectors = selectors;
         }
 

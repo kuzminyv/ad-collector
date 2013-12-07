@@ -1,4 +1,4 @@
-﻿using Core.Entities;
+using Core.Entities;
 using Core.Expressions;
 using Core.Utils;
 using System;
@@ -38,8 +38,12 @@ namespace Core.Connectors
 
         public override Selector CreateDetailsSelector()
         {
-            return new BoundExpressionSelector("Details", new BoundExpression(new BoundExpressionGroup("Images", new BoundSelector("<div class=\"viewport\">", "</div>"))),
-                        new BoundExpressionSelector("Preview", new BoundExpression(new BoundExpressionGroup("Url", new BoundSelector("img src=\"", "\""))))           		
+            return new BoundExpressionSelector("Details", 
+                new BoundExpression(new BoundExpressionGroup("Images", true, new BoundSelector("<div class=\"viewport\">", "</div>")),
+                                    new BoundExpressionGroup("Description", new BoundSelector("Описание товара<", "text\">", "</p>")),
+                                    new BoundExpressionGroup("Coord", true, new BoundSelector("Расположение", "coords:", "\"") {HoldPosition = true}),
+                                    new BoundExpressionGroup("Address", new BoundSelector("address_link", ">", "<"))),
+                        new BoundExpressionSelector("Preview", "Images", new BoundExpression(new BoundExpressionGroup("Url", new BoundSelector("img src=\"", "\""))))           		
 		    );            		
         }
 
@@ -144,7 +148,7 @@ namespace Core.Connectors
 
         private bool LastWith(string str, string subStr)
         {
-            int idx = str.IndexOf(subStr);
+            int idx = str.IndexOf(subStr, StringComparison.OrdinalIgnoreCase);
             return idx > 0 && str.Length == (idx + subStr.Length);
         }
 

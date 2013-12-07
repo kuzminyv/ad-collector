@@ -12,41 +12,54 @@ namespace Core.Expressions
 
         public override IEnumerable<Match> MatchAtom(string input)
         {
-            var boundMatches = _expression.Matches(input);
-            var result = new List<Match>(boundMatches.Count);
-            foreach (var boundMatch in boundMatches)
+            if (!string.IsNullOrEmpty(input))
             {
-                var match = new Match(this.Name, "");
-                result.Add(match);
-                foreach (var matchItem in boundMatch)
+                var boundMatches = _expression.Matches(input);
+                var result = new List<Match>(boundMatches.Count);
+                foreach (var boundMatch in boundMatches)
                 {
-                    match.AddMatch(new Match(matchItem.Key, matchItem.Value));
-                }
-            }
-            return result;
-        }
-
-        public override IEnumerable<Match> Match(string input)
-        {
-            var thisMatch = MatchAtom(input);
-            foreach (Match match in thisMatch)
-            {
-                foreach (var matchItem in match)
-                {                    
-                    foreach (var selector in Selectors)
+                    var match = new Match(this.Name, "");
+                    result.Add(match);
+                    foreach (var matchItem in boundMatch)
                     {
-                        var childMatch = selector.Match(matchItem.Value);
-                        matchItem.AddMatchRange(childMatch);
+                        match.AddMatch(new Match(matchItem.Key, matchItem.Value));
                     }
                 }
+                return result;
             }
-            return thisMatch;
+            return new Match[0];
+        }
+
+        public override IEnumerable<Match> Match(Match match)
+        {
+            if (!string.IsNullOrEmpty(match.Value) && (string.IsNullOrEmpty(MatchFilter) || match.Name == MatchFilter))
+            {
+                var thisMatch = MatchAtom(match.Value);
+                foreach (Match m in thisMatch)
+                {
+                    foreach (var matchItem in m)
+                    {
+                        foreach (var selector in Selectors)
+                        {
+                            var childMatch = selector.Match(matchItem);
+                            matchItem.AddMatchRange(childMatch);
+                        }
+                    }
+                }
+                return thisMatch;
+            }
+            return new Match[0];
+        }
+
+        public BoundExpressionSelector(string name, string matchFilter, BoundExpression expression, params Selector[] selectors)
+            : base(name, matchFilter, selectors)
+        {
+            _expression = expression;
         }
 
         public BoundExpressionSelector(string name, BoundExpression expression, params Selector[] selectors)
-            : base(name, selectors)
-        {
-            _expression = expression;
+            : this(name, null, expression, selectors)
+        { 
         }
     }
 }
