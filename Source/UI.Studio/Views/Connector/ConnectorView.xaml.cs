@@ -2,13 +2,14 @@
 using Core.Entities;
 using Core.Expressions;
 using Core.Utils;
+using ICSharpCode.AvalonEdit;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -18,82 +19,96 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using UI.Desktop.Views;
-using UI.Studio.Views;
-using Xceed.Wpf.AvalonDock.Layout;
 using UI.Desktop.Utils;
 
-namespace UI.Studio
+namespace UI.Studio.Views
 {
-
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
-    public partial class MainWindow : Window
-    {
-        public string connectorPath = @"..\..\..\Core\Connectors\Realty\CnKvadrat64.cs";
-        private AsyncOperation<object, object> _runConnectorOperation;
-
+	/// <summary>
+    /// Interaction logic for ConnectorView.xaml
+	/// </summary>
+	public partial class ConnectorView : UserControl
+	{
         private class OperationOptions
-        { 
+        {
             public bool IsDetailsPage;
             public bool FillEntity;
             public bool ThrowError;
         }
 
+        public ConnectorViewModel ViewModel
+        {
+            get
+            {
+                return this.DataContext as ConnectorViewModel;
+            }
+        }
 
-        public MainWindow()
+        public ConnectorView()
         {
             InitializeComponent();
-            if (File.Exists("studio.txt"))
+            this.Loaded += ConnectorView_Loaded;
+		}
+
+        private void ConnectorView_Loaded(object sender, RoutedEventArgs e)
+        {
+            editorConnectorSource.Text = ViewModel.LoadConnectorSources();
+
+            if (chkDetails.IsChecked == true)
             {
-                sourceText.Text = File.ReadAllText("studio.txt");
+                editorPageSource.Text = ViewModel.LoadDetailsPage();
             }
-            connectorDefinition.Text = File.ReadAllText(connectorPath);
+            else
+            {
+                editorPageSource.Text = ViewModel.LoadListPage();
+            }
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            if (!string.IsNullOrEmpty(sourceText.Text))
-            {
-                File.WriteAllText("studio.txt", sourceText.Text);
-            }
-        }
+
 
         private void btnMatch_Click(object sender, RoutedEventArgs e)
         {
-            RunConnector(new OperationOptions() 
-            { 
-                IsDetailsPage = (chkDetails.IsChecked == true), 
+            RunConnector(new OperationOptions()
+            {
+                IsDetailsPage = (chkDetails.IsChecked == true),
                 ThrowError = (chkThrowError.IsChecked == true),
-                FillEntity = false 
+                FillEntity = false
             }, new CancelationToken());
         }
 
         private void btnParse_Click(object sender, RoutedEventArgs e)
         {
-            RunConnector(new OperationOptions() 
-            { 
+            RunConnector(new OperationOptions()
+            {
                 IsDetailsPage = (chkDetails.IsChecked == true),
                 ThrowError = (chkThrowError.IsChecked == true),
-                FillEntity = true 
+                FillEntity = true
             }, new CancelationToken());
         }
 
         private object RunConnector(OperationOptions options, CancelationToken cancelationToken)
         {
-            ClearErrors();
+            ViewModel.Parent.Errors.ClearErrors();
             try
             {
-                string text = sourceText.Text;
-                BasicConnector connector = (new RuntimeCompiler()).CreateInstance<BasicConnector>(connectorDefinition.Text);
+                string text = editorPageSource.Text;
+                BasicConnector connector;
+
+                try
+                {
+                    connector = (new RuntimeCompiler()).CreateInstance<BasicConnector>(editorConnectorSource.Text);
+                }
+                catch (Exception exCompile)
+                {
+                    ViewModel.Parent.Errors.AddError(exCompile.Message);
+                    ViewModel.Parent.Errors.AddError(exCompile.StackTrace);
+                    return null;
+                }
+
                 var selector = options.IsDetailsPage ? connector.CreateDetailsSelector() : connector.CreateSelector();
 
-                var model = new MatchListViewModel();
-                model.Items = new ObservableCollection<MatchItemViewModel>(
+                ViewModel.Parent.MatchList.Items = new ObservableCollection<MatchItemViewModel>(
                     selector.Match(text).SelectMany(m => Match.Flat(m))
                                         .Select(m => new MatchItemViewModel(m)));
-                resultView.DataContext = model;
 
                 if (options.FillEntity)
                 {
@@ -101,7 +116,7 @@ namespace UI.Studio
                     {
                         foreach (var match in selector.Match(text))
                         {
-                           connector.FillDetails(new AdRealty());
+                            connector.FillDetails(new AdRealty());
                         }
                     }
                     else
@@ -116,8 +131,8 @@ namespace UI.Studio
             }
             catch (Exception ex)
             {
-                AddError(ex.Message);
-                AddError(ex.StackTrace);
+                ViewModel.Parent.Errors.AddError(ex.Message);
+                ViewModel.Parent.Errors.AddError(ex.StackTrace);
                 if (options.ThrowError)
                 {
                     throw;
@@ -127,19 +142,10 @@ namespace UI.Studio
         }
 
 
-        private void ClearErrors()
-        {
-            txtErrors.Text = string.Empty;
-        }
-
-        private void AddError(string error)
-        {
-            txtErrors.Text += error + "\n";
-        }
 
         private void btnSave_Click(object sender, RoutedEventArgs e)
         {
-            File.WriteAllText(connectorPath, connectorDefinition.Text);
+            File.WriteAllText(ViewModel.PathToConnectorSource, editorConnectorSource.Text);
         }
     }
 }

@@ -1,0 +1,81 @@
+﻿<Window x:Class="UI.Studio.MainWindow"
+                 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                 xmlns:local="clr-namespace:UI.Studio"
+                 xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+                 xmlns:xcad="http://schemas.xceed.com/wpf/xaml/avalondock"
+                 xmlns:s="clr-namespace:System;assembly=mscorlib"
+                 xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
+                 xmlns:views ="clr-namespace:UI.Studio.Views" 
+        Closing="Window_Closing">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Height="20">
+
+        </StackPanel>
+
+        <xcad:DockingManager Grid.Row="1"
+                           AllowMixedOrientation="True"
+                           BorderBrush="Black"
+                           BorderThickness="1"
+                           x:Name="dockingManager"
+                           DocumentsSource="{Binding Connectors}">
+
+            <xcad:DockingManager.LayoutItemTemplateSelector>
+                <views:PanesTemplateSelector>
+                    <views:PanesTemplateSelector.ConnectorViewTemplate>
+                        <DataTemplate>
+                            <views:ConnectorView/>
+                        </DataTemplate>
+                    </views:PanesTemplateSelector.ConnectorViewTemplate>
+                </views:PanesTemplateSelector>
+            </xcad:DockingManager.LayoutItemTemplateSelector>
+
+            <xcad:DockingManager.LayoutItemContainerStyleSelector>
+                <views:PanesStyleSelector>
+                    <views:PanesStyleSelector.ConnectorStyle>
+                        <Style TargetType="{x:Type xcad:LayoutItem}">
+                            <Setter Property="Title" Value="{Binding Model.ContentId}"/>
+                            <!--<Setter Property="ToolTip" Value="{Binding Model.FilePath}"/>
+                            <Setter Property="IconSource" Value="{Binding Model.IconSource}"/>-->
+                            <Setter Property="ContentId" Value="{Binding Model.ContentId}"/>
+                            <Setter Property="CloseCommand" Value="{Binding Model.CloseCommand}"/>
+                        </Style>
+                    </views:PanesStyleSelector.ConnectorStyle>
+                </views:PanesStyleSelector>
+            </xcad:DockingManager.LayoutItemContainerStyleSelector>
+
+            <xcad:LayoutRoot x:Name="_layoutRoot">                                                
+                <xcad:LayoutPanel Orientation="Horizontal">
+                    <xcad:LayoutDocumentPaneGroup >
+                        <xcad:LayoutDocumentPane>
+                        </xcad:LayoutDocumentPane>
+                    </xcad:LayoutDocumentPaneGroup >
+                    <xcad:LayoutAnchorablePaneGroup DockWidth="300">
+                        <xcad:LayoutAnchorablePane>
+                            <xcad:LayoutAnchorable ContentId="resultId" Title="Matches">
+                                <views:MatchListView x:Name="resultView" DataContext="{Binding MatchList}"/>
+                            </xcad:LayoutAnchorable>
+                            <xcad:LayoutAnchorable ContentId="explorerId" Title="Explorer">
+                                <views:ExplorerView x:Name="explorerView" DataContext="{Binding Explorer}"/>
+                            </xcad:LayoutAnchorable>
+                        </xcad:LayoutAnchorablePane>
+                    </xcad:LayoutAnchorablePaneGroup>
+                </xcad:LayoutPanel>
+                <xcad:LayoutRoot.BottomSide>
+                    <xcad:LayoutAnchorSide>
+                        <xcad:LayoutAnchorGroup>
+                            <xcad:LayoutAnchorable Title="Errors">
+                                <views:ErrorsView DataContext="{Binding Errors}"/>
+                            </xcad:LayoutAnchorable>
+                        </xcad:LayoutAnchorGroup>
+                    </xcad:LayoutAnchorSide>
+                </xcad:LayoutRoot.BottomSide>
+            </xcad:LayoutRoot>
+        </xcad:DockingManager>
+    </Grid>
+</Window>

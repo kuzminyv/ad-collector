@@ -1,0 +1,48 @@
+﻿<UserControl
+	x:Class="UI.Studio.Views.ConnectorView"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:avalonedit="http://icsharpcode.net/sharpdevelop/avalonedit"
+	mc:Ignorable="d"
+	d:DesignHeight="70"
+	d:DesignWidth="421">
+	<UserControl.Resources>
+       
+	</UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <GridSplitter Grid.Row="1" 
+                    HorizontalAlignment="Stretch" 
+                    VerticalAlignment="Top"
+                    Background="LightGray" 
+                    ShowsPreview="true"
+                    Height="5"/>
+        <avalonedit:TextEditor Grid.Row="0" x:Name="editorPageSource"  SyntaxHighlighting="XML" ShowLineNumbers="True"/>
+        <ContentControl Grid.Row="1" VerticalAlignment="Stretch">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition
+                                Height="Auto"/>
+                    <RowDefinition
+                                Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Height="30"  Grid.Row="0" Orientation="Horizontal">
+                    <Button Content="Save" x:Name="btnSave"/>
+                    <Button Content="Match" x:Name="btnMatch"/>
+                    <Button Content="Parse" x:Name="btnParse"/>
+                    <CheckBox x:Name="chkDetails" Content="Details"/>
+                    <CheckBox x:Name="chkRealtime" Content="Realtime"/>
+                    <CheckBox x:Name="chkThrowError" Content="Throw on error"/>
+                    <ComboBox />
+                </StackPanel>
+                <avalonedit:TextEditor Grid.Row="1" x:Name="editorConnectorSource"  SyntaxHighlighting="C#"  ShowLineNumbers="True"/>
+            </Grid>
+        </ContentControl>
+    </Grid>
+</UserControl>

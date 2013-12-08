@@ -4,6 +4,31 @@ using System.Diagnostics;
 
 namespace UI.Desktop.Views
 {
+    public class ViewModel<TModel, TParent> : ViewModel
+        where TParent : ViewModel
+    {
+        public TModel Model
+        {
+            get;
+            protected set;
+        }
+
+        public TParent Parent
+        {
+            get;
+            protected set;
+        }
+
+        public ViewModel(TParent parent)
+        {
+            Parent = parent;
+        }
+
+        public ViewModel()
+        { 
+        }
+    }
+
 	public abstract class ViewModel : INotifyPropertyChanged
 	{
 		#region Events

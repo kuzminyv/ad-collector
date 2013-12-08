@@ -13,7 +13,7 @@ using UI.Desktop.Views;
 
 namespace UI.Studio.Views
 {
-	public class MatchListViewModel : ViewModel
+	public class MatchListViewModel : ViewModel<object, MainViewModel>
 	{
         private ObservableCollection<MatchItemViewModel> _items;
         public ObservableCollection<MatchItemViewModel> Items
@@ -32,7 +32,8 @@ namespace UI.Studio.Views
             }
 		}
 
-        public MatchListViewModel()
+        public MatchListViewModel(MainViewModel parent)
+            : base(parent)
         {
         }
 	}

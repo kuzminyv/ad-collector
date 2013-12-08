@@ -34,5 +34,10 @@ namespace UI.Desktop.Commands
             : this(o => action(), null)
         { 
         }
+
+        public DelegateCommand(Action<object> action)
+            : this(o => action(o), null)
+        {
+        }
     }
 }
