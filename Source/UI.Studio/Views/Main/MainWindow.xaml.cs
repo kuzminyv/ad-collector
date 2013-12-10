@@ -41,14 +41,14 @@ namespace UI.Studio
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            var serializer = new Xceed.Wpf.AvalonDock.Layout.Serialization.XmlLayoutSerializer(dockingManager);
-            serializer.LayoutSerializationCallback += (s, args) =>
-            {
-                args.Content = args.Content;
-            };
+            //var serializer = new Xceed.Wpf.AvalonDock.Layout.Serialization.XmlLayoutSerializer(dockingManager);
+            //serializer.LayoutSerializationCallback += (s, args) =>
+            //{
+            //    args.Content = args.Content;
+            //};
 
-            if (File.Exists(@".\studioLayout.config"))
-                serializer.Deserialize(@".\studioLayout.config");
+            //if (File.Exists(@".\studioLayout.config"))
+            //    serializer.Deserialize(@".\studioLayout.config");
         }
 
         private void MainWindow_Unloaded(object sender, RoutedEventArgs e)

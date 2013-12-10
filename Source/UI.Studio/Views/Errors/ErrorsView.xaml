@@ -17,8 +17,7 @@
             </Grid>
         </DataTemplate>
 	</UserControl.Resources>
-	
-	<ContentControl
+    <ContentControl
 		Content="{Binding}"
 		ContentTemplate="{StaticResource contentTemplate}">		
 	</ContentControl>
