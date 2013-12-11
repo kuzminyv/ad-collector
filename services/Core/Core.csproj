@@ -50,6 +50,9 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.0.1\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="HtmlAgilityPack">
+      <HintPath>..\packages\HtmlAgilityPack.1.4.6\lib\Net45\HtmlAgilityPack.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\Lib\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -186,6 +189,7 @@
     <Compile Include="Expressions\Bound\BoundExpression.cs" />
     <Compile Include="Expressions\Bound\BoundExpressionCondition.cs" />
     <Compile Include="Expressions\Bound\BoundExpressionToken.cs" />
+    <Compile Include="Expressions\HtmlPathSelector.cs" />
     <Compile Include="Expressions\EmptySelector.cs" />
     <Compile Include="Expressions\FilterSelector.cs" />
     <Compile Include="Expressions\Match.cs" />

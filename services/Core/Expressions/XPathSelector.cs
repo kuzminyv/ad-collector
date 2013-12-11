@@ -14,12 +14,15 @@ namespace Core.Expressions
         private readonly string _xPathExpression;
         public override IEnumerable<Match> MatchAtom(string input)
         {
-            XmlDocument xDoc = new XmlDocument();
-            xDoc.Load(new StringReader(input));
-            var nodes = xDoc.SelectNodes(_xPathExpression);
-            for (int i = 0; i < nodes.Count; i++)
+            if (!string.IsNullOrEmpty(input))
             {
-                yield return new Match(this.Name, nodes.Item(i).InnerText);
+                XmlDocument xDoc = new XmlDocument();
+                xDoc.Load(new StringReader(input));
+                var nodes = xDoc.SelectNodes(_xPathExpression);
+                for (int i = 0; i < nodes.Count; i++)
+                {
+                    yield return new Match(this.Name, nodes.Item(i).InnerText);
+                }
             }
         }
 

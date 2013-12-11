@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,6 +11,11 @@ namespace TestConsole
     {
         static void Main(string[] args)
         {
+            HtmlDocument d = new HtmlDocument();
+            HtmlNode node = HtmlNode.CreateNode("<div><span>abc</span></div>");
+
+
+
             DynLinqTest.Run();
         }
     }
