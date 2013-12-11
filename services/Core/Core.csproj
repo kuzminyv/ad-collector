@@ -189,6 +189,7 @@
     <Compile Include="Expressions\EmptySelector.cs" />
     <Compile Include="Expressions\FilterSelector.cs" />
     <Compile Include="Expressions\Match.cs" />
+    <Compile Include="Expressions\AdParsers\ParsersHelper.cs" />
     <Compile Include="Expressions\Selector.cs" />
     <Compile Include="Expressions\StringRange.cs" />
     <Compile Include="Expressions\Bound\BoundSelectorResult.cs" />

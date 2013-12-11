@@ -36,7 +36,7 @@
                     <Button VerticalAlignment="Center" Content="Save" Command="{Binding SaveConnectorSourcesCommand}" Height="20" Margin="10 0 0 0"/>
                     <Button VerticalAlignment="Center" Content="Run" Command="{Binding RunConnectorCommand}" Height="20" Margin="10 0 0 0"/>
                     <CheckBox VerticalAlignment="Center" Content="Match Only" IsChecked="{Binding MatchOnly}" Margin="10 0 0 0"/>
-                    <CheckBox VerticalAlignment="Center" Content="Details" IsChecked="{Binding MatchOnly}" Margin="10 0 0 0"/>
+                    <CheckBox VerticalAlignment="Center" Content="Details" IsChecked="{Binding IsDetailsPage}" Margin="10 0 0 0"/>
                     <CheckBox VerticalAlignment="Center" Content="Throw on error" IsChecked="{Binding ThrowOnError}" Margin="10 0 0 0"/>
                 </StackPanel>
                 <avalonedit:TextEditor Grid.Row="1" x:Name="editorConnectorSource"  SyntaxHighlighting="C#"  ShowLineNumbers="True"/>
