@@ -1,5 +1,5 @@
 module.exports = {
-    db: "mongodb://localhost/mean",
+    db: "mongodb://admin:admin@ds061158.mongolab.com:61158/adcollector-prod",
     app: {
         name: "MEAN - A Modern Stack - Production"
     },
