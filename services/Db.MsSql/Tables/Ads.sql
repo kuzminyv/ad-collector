@@ -2,7 +2,7 @@
 (
 	[Id] INT NOT NULL PRIMARY KEY IDENTITY, 
     [Title] NVARCHAR(250) NULL, 
-    [Description] NVARCHAR(250) NULL, 
+    [Description] NVARCHAR(4000) NULL, 
     [PublishDate] DATETIME2 NOT NULL, 
     [CollectDate] DATETIME2 NOT NULL, 
     [Url] NVARCHAR(4000) NULL, 

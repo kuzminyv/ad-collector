@@ -14,6 +14,9 @@ namespace Core.Expressions
     {
         private readonly bool _isHtmlFragment;
         private readonly string _xPathExpression;
+        private readonly string _attributeName;
+        private readonly bool _innerHtml;
+
         public override IEnumerable<Match> MatchAtom(string input)
         {
             if (!string.IsNullOrEmpty(input))
@@ -21,26 +24,50 @@ namespace Core.Expressions
                 HtmlNodeCollection nodes;
                 if (_isHtmlFragment)
                 {
-                    nodes = HtmlNode.CreateNode(input).SelectNodes(_xPathExpression);
+                    nodes = HtmlNode.CreateNode(input). SelectNodes(_xPathExpression);
                 }
                 else
                 {
                     HtmlDocument doc = new HtmlDocument();
                     doc.LoadHtml(input);
-                    nodes = doc.DocumentNode.SelectNodes(input);
+                    nodes = doc.DocumentNode.SelectNodes(_xPathExpression);
                 }
-                for (int i = 0; i < nodes.Count; i++)
+
+                if (nodes != null)
                 {
-                    yield return new Match(this.Name, nodes[i].InnerText);
+                    for (int i = 0; i < nodes.Count; i++)
+                    {
+                        string nodeValue = null;
+                        if (!string.IsNullOrEmpty(_attributeName))
+                        {
+                            nodeValue = nodes[i].Attributes[_attributeName].Value;
+                        }
+                        else if (_innerHtml)
+                        {
+                            nodeValue = nodes[i].InnerHtml;
+                        }
+                        else
+                        {
+                            nodeValue = nodes[i].OuterHtml;
+                        }
+                        yield return new Match(this.Name, nodeValue);
+                    }
                 }
             }
         }
 
-        public HtmlPathSelector(string name, string xPathExpression, bool isHtmlFragment, params Selector[] selectors)
+        public HtmlPathSelector(string name, string xPathExpression, bool isHtmlFragment, bool innerHtml, string attributeName, params Selector[] selectors)
             : base(name, selectors)
         {
             _xPathExpression = xPathExpression;
-            _isHtmlFragment = isHtmlFragment; 
+            _isHtmlFragment = isHtmlFragment;
+            _innerHtml = innerHtml;
+            _attributeName = attributeName;
+        }
+
+        public HtmlPathSelector(string name, string xPathExpression, bool isHtmlFragment, params Selector[] selectors)
+            : this(name, xPathExpression, isHtmlFragment, false, null, selectors)
+        { 
         }
     }
 }

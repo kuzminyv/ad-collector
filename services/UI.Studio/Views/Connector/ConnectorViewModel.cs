@@ -243,6 +243,8 @@ namespace UI.Studio.Views
 
             var selector = options.IsDetailsPage ? connector.CreateDetailsSelector() : connector.CreateSelector();
 
+            var mmm = selector.Match(options.PageSource);
+
             Parent.MatchList.Items = new ObservableCollection<MatchItemViewModel>(
                 selector.Match(options.PageSource).SelectMany(m => Match.Flat(m))
                                     .Select(m => new MatchItemViewModel(m)));
@@ -260,7 +262,7 @@ namespace UI.Studio.Views
             {
                 foreach (var match in matches)
                 {
-                    connector.FillDetails(new AdRealty());
+                    //connector.FillDetails(new AdRealty(), match);
                 }
             }
             else

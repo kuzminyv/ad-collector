@@ -58,8 +58,8 @@ namespace Core.BLL
 
             int maxAds = Managers.SettingsManager.GetSettings().CheckForNewAdsMaxAdsCount;
             int frameSize = 100;
-            int minAds = 200;
-            double minNewAdsInFrame = 0.1;
+            int minAds = 300;
+            double minNewAdsInFrame = 0.05;
 
             foreach (var connector in Managers.ConnectorsManager.GetConnectors())
             {
@@ -173,7 +173,26 @@ namespace Core.BLL
 
                 try
                 {
-                    if (connector.FillDetails(ad))
+                    bool result = false;
+                    try
+                    {
+                        result = connector.FillDetails(ad);
+                    }
+                    catch (Exception fillEx)
+                    {
+                        if (fillEx.Message.Contains("404"))
+                        {
+                            ad.DetailsDownloadStatus = DetailsDownloadStatus.PageNotAccessable;
+                        }
+                        else
+                        {
+                            ad.DetailsDownloadStatus = DetailsDownloadStatus.ParserError;
+                        }
+                        Repositories.AdsRepository.UpdateItem(ad);
+                        throw;
+                    }
+
+                    if (result)
                     {
                         if (cancelationToken.IsCancellationRequested)
                         {
@@ -189,7 +208,7 @@ namespace Core.BLL
                             Repositories.AdImagesRepository.SetList(ad.Id, ad.Images);
                         }
                     }
-                    state.Description = string.Format("Fill details {0}.", ad.ConnectorId);
+                    state.Description = string.Format("Fill details {0}.", ad.Url);
                     state.ProgressTotal++;
                     stateCallback(state);
                 }

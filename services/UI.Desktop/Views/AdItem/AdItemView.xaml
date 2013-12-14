@@ -65,13 +65,20 @@
                         Text="{Binding Id}"/>
                 </StackPanel>
                 
-                <TextBlock
-					Name="tkAdText"
-					Grid.Row="1"
+                <StackPanel
+                    Grid.Row="1"
                     Grid.Column="0"
-					TextWrapping="Wrap"
-					Text="{Binding Text}">
-				</TextBlock>
+                    Orientation="Horizontal">
+                    <TextBlock
+				        Name="tkAdText"				        
+				        TextWrapping="Wrap"
+				        Text="{Binding Text}">
+			        </TextBlock>
+                    <TextBlock
+                        TextTrimming="CharacterEllipsis"
+                        TextWrapping="Wrap"
+                        Text="{Binding Description}"/>
+                </StackPanel>
                 
                 <ItemsControl
                     Grid.Row="1"
@@ -84,7 +91,9 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <Image Source="{Binding PreviewUrl}"/>
+                            <Border BorderThickness="1" BorderBrush="LightGray" Margin="5 0 0 0">
+                                <Image Source="{Binding PreviewUrl}"/>
+                            </Border>
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

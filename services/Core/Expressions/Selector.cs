@@ -44,12 +44,12 @@ namespace Core.Expressions
         {
             if (string.IsNullOrEmpty(MatchFilter) || match.Name == MatchFilter)
             {
-                var thisMatch = MatchAtom(match.Value);
+                var thisMatch = MatchAtom(match.Value).ToList();
                 foreach (var m in thisMatch)
                 {
                     foreach (var selector in Selectors)
                     {
-                        var childMatch = selector.Match(m);
+                        var childMatch = selector.Match(m).ToList();
                         m.AddMatchRange(childMatch);
                     }
                 }

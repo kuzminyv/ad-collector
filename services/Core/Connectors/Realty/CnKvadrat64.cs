@@ -67,6 +67,24 @@ namespace Core.Connectors
                 ));
         }
 
+        public override Selector CreateDetailsSelector()
+        {
+            return new HtmlPathSelector("Details", "/html/body/table[3]/tr/td[1]/div/table[4]", false,
+                new HtmlPathSelector("Description", "/table/tr[2]/td[2]/span", true, true, null),
+                new HtmlPathSelector("ImagePreviewUrl", "/table/tr[4]/td[2]/a/img/@src", true, false, "src"));
+        }
+
+        protected override void FillAdDetails(Ad ad, Match match)
+        {
+            ad.Images = match.GetByPath(@"Details\ImagePreviewUrl", true).Select(previewUrl => new AdImage()
+            {
+                AdId = ad.Id,
+                PreviewUrl = Id + "/" + previewUrl.Value,
+                Url = Id + "/" + previewUrl.Value.Replace("s", "b")
+            }).ToList();
+            ad.Description = match["Description"];
+        }
+
         public override Ad CreateAd(Match match)
         {
             return new AdRealty()

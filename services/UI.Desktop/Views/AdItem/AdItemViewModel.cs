@@ -56,9 +56,18 @@ namespace UI.Desktop.Views
 		{
 			get
 			{
-				return _model.Title;
+                return string.IsNullOrEmpty(_model.Title) ? string.Format("{0}, {1}, {2} ", _model.Price, ((AdRealty)_model).Address, ((AdRealty)_model).LivingSpace)
+                    : _model.Title;
 			}
 		}
+
+        public string Description
+        {
+            get
+            {
+                return _model.Description;
+            }
+        }
 
 		public DateTime Date
 		{
@@ -157,10 +166,6 @@ namespace UI.Desktop.Views
         {
             get
             {
-                if (_model.Images != null && _model.Images.Count > 0)
-                {
-                    throw new Exception("Images");
-                }
                 return _model.Images;
             }
         }

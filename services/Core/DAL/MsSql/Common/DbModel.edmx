@@ -76,7 +76,7 @@
           </Key>
           <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="Title" Type="nvarchar" MaxLength="250" />
-          <Property Name="Description" Type="nvarchar" MaxLength="250" />
+          <Property Name="Description" Type="nvarchar" />
           <Property Name="PublishDate" Type="datetime2" Nullable="false" />
           <Property Name="CollectDate" Type="datetime2" Nullable="false" />
           <Property Name="Url" Type="nvarchar" />
@@ -268,7 +268,7 @@
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
           <Property Name="Title" Type="String" MaxLength="250" Unicode="true" FixedLength="false" />
-          <Property Name="Description" Type="String" MaxLength="250" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="4000" Unicode="true" FixedLength="false" />
           <Property Name="PublishDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="CollectDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="Price" Type="Double" Nullable="false" />

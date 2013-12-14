@@ -127,7 +127,7 @@ namespace Core.Expressions
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _matches.GetEnumerator();
+            return ((IEnumerable)_matches).GetEnumerator();
         }
 
         public Match(string name, string value, params Match[] matches)

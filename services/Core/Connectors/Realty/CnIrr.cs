@@ -67,6 +67,7 @@ namespace Core.Connectors
 
         protected override void FillAdDetails(Ad ad, Match match)
         {
+            Thread.Sleep(2000);
             ad.Images = match.GetByPath(@"Images\Preview\Url", true).Select(previewUrl => new AdImage() 
             {
                 AdId = ad.Id,
