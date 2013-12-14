@@ -51,5 +51,19 @@ namespace Core.DAL.MsSql
             });
             return result;
         }
+
+        public void SetList(int adId, List<AdImage> images)
+        {
+            ExecuteDbOperation(context =>
+            {
+                context.Database.ExecuteSqlCommand("DELETE FROM dbo.AdImages WHERE AdId = " + adId);
+
+                for (int i = 0; i < images.Count; i++)
+                {
+                    images[i].AdId = adId;
+                }
+                AddList(images);
+            });
+        }
     }
 }

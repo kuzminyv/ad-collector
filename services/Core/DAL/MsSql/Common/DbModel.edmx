@@ -85,6 +85,7 @@
           <Property Name="IsSuspicious" Type="bit" Nullable="false" />
           <Property Name="ConnectorId" Type="nvarchar" MaxLength="1000" />
           <Property Name="CreationDate" Type="datetime2" />
+          <Property Name="DetailsDownloadStatus" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="AdsRealty">
           <Key>
@@ -281,6 +282,7 @@
           <Property Type="String" Name="ConnectorId" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Type="DateTime" Name="CreationDate" Precision="7" />
           <Property Type="String" Name="Url" Unicode="true" MaxLength="4000" FixedLength="false" Nullable="true" />
+          <Property Type="Int32" Name="DetailsDownloadStatus" Nullable="false" />
         </EntityType>
         <EntityType Name="DbAdsRealty" BaseType="AdCollectorDBModel.DbAd">
           <Property Name="Address" Type="String" MaxLength="500" Unicode="true" FixedLength="false" />
@@ -435,6 +437,7 @@
           <EntitySetMapping Name="Ads">
             <EntityTypeMapping TypeName="IsTypeOf(AdCollectorDBModel.DbAd)">
               <MappingFragment StoreEntitySet="Ads">
+                <ScalarProperty Name="DetailsDownloadStatus" ColumnName="DetailsDownloadStatus" />
                 <ScalarProperty Name="Url" ColumnName="Url" />
                 <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
                 <ScalarProperty Name="ConnectorId" ColumnName="ConnectorId" />

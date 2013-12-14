@@ -6,13 +6,15 @@ using Core.Entities;
 using System.Windows.Input;
 using UI.Desktop.Commands;
 using System.Web;
+using UI.Desktop.Utils;
+using Core.BLL;
 
 namespace UI.Desktop.Views
 {
 	public class AdItemViewModel : ViewModel
-	{
-		private Ad _model;
-
+    {
+        #region Properties
+        private Ad _model;
         public Ad Model
         {
             get
@@ -151,7 +153,21 @@ namespace UI.Desktop.Views
             }
         }
 
-		public ICommand OpenUrlCommand
+        public List<AdImage> Images
+        {
+            get
+            {
+                if (_model.Images != null && _model.Images.Count > 0)
+                {
+                    throw new Exception("Images");
+                }
+                return _model.Images;
+            }
+        }
+        #endregion
+
+        #region Commands
+        public ICommand OpenUrlCommand
 		{
 			get
 			{
@@ -174,8 +190,9 @@ namespace UI.Desktop.Views
                 return AppCommands.ShowAdHistoryCommand;
             }
         }
+        #endregion
 
-		public AdItemViewModel(Ad model)
+        public AdItemViewModel(Ad model)
 		{
 			_model = model;
 		}

@@ -10,5 +10,6 @@
     [IdOnWebSite] NVARCHAR(250) NULL, 
     [IsSuspicious] BIT NOT NULL, 
     [ConnectorId] NVARCHAR(1000) NULL, 
-    [CreationDate] DATETIME2 NULL
+    [CreationDate] DATETIME2 NULL, 
+    [DetailsDownloadStatus] INT NOT NULL DEFAULT 0
 )

@@ -6,7 +6,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:utils="clr-namespace:UI.Desktop.Utils"
 	mc:Ignorable="d"
-	d:DesignHeight="98"
+	d:DesignHeight="120"
 	d:DesignWidth="421">
 	<UserControl.Resources>
         <utils:BoolToVisibilityConverter
@@ -19,16 +19,16 @@
 					<RowDefinition
 						Height="20" />
 					<RowDefinition
-						Height="50" />
+						Height="70" />
 					<RowDefinition
 						Height="20" />
 				</Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition
-                        Width="50*"/>
+                        Width="*"/>
                     <ColumnDefinition
-                        Width="50*"/>
+                        Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
 				<TextBlock>
@@ -47,6 +47,7 @@
                 <StackPanel
                     Grid.Row="0"
                     Grid.Column="1"
+                    Grid.ColumnSpan="2"
                     HorizontalAlignment="Right"
                     Orientation="Horizontal">
                     <TextBlock
@@ -67,10 +68,26 @@
                 <TextBlock
 					Name="tkAdText"
 					Grid.Row="1"
-                    Grid.ColumnSpan="2"
+                    Grid.Column="0"
 					TextWrapping="Wrap"
 					Text="{Binding Text}">
 				</TextBlock>
+                
+                <ItemsControl
+                    Grid.Row="1"
+                    Grid.Column="1"
+                    ItemsSource="{Binding Images}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding PreviewUrl}"/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
 
                 <Grid
 					Grid.Row="2"

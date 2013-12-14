@@ -11,5 +11,6 @@ namespace Core.DAL
     {
         List<AdImage> GetList(int adId);
         void AddList(List<AdImage> entities);
+        void SetList(int adId, List<AdImage> images);
     }
 }

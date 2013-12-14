@@ -12,6 +12,7 @@ using Core.DAL.MsSql.Common;
 using AutoMapper;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using Core.Entities.Enums;
 
 namespace Core.DAL.MsSql
 {
@@ -21,6 +22,8 @@ namespace Core.DAL.MsSql
         {
             public DbAdsRealty Ad { get; set; }
             public int? HistoryLength { get; set; }
+            public DbMetadata Metadata { get; set; }
+            public ICollection<DbAdImage> Images { get; set; }
         }
 
         #region Abstract methods implementation
@@ -76,7 +79,8 @@ namespace Core.DAL.MsSql
                 ConnectorId = entity.ConnectorId,
                 Title = entity.Title,
                 Url = entity.Url,
-                IsNewBuilding = entity.IsNewBuilding
+                IsNewBuilding = entity.IsNewBuilding,
+                DetailsDownloadStatus = (int)entity.DetailsDownloadStatus
             };
         }
 
@@ -108,7 +112,9 @@ namespace Core.DAL.MsSql
                 IsSuspicious = source.IsSuspicious,
                 Description = source.Description,
                 IsNewBuilding = source.IsNewBuilding,
-                Metadata = ((MetadataRepository)Repositories.MetadataRepository).ConvertToEntity(dbEntity.Metadatas.FirstOrDefault())
+                DetailsDownloadStatus = (DetailsDownloadStatus)source.DetailsDownloadStatus,
+                Metadata = ((MetadataRepository)Repositories.MetadataRepository).ConvertToEntity(dbEntity.Metadatas.FirstOrDefault()),
+                Images = ((AdImagesRepository)Repositories.AdImagesRepository).ConvertAllToEntity(dbEntity.AdImages).ToList()
             };
         }
 
@@ -156,6 +162,8 @@ namespace Core.DAL.MsSql
                         result = result.Where(t => t.Price <= priceMax || t.Price == 0);
                         break;
                     case "DetailsDownloadStatus":
+                        var status = (DetailsDownloadStatus)filter.Value;
+                        result = result.Where(t => (DetailsDownloadStatus)t.DetailsDownloadStatus == status);
                         break;
                     case "IsNew":
                         break;
@@ -196,19 +204,31 @@ namespace Core.DAL.MsSql
             return result;
         }
 
-        private DbQuery<DbAd> FillAdditionalProperties(DbSet<DbAd> entities, List<string> optionalFields)
+        private IQueryable<DbAdsRealtyContainer> FillAdditionalProperties(IQueryable<DbAdsRealty> entities, List<string> optionalFields)
         {
-            DbQuery<DbAd> result = entities;
-            foreach (var fieldName in optionalFields)
+            //This is the temporary implementation
+            //There is the limitation in EF ("http://msdn.microsoft.com/en-us/library/bb896317.aspx" - Projecting to an Anonymous Type)
+            return entities.Select(a => new DbAdsRealtyContainer()
             {
-                switch (fieldName)
-                {
-                    case "Metadata":
-                        result = entities.Include("Metadatas");
-                        break;
-                }
-            }
-            return result;
+                Ad = a,
+                HistoryLength = a.AdHistoryItems.Count(),
+                Images = a.AdImages,
+                Metadata = a.Metadatas.FirstOrDefault()
+            });
+            //DbQuery<DbAd> result = entities;
+            //foreach (var fieldName in optionalFields)
+            //{         
+            //    switch (fieldName)
+            //    {
+            //        case "Metadata":
+            //            result = result.Include("Metadatas");
+            //            break;
+            //        case "Images":
+            //            result = result.Include("AdImages");
+            //            break;
+            //    }
+            //}
+            //return result;
         }
 
         public override QueryResult<AdRealty> GetList(Query query)
@@ -218,18 +238,10 @@ namespace Core.DAL.MsSql
 
             ExecuteDbOperation(context =>
             {
-                IQueryable<DbAdsRealty> dbEntities;
+                IQueryable<DbAdsRealty> dbEntities = GetDbEntities(context).OfType<DbAdsRealty>();
 
                 if (query != null)
                 {
-                    if (query.HasOptionalFields)
-                    {
-                        dbEntities = FillAdditionalProperties(GetDbEntities(context), query.OptionalFields).OfType<DbAdsRealty>();
-                    }
-                    else
-                    {
-                        dbEntities = GetDbEntities(context).OfType<DbAdsRealty>();
-                    }
                     if (query.HasFilters)
                     {
                         dbEntities = ApplyFilter(context, dbEntities, query.Filters);
@@ -247,15 +259,19 @@ namespace Core.DAL.MsSql
                         }
                         dbEntities = dbEntities.Take(query.Limit.Value);
                     }
-
-                    if (query.HasOptionalFields && query.OptionalFields.Contains("HistoryLength"))
+                    if (query.HasOptionalFields)
                     {
-                        result = new QueryResult<AdRealty>(ConvertAllToEntity(dbEntities.Select(a => new DbAdsRealtyContainer()
-                        {
-                            Ad = a,
-                            HistoryLength = a.AdHistoryItems.Count()
-                        })).ToList(), totalCount);
+                        result = new QueryResult<AdRealty>(ConvertAllToEntity(FillAdditionalProperties(dbEntities, query.OptionalFields)).ToList(), totalCount);
                     }
+
+                    //if (query.HasOptionalFields && query.OptionalFields.Contains("HistoryLength"))
+                    //{
+                    //    result = new QueryResult<AdRealty>(ConvertAllToEntity(dbEntities.Select(a => new DbAdsRealtyContainer()
+                    //    {
+                    //        Ad = a//,
+                    //        //HistoryLength = a.AdHistoryItems.Count()
+                    //    }).Include("Ad.AdImages")).ToList(), totalCount);
+                    //}
                 }
                 else
                 {

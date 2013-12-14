@@ -65,9 +65,15 @@ namespace Core.Connectors
 		    );            		
         }
 
-        public override bool FillDetails(Ad ad)
+        protected override void FillAdDetails(Ad ad, Match match)
         {
-            return false;
+            ad.Images = match.GetByPath(@"Images\Preview\Url", true).Select(previewUrl => new AdImage() 
+            {
+                AdId = ad.Id,
+                PreviewUrl = previewUrl.Value,
+                Url = previewUrl.Value.Replace("small", "view")
+            }).ToList();
+            ad.Description = match["Description"];
         }
 
         public override Ad CreateAd(Match match)

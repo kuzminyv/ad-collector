@@ -310,6 +310,7 @@ namespace UI.Desktop.Views
             query.AddSort(SortBySelectedItem.Key, SortOrderSelectedItem.Key);
             query.AddFields("LinkedAdsCount");
             query.AddFields("HistoryLength");
+            query.AddFields("Images");
 
             if (!string.IsNullOrEmpty(TextFilter))
             {
