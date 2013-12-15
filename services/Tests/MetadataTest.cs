@@ -10,7 +10,7 @@ namespace Tests
     public class MetadataTest
     {
         [TestMethod]
-        public void SaveTest()
+        public void MetadataTest_SaveTest()
         {
             Query query = new Query(0, 1);
             query.AddFields("Metadata");

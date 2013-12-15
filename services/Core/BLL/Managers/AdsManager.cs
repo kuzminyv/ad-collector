@@ -58,8 +58,8 @@ namespace Core.BLL
 
             int maxAds = Managers.SettingsManager.GetSettings().CheckForNewAdsMaxAdsCount;
             int frameSize = 100;
-            int minAds = 200;
-            double minNewAdsInFrame = 0.1;
+            int minAds = 300;
+            double minNewAdsInFrame = 0.05;
 
             foreach (var connector in Managers.ConnectorsManager.GetConnectors())
             {
@@ -112,9 +112,16 @@ namespace Core.BLL
                         string.Format("{0} Collection from {1} finished. Processed: {2}; New ads: {3}; Added to History: {4}; Rejected: {5};",
                         this.GetType().Name, connector.Id,
                         acceptance.Count(),
-                        acceptance.Where(a => a == AdAcceptance.Accepted).Count(),
-                        acceptance.Where(a => a == AdAcceptance.History).Count(),
-                        acceptance.Where(a => a == AdAcceptance.Rejected).Count()));
+                        acceptance.Where(a => a.Value == AdAcceptance.Accepted).Count(),
+                        acceptance.Where(a => a.Value == AdAcceptance.History).Count(),
+                        acceptance.Where(a => a.Value == AdAcceptance.Rejected).Count()));
+
+                    FillDetails(
+                        st => { state.Description = st.Description; state.Progress = st.Progress; stateChangedCallback(state); },
+                        () => { },
+                        cancelationToken,
+                        acceptance.Where(kvp => (kvp.Value == AdAcceptance.Accepted || kvp.Value == AdAcceptance.History) && kvp.Key.DetailsDownloadStatus == DetailsDownloadStatus.NotDownloaded)
+                        .Select(kvp => kvp.Key).ToList());
 
                     result.AddRange(connectorResult);
                 }
@@ -166,7 +173,26 @@ namespace Core.BLL
 
                 try
                 {
-                    if (connector.FillDetails(ad))
+                    bool result = false;
+                    try
+                    {
+                        result = connector.FillDetails(ad);
+                    }
+                    catch (Exception fillEx)
+                    {
+                        if (fillEx.Message.Contains("404"))
+                        {
+                            ad.DetailsDownloadStatus = DetailsDownloadStatus.PageNotAccessable;
+                        }
+                        else
+                        {
+                            ad.DetailsDownloadStatus = DetailsDownloadStatus.ParserError;
+                        }
+                        Repositories.AdsRepository.UpdateItem(ad);
+                        throw;
+                    }
+
+                    if (result)
                     {
                         if (cancelationToken.IsCancellationRequested)
                         {
@@ -179,10 +205,10 @@ namespace Core.BLL
                         Repositories.AdsRepository.UpdateItem(ad);
                         if (ad.Images != null && ad.Images.Count > 0)
                         {
-                            Repositories.AdImagesRepository.AddList(ad.Images);
+                            Repositories.AdImagesRepository.SetList(ad.Id, ad.Images);
                         }
                     }
-                    state.Description = string.Format("Fill details {0}.", ad.ConnectorId);
+                    state.Description = string.Format("Fill details {0}.", ad.Url);
                     state.ProgressTotal++;
                     stateCallback(state);
                 }
@@ -204,10 +230,10 @@ namespace Core.BLL
             }
         }
 
-        private List<AdAcceptance> AddNewOrCreateHistory(List<Ad> ads)
+        private Dictionary<Ad, AdAcceptance> AddNewOrCreateHistory(List<Ad> ads)
         {
             int historyAcceptanceHours = 168;
-            var result = new List<AdAcceptance>(ads.Count);
+            var result = new Dictionary<Ad, AdAcceptance>(ads.Count);
             for (int i = ads.Count - 1; i >= 0; i--)
             {
                 var ad = ads[i];
@@ -217,7 +243,7 @@ namespace Core.BLL
                     var history = Repositories.AdHistoryItemsRepository.GetList(adForSameObject.Id).OrderByDescending(hi => hi.AdCollectDate).FirstOrDefault();
                     if ((ad.CollectDate - adForSameObject.CollectDate).Hours < historyAcceptanceHours && ad.Price == adForSameObject.Price)
                     {
-                        result.Add(AdAcceptance.Rejected);
+                        result.Add(ad, AdAcceptance.Rejected);
                     }
                     else 
                     {
@@ -237,13 +263,13 @@ namespace Core.BLL
                         adForSameObject.IdOnWebSite = ad.IdOnWebSite;
                         adForSameObject.Price = ad.Price;
                         Repositories.AdsRepository.UpdateItem(adForSameObject);
-                        result.Add(AdAcceptance.History);
+                        result.Add(adForSameObject, AdAcceptance.History);
                     }
                 }
                 else
                 {
                     Repositories.AdsRepository.AddItem(ad);
-                    result.Add(AdAcceptance.Accepted);
+                    result.Add(ad, AdAcceptance.Accepted);
                 }
             }
             return result;

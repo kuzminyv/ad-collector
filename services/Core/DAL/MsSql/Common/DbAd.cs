@@ -34,6 +34,7 @@ namespace Core.DAL.MsSql.Common
         public string ConnectorId { get; set; }
         public Nullable<System.DateTime> CreationDate { get; set; }
         public string Url { get; set; }
+        public int DetailsDownloadStatus { get; set; }
     
         public virtual ICollection<DbAdLink> AdLinks { get; set; }
         public virtual ICollection<DbAdLink> AdLinks1 { get; set; }

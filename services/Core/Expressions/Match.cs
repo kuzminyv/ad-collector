@@ -81,15 +81,28 @@ namespace Core.Expressions
             }
         }
 
-        public IEnumerable<Match> GetByPath(string path)
+        public IEnumerable<Match> GetByPath(string path, bool relative)
         {
             foreach (Match match in Match.Flat(this))
             {
-                if (match.Path.StartsWith(path))
+                if ((relative && match.GetRelativePath(this).StartsWith(path)) || (!relative && match.Path.StartsWith(path)))
                 {
                     yield return match;
                 }
             }
+        }
+
+        public string GetRelativePath(Match match)
+        {
+            Match parent = Parent;
+            string path = Name;
+            while (parent != null && parent != match)
+            {
+                path = parent.Name + "\\" + path;
+                parent = parent.Parent;
+            }
+
+            return path;
         }
 
         public Match AddMatch(Match match)
@@ -114,7 +127,7 @@ namespace Core.Expressions
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return _matches.GetEnumerator();
+            return ((IEnumerable)_matches).GetEnumerator();
         }
 
         public Match(string name, string value, params Match[] matches)

@@ -18,5 +18,19 @@ namespace Core.DAL.Binary
                 return base.Entities.Where(kvp => kvp.Value.AdId == adId).Select(kvp => kvp.Value).ToList();
             }
         }
+
+        public void SetList(int adId, List<AdImage> images)
+        {
+            ExecuteDbOperation(() =>
+            {
+                var listToRemove = Entities.Where(kvp => kvp.Value.AdId == adId).Select(kvp => kvp.Key).ToList();
+                DeleteItems(listToRemove);
+                for (int i = 0; i < images.Count; i++)
+                {
+                    images[i].AdId = adId;
+                }
+                AddList(images);
+            });
+        }
     }
 }

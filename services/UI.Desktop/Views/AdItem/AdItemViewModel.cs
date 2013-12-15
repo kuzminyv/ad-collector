@@ -6,13 +6,15 @@ using Core.Entities;
 using System.Windows.Input;
 using UI.Desktop.Commands;
 using System.Web;
+using UI.Desktop.Utils;
+using Core.BLL;
 
 namespace UI.Desktop.Views
 {
 	public class AdItemViewModel : ViewModel
-	{
-		private Ad _model;
-
+    {
+        #region Properties
+        private Ad _model;
         public Ad Model
         {
             get
@@ -54,9 +56,18 @@ namespace UI.Desktop.Views
 		{
 			get
 			{
-				return _model.Title;
+                return string.IsNullOrEmpty(_model.Title) ? string.Format("{0}, {1}, {2} ", _model.Price, ((AdRealty)_model).Address, ((AdRealty)_model).LivingSpace)
+                    : _model.Title;
 			}
 		}
+
+        public string Description
+        {
+            get
+            {
+                return _model.Description;
+            }
+        }
 
 		public DateTime Date
 		{
@@ -151,7 +162,17 @@ namespace UI.Desktop.Views
             }
         }
 
-		public ICommand OpenUrlCommand
+        public List<AdImage> Images
+        {
+            get
+            {
+                return _model.Images;
+            }
+        }
+        #endregion
+
+        #region Commands
+        public ICommand OpenUrlCommand
 		{
 			get
 			{
@@ -174,8 +195,9 @@ namespace UI.Desktop.Views
                 return AppCommands.ShowAdHistoryCommand;
             }
         }
+        #endregion
 
-		public AdItemViewModel(Ad model)
+        public AdItemViewModel(Ad model)
 		{
 			_model = model;
 		}

@@ -1,4 +1,4 @@
-﻿using Core.Entities;
+using Core.Entities;
 using Core.Expressions;
 using Core.Utils;
 using System;
@@ -35,6 +35,17 @@ namespace Core.Connectors
                 ));
         }
 
+        public override Selector CreateDetailsSelector()
+        {
+            return new HtmlPathSelector("Details", "//*[@id=\"content\"]/div", false,
+                new HtmlPathSelector("FirstImageUrl", "//*[@id=\"tur\"]/a/@href", true, false, "href"),
+                new HtmlPathSelector("FirsrImagePreviewUrl", "//*[@id=\"tur\"]/a/img/@src", true, false, "src"),
+                new HtmlPathSelector("Description", "/div/dl/dd/p", true, true, null),
+                new HtmlPathSelector("Images", "/div/table[2]//tr//td", true, true, null,
+                	 new HtmlPathSelector("Url", "/a/@href", true, true, "href"),
+                	 new HtmlPathSelector("PreviewUrl", "/a/img/@src", true, true, "src")));
+        }
+
         public override Ad CreateAd(Match match)
         {
             return new AdRealty()
@@ -51,6 +62,27 @@ namespace Core.Connectors
                 LivingSpace = ParseSize(match["Size"]),
                 Price = ParsePrice(match["Price"])
             };
+        }
+
+        protected override void FillAdDetails(Ad ad, Match match)
+        {
+            ad.Images = match.GetByPath(@"Details\Images", true).Select(img => new AdImage()
+            {
+                AdId = ad.Id,
+                PreviewUrl = img["PreviewUrl"],
+                Url = img["Url"]
+            }).ToList();
+            ad.Description = match["Description"];
+
+            if (!string.IsNullOrEmpty(match["FirstImageUrl"]))
+            {
+                ad.Images.Add(new AdImage()
+                {
+                    AdId = ad.Id,
+                    PreviewUrl = match["FirsrImagePreviewUrl"],
+                    Url = match["FirstImageUrl"]
+                });
+            }
         }
 
         protected int ParseRooms(string rooms)

@@ -170,7 +170,7 @@
             BorderBrush="Gray">
             <StackPanel
                 Orientation="Horizontal">
-                <TextBlock VerticalAlignment="Center" Margin="10 0 0 0" Width="200" Text="{Binding StatusText}"/>
+                <TextBlock VerticalAlignment="Center" Margin="10 0 0 0" Width="Auto" Text="{Binding StatusText}"/>
                 <TextBlock VerticalAlignment="Center" Margin="20 0 0 0" Text="{Binding Path=TotalAdsCount, StringFormat=Total: {0}}"/>
                 <TextBlock VerticalAlignment="Center" Margin="20 0 0 0" Text="{Binding ProcessedAdsCount, StringFormat=Processed: {0}}"/>
                 <TextBlock VerticalAlignment="Center" Margin="20 0 0 0" Text="{Binding NewAdsCount, StringFormat=Received: {0}}"/>
