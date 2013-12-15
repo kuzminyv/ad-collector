@@ -2,9 +2,17 @@ angular.module('mean.realty').directive('search', function(){
     return {
         restrict: 'E',
         templateUrl: '/views/realty/search.html',
-        scope: {},
+        scope: {
+            search: '&'
+        },
         controller: function ($scope) {
-            $scope.query = "Query";
+            $scope.submit = function() {
+                var searchData = {
+                    query: $scope.query
+                };
+
+                $scope.search({ searchData: searchData });
+            };
         }
     };
 });
