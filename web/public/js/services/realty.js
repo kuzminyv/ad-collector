@@ -4,7 +4,7 @@ angular.module('mean.realty').factory('Realty', ['$resource', function ($resourc
     return $resource(serviceUrl + '/ads/:adId',
         { adId: '@_id' },
         {
-            query: { isArray: false },
+            query: { method: 'GET', isArray: false },
             update: { method: 'PUT' }
         });
 }]);

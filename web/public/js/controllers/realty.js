@@ -1,15 +1,19 @@
-angular.module('mean.realty').controller('RealtyController', [ '$scope', 'Realty', function ($scope, Realty) {
+angular.module('mean.realty').controller('RealtyController', [ '$scope', 'Global', 'Realty', function ($scope, Global, Realty) {
     $scope.ads = [];
 
     $scope.find = function () {
-//        Realty.query(function(queryResult) {
-//            $scope.ads = queryResult.items;
-//        });
+        Realty.query(Global.realty.search, function (queryResult) {
+            $scope.ads = queryResult.items;
+        });
     };
 
-    $scope.search = function(searchData) {
-        console.log(searchData);
-    };
+    $scope.$watch(
+        function () {
+            return Global.realty.search;
+        },
+        function () {
+            $scope.find();
+        }, true);
 
-    $scope.message = 'List of realty';
+    $scope.realtySearch = Global.realty.search;
 }]);

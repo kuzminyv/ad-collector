@@ -1,4 +1,4 @@
-<nav class="navbar navbar-default" role="navigation">
+<nav class="navbar navbar-default" role="navigation" ng-controller="HeaderController">
     <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse">
             <span class="sr-only">Toggle navigation</span>
@@ -15,5 +15,16 @@
                 <a href="#!/{{item.link}}">{{item.title}}</a>
             </li>
         </ul>
+        <form class="navbar-form" ng-submit="search()">
+        <form class="navbar-form" ng-submit="search()">
+            <div class="row">
+                <div class="input-group col-md-offset-2">
+                    <label for="query" class="input-group-addon">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </label>
+                    <input type="text" class="form-control" placeholder="Search" id="query" ng-model="query" autofocus>
+                </div>
+            </div>
+        </form>
     </div>
 </nav>
