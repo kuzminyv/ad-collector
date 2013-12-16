@@ -16,37 +16,23 @@
             </li>
         </ul>
         <form class="navbar-form" ng-submit="search()">
-            <form class="navbar-form" ng-submit="search()">
-                <div class="row">
-                    <div class="input-group col-md-offset-2">
-                        <label for="query" class="input-group-addon">
-                            <span class="glyphicon glyphicon-search"></span>
-                        </label>
-                        <input type="text" class="form-control" placeholder="Search" id="query" ng-model="query"
-                               autofocus>
+            <div class="row">
+                <div class="input-group col-md-offset-2">
+                    <label for="query" class="input-group-addon">
+                        <span class="glyphicon glyphicon-search"></span>
+                    </label>
+                    <input type="text" class="form-control" placeholder="Search" id="query" ng-model="query"
+                           autofocus>
 
-                        <div class="input-group-btn dropdown">
-                            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                                <span class="glyphicon glyphicon-sort"></span>
-                                <i class="caret"></i>
-                            </button>
-                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu">
-                                <li role="presentation"><a role="menuitem" ng-click="sort('publishDate', 'desc')">
-                                    Newest first
-                                    <span class="glyphicon glyphicon-ok pull-right"></span>
-                                </a>
-                                </li>
-                                <li class="divider" role="presentation"></li>
-                                <li class="dropdown-header" role="presentation" ng-click="sort('price', ')">
-                                    Price
-                                </li>
-                                <li role="presentation"><a role="menuitem" href="#">Low to high</a></li>
-                                <li role="presentation"><a role="menuitem" href="#">High to low</a></li>
-                                </li>
-                            </ul>
-                        </div>
+                    <div class="input-group-btn dropdown">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            <span class="glyphicon glyphicon-sort"></span>
+                            <i class="caret"></i>
+                        </button>
+                        <dropdown-menu menu-items="menuItems" selected-item="selectedItem"></dropdown-menu>
                     </div>
                 </div>
-            </form>
+            </div>
+        </form>
     </div>
 </nav>
