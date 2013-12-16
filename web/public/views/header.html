@@ -26,11 +26,24 @@
                                autofocus>
 
                         <div class="input-group-btn dropdown">
-                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                            <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                                 <span class="glyphicon glyphicon-sort"></span>
                                 <i class="caret"></i>
                             </button>
-                            <dropdown-menu menu-items="menuItems" selected-item="selectedItem"></dropdown-menu>
+                            <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu">
+                                <li role="presentation"><a role="menuitem" ng-click="sort('publishDate', 'desc')">
+                                    Newest first
+                                    <span class="glyphicon glyphicon-ok pull-right"></span>
+                                </a>
+                                </li>
+                                <li class="divider" role="presentation"></li>
+                                <li class="dropdown-header" role="presentation" ng-click="sort('price', ')">
+                                    Price
+                                </li>
+                                <li role="presentation"><a role="menuitem" href="#">Low to high</a></li>
+                                <li role="presentation"><a role="menuitem" href="#">High to low</a></li>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,10 @@
 <section ng-controller="RealtyController" ng-init="find()">
+    <div class="row">
+        <div class="col-md-6">
+            <ac-pagination class="" total="total" offset="realtySearch.offset" items-per-page="realtySearch.limit"
+                           max-page-count="5"></ac-pagination>
+        </div>
+    </div>
     <div ng-repeat="ad in ads">
         <div class="col-md-6">
             <ng-include src="'views/realty/ad.html'"></ng-include>
