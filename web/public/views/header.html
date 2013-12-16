@@ -18,12 +18,11 @@
         <form class="navbar-form" ng-submit="search()">
             <div class="row">
                 <div class="input-group col-md-offset-2">
-                    <label for="query" class="input-group-addon">
-                        <span class="glyphicon glyphicon-search"></span>
-                    </label>
+                    <a class="input-group-addon" ng-click="reset()">
+                        <span class="glyphicon" ng-class="{ 'glyphicon-search': !query, 'glyphicon-remove': query }"></span>
+                    </a>
                     <input type="text" class="form-control" placeholder="Search" id="query" ng-model="query"
                            autofocus>
-
                     <div class="input-group-btn dropdown">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
                             <span class="glyphicon glyphicon-sort"></span>

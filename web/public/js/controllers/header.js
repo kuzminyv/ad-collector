@@ -49,4 +49,9 @@ angular.module('mean.system').controller('HeaderController', ['$scope', 'Global'
         Global.realty.search.sortBy = item.field;
         Global.realty.search.sortDirection = item.direction;
     });
+
+    $scope.reset = function(){
+        $scope.query = "";
+        $scope.search();
+    }
 }]);
