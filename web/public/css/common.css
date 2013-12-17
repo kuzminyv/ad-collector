@@ -1,3 +1,5 @@
+body { padding-top: 70px; }
+
 .navbar .nav>li>a.brand {
     padding-left:20px;
     margin-left:0
