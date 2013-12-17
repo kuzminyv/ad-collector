@@ -45,6 +45,8 @@ angular.module('mean.system').controller('HeaderController', ['$scope', 'Global'
 
     $scope.selectedItem = $scope.menuItems[0];
 
+    $scope.realtySearch = Global.realty.search;
+
     $scope.$watch('selectedItem', function(item) {
         Global.realty.search.sortBy = item.field;
         Global.realty.search.sortDirection = item.direction;
@@ -53,5 +55,5 @@ angular.module('mean.system').controller('HeaderController', ['$scope', 'Global'
     $scope.reset = function(){
         $scope.query = "";
         $scope.search();
-    }
+    };
 }]);

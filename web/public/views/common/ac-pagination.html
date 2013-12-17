@@ -1,7 +1,7 @@
 <ul class="pagination">
-    <li ng-if="showHead()"><a ng-click="navigateToHead()">First</a>
+    <li ng-if="showHead()"><a ng-click="navigateToHead()">First ...</a>
     <li ng-repeat="page in pages()" ng-class="{ active: isActive(page) }">
         <a ng-click="navigate(page)">{{page}}</a>
     </li>
-    <li ng-if="showTrail()"><a ng-click="navigateToTrail()">Last</a>
+    <li ng-if="showTrail()"><a ng-click="navigateToTrail()">... Last</a>
 </ul>
