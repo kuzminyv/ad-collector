@@ -15,7 +15,7 @@
                 <a href="#!/{{item.link}}">{{item.title}}</a>
             </li>
         </ul>
-        <form class="navbar-form" role="search">
+        <form class="navbar-form" role="search" ng-submit="search()">
             <div class="input-group">
                 <a class="input-group-addon" ng-click="reset()">
                     <span class="glyphicon" ng-class="{ 'glyphicon-search': !query, 'glyphicon-remove': query }"></span>
