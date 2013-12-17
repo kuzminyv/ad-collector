@@ -1,4 +1,4 @@
-angular.module('mean')
+angular.module('ac')
     .directive('dropdownMenu', function () {
         return {
             restrict: 'E',

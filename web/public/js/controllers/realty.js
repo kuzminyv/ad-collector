@@ -1,4 +1,4 @@
-angular.module('mean.realty').controller('RealtyController', [ '$scope', 'Global', 'Realty', function ($scope, Global, Realty) {
+angular.module('ac.realty').controller('RealtyController', [ '$scope', 'Global', 'Realty', function ($scope, Global, Realty) {
     $scope.ads = [];
 
     $scope.find = function () {

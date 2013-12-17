@@ -1,7 +1,7 @@
 module.exports = {
     db: "mongodb://localhost/adcollector-local",
     app: {
-        name: "MEAN - A Modern Stack - Local"
+        name: "Ad Collector [Local]"
     },
     facebook: {
         clientID: "APP_ID",
