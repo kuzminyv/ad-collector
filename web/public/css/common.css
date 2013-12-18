@@ -39,3 +39,17 @@ footer p {
 .navbar .pagination {
     margin: 0;
 }
+
+ac-ajax-progress {
+    margin-bottom: -1px;
+}
+
+.ajax-progress {
+    margin: 0;
+    padding: 0;
+    height: 2px;
+}
+
+.ajax-progress .progress-bar {
+    height: 2px;
+}

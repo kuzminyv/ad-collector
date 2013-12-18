@@ -106,4 +106,33 @@ angular.module('ac')
                 }
             }
         };
+    })
+    .directive('acAjaxProgressbar', function ($http) {
+        return {
+            restrict: 'E',
+            templateUrl: '/views/common/ac-ajax-progressbar.html',
+            scope: {},
+            link: function (scope, element, attrs) {
+                scope.visible = false;
+                scope.percentage = 0;
+
+                $http.defaults.transformRequest.push(function (data, headers) {
+                    scope.percentage = 0;
+                    scope.visible = true;
+                    return data;
+                });
+
+                $http.defaults.transformResponse.push(function (data, headers) {
+                    scope.percentage = 100;
+                    setTimeout(function () {
+                        scope.$apply(function () {
+                            scope.visible = false;
+                            scope.percentage = 0;
+                        });
+                    }, 1000);
+
+                    return data;
+                });
+            }
+        };
     });
