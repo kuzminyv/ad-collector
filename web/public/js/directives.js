@@ -145,7 +145,7 @@ angular.module('ac')
                 $scope.menuItems = [
                     {
                         field: 'PublishDate',
-                        direction: 0,
+                        direction: 1,
                         title: 'Newest first'
                     },
                     {
