@@ -1,0 +1,17 @@
+<form class="navbar-form" role="search" ng-submit="search()">
+    <div class="input-group">
+        <a class="input-group-addon" ng-click="reset()">
+            <span class="glyphicon" ng-class="{ 'glyphicon-search': !query, 'glyphicon-remove': query }"></span>
+        </a>
+        <input type="text" class="form-control" placeholder="Search" id="query" ng-model="query"
+               autofocus/>
+
+        <div class="input-group-btn dropdown">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                <span class="glyphicon glyphicon-sort"></span>
+                <i class="caret"></i>
+            </button>
+            <dropdown-menu menu-items="menuItems" selected-item="selectedItem"></dropdown-menu>
+        </div>
+    </div>
+</form>

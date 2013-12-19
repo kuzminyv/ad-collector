@@ -135,4 +135,55 @@ angular.module('ac')
                 });
             }
         };
+    })
+    .directive('acRealtySearch', function() {
+        return {
+            restrict: 'E',
+            scope: {},
+            templateUrl: '/views/common/ac-realty-search.html',
+            controller: function($scope, Global){
+                $scope.menuItems = [
+                    {
+                        field: 'PublishDate',
+                        direction: 0,
+                        title: 'Newest first'
+                    },
+                    {
+                        type: 'divider'
+                    },
+                    {
+                        type: 'header',
+                        title: 'Price'
+                    },
+                    {
+                        field: 'Price',
+                        direction: 0,
+                        title: 'Low to high'
+                    },
+                    {
+                        field: 'Price',
+                        direction: 1,
+                        title: 'High to low'
+                    }
+                ];
+
+                $scope.search = function () {
+                    Global.realty.search.query = $scope.query;
+                };
+
+                $scope.selectedItem = $scope.menuItems[0];
+
+                $scope.realty = Global.realty;
+
+                $scope.$watch('selectedItem', function(item) {
+                    Global.realty.search.sortBy = item.field;
+                    Global.realty.search.sortDirection = item.direction;
+                });
+
+                $scope.reset = function(){
+                    $scope.query = "";
+                    $scope.search();
+                };
+            }
+        };
     });

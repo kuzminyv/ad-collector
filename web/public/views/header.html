@@ -15,26 +15,9 @@
                 <a href="#!/{{item.link}}">{{item.title}}</a>
             </li>
         </ul>
-        <form class="navbar-form" role="search" ng-submit="search()">
-            <div class="input-group">
-                <a class="input-group-addon" ng-click="reset()">
-                    <span class="glyphicon" ng-class="{ 'glyphicon-search': !query, 'glyphicon-remove': query }"></span>
-                </a>
-                <input type="text" class="form-control" placeholder="Search" id="query" ng-model="query"
-                       autofocus/>
-
-                <div class="input-group-btn dropdown">
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                        <span class="glyphicon glyphicon-sort"></span>
-                        <i class="caret"></i>
-                    </button>
-                    <dropdown-menu menu-items="menuItems" selected-item="selectedItem"></dropdown-menu>
-                </div>
-            </div>
-        </form>
-
-        <ac-pagination class="navbar-btn" total="realtySearch.total" offset="realtySearch.offset"
-                       items-per-page="realtySearch.limit"
+        <ac-realty-search></ac-realty-search>
+        <ac-pagination class="navbar-btn" total="realty.total" offset="realty.search.offset"
+                       items-per-page="realty.search.limit"
                        max-page-count="5"></ac-pagination>
 
     </div>

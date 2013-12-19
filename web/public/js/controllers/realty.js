@@ -4,7 +4,7 @@ angular.module('ac.realty').controller('RealtyController', [ '$scope', 'Global',
     $scope.find = function () {
         Realty.query(Global.realty.search, function (queryResult) {
             $scope.ads = queryResult.items;
-            Global.realty.search.total = queryResult.totalCount;
+            Global.realty.total = queryResult.totalCount;
         });
     };
 
