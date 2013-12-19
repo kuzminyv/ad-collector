@@ -13,3 +13,15 @@
     [CreationDate] DATETIME2 NULL, 
     [DetailsDownloadStatus] INT NOT NULL DEFAULT 0
 )
+
+GO
+
+CREATE INDEX [IX_Ads_PublishDate] ON [dbo].[Ads] ([PublishDate])
+
+GO
+
+CREATE INDEX [IX_Ads_CollectDate] ON [dbo].[Ads] ([CollectDate])
+
+GO
+
+CREATE INDEX [IX_Ads_Price] ON [dbo].[Ads] ([Price])

@@ -67,7 +67,6 @@ namespace Core.Connectors
 
         protected override void FillAdDetails(Ad ad, Match match)
         {
-            Thread.Sleep(2000);
             ad.Images = match.GetByPath(@"Images\Preview\Url", true).Select(previewUrl => new AdImage() 
             {
                 AdId = ad.Id,
@@ -88,7 +87,7 @@ namespace Core.Connectors
                 Url = match["DetailUrl"],
                 Address = match["Address"],
                 RoomsCount = ParsersHelper.ParseInt(match["Rooms"]),
-                LivingSpace = ParsersHelper.ParseFloat(match["LivingSpace"]),
+                LivingSpace = ParsersHelper.ParseFloat(match["LivingSpace"], "."),
                 PublishDate = ParsersHelper.ParseDate(match["Date"], "HH:mm, dd.MM.yyyy"),
                 CreationDate = ParsersHelper.ParseDate(match["Date"], "HH:mm, dd.MM.yyyy"),
                 Price = ParsersHelper.ParseDouble(match["Price"]),

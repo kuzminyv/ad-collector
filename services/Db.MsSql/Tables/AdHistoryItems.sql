@@ -7,3 +7,7 @@
     [AdCollectDate] DATETIME2 NOT NULL, 
     CONSTRAINT [FK_AdHistoryItems_ToAds] FOREIGN KEY ([AdId]) REFERENCES [Ads]([Id])
 )
+
+GO
+
+CREATE INDEX [IX_AdHistoryItems_AdId] ON [dbo].[AdHistoryItems] ([AdId])

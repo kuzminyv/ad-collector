@@ -71,11 +71,16 @@ namespace Core.Expressions.AdParsers
             return int.Parse(str);
         }
 
-        public static double ParseDouble(string str, bool onlyDigits = true, params string[] strToRemove)
-        { 
+        public static double ParseDouble(string str, string decimalPoint = null, bool onlyDigits = true, params string[] strToRemove)
+        {
+            if (!string.IsNullOrEmpty(decimalPoint))
+            {
+                str = str.Replace(decimalPoint, ".");
+            }
             if (onlyDigits)
             {
-                str = NumbersOnly(str);
+                char[] allowedChars = string.IsNullOrEmpty(decimalPoint) ? new char[0] : new char[] {'.'}; 
+                str = NumbersOnly(str, allowedChars);
             }
             if (strToRemove.Length > 0)
             {
@@ -88,9 +93,9 @@ namespace Core.Expressions.AdParsers
             return double.Parse(str, CultureInfo.InvariantCulture);
         }
 
-        public static float ParseFloat(string str, bool onlyDigits = true, params string[] strToRemove)
+        public static float ParseFloat(string str, string decimalPoint = null, bool onlyDigits = true, params string[] strToRemove)
         {
-            return (float)ParseDouble(str, onlyDigits, strToRemove);
+            return (float)ParseDouble(str, decimalPoint, onlyDigits, strToRemove);
         }
 
         public static DateTime ParseDate(string str, string format)

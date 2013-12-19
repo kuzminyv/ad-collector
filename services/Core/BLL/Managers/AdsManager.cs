@@ -177,6 +177,7 @@ namespace Core.BLL
                     try
                     {
                         result = connector.FillDetails(ad);
+                        Thread.Sleep(2000);
                     }
                     catch (Exception fillEx)
                     {

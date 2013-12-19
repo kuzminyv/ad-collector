@@ -6,3 +6,7 @@
     [PreviewUrl] NVARCHAR(1000) NULL, 
     CONSTRAINT [FK_AdImages_ToAds] FOREIGN KEY ([AdId]) REFERENCES [Ads]([Id]) 
 )
+
+GO
+
+CREATE INDEX [IX_AdImages_AdId] ON [dbo].[AdImages] ([AdId])
