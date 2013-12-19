@@ -1,7 +1,7 @@
 module.exports = {
     db: "mongodb://admin:admin@ds061188.mongolab.com:61188/adcollector-qa",
     app: {
-        name: "MEAN - A Modern Stack - QA"
+        name: "Ad Collector [QA]"
     },
     facebook: {
         clientID: "APP_ID",

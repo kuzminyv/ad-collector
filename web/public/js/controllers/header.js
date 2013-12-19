@@ -1,4 +1,4 @@
-angular.module('mean.system').controller('HeaderController', ['$scope', 'Global', function ($scope, Global) {
+angular.module('ac.system').controller('HeaderController', ['$scope', 'Global', function ($scope, Global) {
     $scope.global = Global;
 
     $scope.menu = [
@@ -13,8 +13,5 @@ angular.module('mean.system').controller('HeaderController', ['$scope', 'Global'
     ];
 
     $scope.isCollapsed = false;
-
-    $scope.search = function () {
-        Global.realty.search.query = $scope.query;
-    };
+    $scope.realty = Global.realty;
 }]);

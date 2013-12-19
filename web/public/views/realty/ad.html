@@ -12,8 +12,9 @@
         </div>
         <div class="row">
             <div class="col-md-4">
-                <img src="{{ad.images[0]}}"
-                     class="img-thumbnail img-rounded img-responsive"/>
+                <img src="{{ad.images[0].previewUrl}}"
+                     class="img-thumbnail img-rounded img-responsive preview"
+                     ng-class="{ 'no-image': !ad.images.length }"/>
             </div>
             <div class="col-md-3">
                 <ul class="list-unstyled">
@@ -24,7 +25,20 @@
             </div>
             <div class="col-md-5">
                 <ul class="list-unstyled pull-right">
-                    <li><small>{{ad.publishDate}}</small></li>
+                    <li>
+                        <small>{{ad.publishDate | date}}</small>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-7">
+                <ul class="list-unstyled preview-list">
+                    <li ng-repeat="image in ad.images">
+                        <img src="{{image.previewUrl}}"
+                             class="img-thumbnail img-responsive preview-small"
+                             ng-class="{ 'no-image': !image.previewUrl }"/>
+                    </li>
                 </ul>
             </div>
         </div>

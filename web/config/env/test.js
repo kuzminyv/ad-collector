@@ -2,7 +2,7 @@ module.exports = {
     db: "mongodb://admin:admin@ds061158.mongolab.com:61158/adcollector-test",
     port: 3001,
     app: {
-        name: "MEAN - A Modern Stack - Test"
+        name: "Ad Collector [Test]"
     },
     facebook: {
         clientID: "APP_ID",

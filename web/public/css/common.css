@@ -1,3 +1,5 @@
+body { padding-top: 70px; }
+
 .navbar .nav>li>a.brand {
     padding-left:20px;
     margin-left:0
@@ -22,4 +24,32 @@ footer {
 
 footer p {
     padding:5px 0 12px 10px
+}
+
+.navbar .navbar-form {
+    display: inline-block;
+    width: 60%;
+}
+
+.navbar ac-pagination {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.navbar .pagination {
+    margin: 0;
+}
+
+ac-ajax-progress {
+    margin-bottom: -1px;
+}
+
+.ajax-progress {
+    margin: 0;
+    padding: 0;
+    height: 2px;
+}
+
+.ajax-progress .progress-bar {
+    height: 2px;
 }

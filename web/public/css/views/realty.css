@@ -1,1 +1,23 @@
-.ad-realty img { max-width: 150px; max-height: 150px; }
+.ad-realty .preview {
+    width: 150px;
+    max-height: 150px;
+}
+
+.ad-realty .preview.no-image {
+    height: 150px;
+}
+
+.ad-realty .preview-small {
+    width: 50px;
+    max-height: 50px;
+    padding: 2px;
+    border-radius: 2px;
+}
+
+.ad-realty .preview-small.no-image {
+    height: 50px;
+}
+
+.ad-realty .preview-list li {
+    display: inline-block;
+}
