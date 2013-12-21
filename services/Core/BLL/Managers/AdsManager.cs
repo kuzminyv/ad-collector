@@ -95,7 +95,7 @@ namespace Core.BLL
                             frame.Dequeue();
                         }
 
-                        if ((adsCount > minAds && frame.Count == frameSize && ((double)frame.Where(item => item).Count()/(double)frameSize) < minNewAdsInFrame) ||
+                        if ((adsCount > minAds && frame.Count == frameSize && ((double)frame.Where(item => item).Count() / (double)frameSize) < minNewAdsInFrame) ||
                             adsCount >= maxAds || cancelationToken.IsCancellationRequested)
                         {
                             break;
@@ -274,6 +274,7 @@ namespace Core.BLL
 
                         adForSameObject.PublishDate = ad.PublishDate;
                         adForSameObject.CollectDate = ad.CollectDate;
+                        adForSameObject.ConnectorId = ad.ConnectorId;
                         adForSameObject.Url = ad.Url;
                         adForSameObject.IdOnWebSite = ad.IdOnWebSite;
                         adForSameObject.Price = ad.Price;

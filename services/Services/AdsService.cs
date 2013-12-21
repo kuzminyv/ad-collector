@@ -48,6 +48,10 @@ namespace Services
                 SortOrder? _sortOrder = UriParamsHelper.ParseEnum<SortOrder>(sortDirection, SortOrder.Ascending);
                 q.AddSort(sortBy, _sortOrder.Value);
             }
+            else
+            {
+                q.AddSort("CollectDate", SortOrder.Descending);
+            }
 
             q.Start = UriParamsHelper.ParseInt(offset, 0);
             q.Limit = UriParamsHelper.ParseInt(limit, 100);

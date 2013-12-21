@@ -76,7 +76,7 @@ namespace Core.Connectors
 
         public override void FillAdDetails(Ad ad, Match match)
         {
-            ad.Images = match.GetByPath(@"Details\ImagePreviewUrl", true).Select(previewUrl => new AdImage()
+            ad.Images = match.GetByPath(@"ImagePreviewUrl", true).Select(previewUrl => new AdImage()
             {
                 AdId = ad.Id,
                 PreviewUrl = Id + "/" + previewUrl.Value,

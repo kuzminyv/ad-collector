@@ -51,7 +51,7 @@ namespace Core.Connectors
             {
                 Title = string.Format("{0}, {1}, {2} ", match["Price"], match["Address"], match["LivingSpace"]),
                 Description = string.Format("Price: {0}\nAddress: {1}\nFloor: {2}\nSize: {3}", match["Price"], match["Address"], match["Floor"], match["LivingSpace"]),
-                Url = Id + match["Url"],
+                Url = "http://www.realty.sarbc.ru" + match["Url"],
                 PublishDate = DateTime.Now,
                 ConnectorId = this.Id,
                 Address = match["Address"],
