@@ -79,7 +79,9 @@
     <Compile Include="BLL\Managers\LogEntriesManager.cs" />
     <Compile Include="BLL\Managers\MetadataManager.cs" />
     <Compile Include="BLL\Managers\SettingsManager.cs" />
+    <Compile Include="Connectors\RealtyVerificator.cs" />
     <Compile Include="Connectors\BasicConnector.cs" />
+    <Compile Include="Connectors\IVerificator.cs" />
     <Compile Include="Connectors\Realty\CnRealtySarbc.cs" />
     <Compile Include="Connectors\Realty\CnKvadrat64.cs" />
     <Compile Include="Connectors\Realty\CnRealtySarbcNewBuildings.cs" />
@@ -184,11 +186,14 @@
     <Compile Include="Entities\LogEntry.cs" />
     <Compile Include="Entities\Setting.cs" />
     <Compile Include="Entities\Settings.cs" />
+    <Compile Include="Expressions\AdRecognizers\IRecognizer.cs" />
+    <Compile Include="Expressions\AdRecognizers\RealtyRecognizer.cs" />
     <Compile Include="Expressions\BoundExpressionSelector.cs" />
     <Compile Include="Expressions\Bound\BoundSelector.cs" />
     <Compile Include="Expressions\Bound\BoundExpression.cs" />
     <Compile Include="Expressions\Bound\BoundExpressionCondition.cs" />
     <Compile Include="Expressions\Bound\BoundExpressionToken.cs" />
+    <Compile Include="Expressions\RegexSelector.cs" />
     <Compile Include="Expressions\HtmlPathSelector.cs" />
     <Compile Include="Expressions\EmptySelector.cs" />
     <Compile Include="Expressions\FilterSelector.cs" />

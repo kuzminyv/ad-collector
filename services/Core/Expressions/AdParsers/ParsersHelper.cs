@@ -56,6 +56,10 @@ namespace Core.Expressions.AdParsers
 
         public static int ParseInt(string str, bool onlyDigits = true, params string[] strToRemove)
         {
+            if (string.IsNullOrEmpty(str))
+            {
+                return default(int);
+            }
             if (onlyDigits)
             {
                 str = NumbersOnly(str);
@@ -64,15 +68,15 @@ namespace Core.Expressions.AdParsers
             {
                 str = RemoveAny(str, strToRemove);
             }
-            if (string.IsNullOrEmpty(str))
-            {
-                return default(int);
-            }
             return int.Parse(str);
         }
 
         public static double ParseDouble(string str, string decimalPoint = null, bool onlyDigits = true, params string[] strToRemove)
         {
+            if (string.IsNullOrEmpty(str))
+            {
+                return default(double);
+            }
             if (!string.IsNullOrEmpty(decimalPoint))
             {
                 str = str.Replace(decimalPoint, ".");
@@ -85,10 +89,6 @@ namespace Core.Expressions.AdParsers
             if (strToRemove.Length > 0)
             {
                 str = RemoveAny(str, strToRemove);
-            }
-            if (string.IsNullOrEmpty(str))
-            {
-                return default(double);
             }
             return double.Parse(str, CultureInfo.InvariantCulture);
         }

@@ -12,12 +12,11 @@
 		<DataTemplate
 			x:Key="contentTemplate">
             <StackPanel>
-                <TextBlock
-                    TextAlignment="Justify"
+                <TextBox
                     TextWrapping="Wrap"
-                    TextTrimming="CharacterEllipsis"
-                    Text="{Binding Text}"/>
-
+                    AcceptsReturn="True"
+                    Height="Auto"
+                    Text="{Binding Text, Mode=OneWay}"/>
             </StackPanel>                
 		</DataTemplate>
 	</UserControl.Resources>

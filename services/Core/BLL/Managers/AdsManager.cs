@@ -136,7 +136,10 @@ namespace Core.BLL
                     break;
                 }
             }
-            
+            FillDetails(
+                st => { state.Description = st.Description; state.Progress = st.Progress; stateChangedCallback(state); },
+                () => { },
+                cancelationToken);
             completedCallback(result);
             return result;
 		}
@@ -162,6 +165,9 @@ namespace Core.BLL
             Dictionary<string, IConnector> connectorsCache = new Dictionary<string, IConnector>();
             OperationState state = new OperationState();
             state.ProgressTotal = ads.Count;
+
+            Dictionary<string, int> errorsByConnectorId = new Dictionary<string, int>();
+            int maxErrors = 3;
             foreach (var ad in ads)
             {
                 IConnector connector;
@@ -169,6 +175,12 @@ namespace Core.BLL
                 {
                     connector = Managers.ConnectorsManager.GetById(ad.ConnectorId);
                     connectorsCache.Add(ad.ConnectorId, connector);
+                    errorsByConnectorId.Add(ad.ConnectorId, 0);
+                }
+
+                if (errorsByConnectorId[connector.Id] >= maxErrors)
+                {
+                    continue;
                 }
 
                 try
@@ -177,10 +189,12 @@ namespace Core.BLL
                     try
                     {
                         result = connector.FillDetails(ad);
-                        Thread.Sleep(2000);
+                        errorsByConnectorId[connector.Id] = 0;
+                        Thread.Sleep(5000);
                     }
                     catch (Exception fillEx)
                     {
+                        errorsByConnectorId[connector.Id] = errorsByConnectorId[connector.Id] + 1;
                         if (fillEx.Message.Contains("404"))
                         {
                             ad.DetailsDownloadStatus = DetailsDownloadStatus.PageNotAccessable;

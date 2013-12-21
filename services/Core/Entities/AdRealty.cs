@@ -98,5 +98,24 @@ namespace Core.Entities
                 this.LivingSpace == a.LivingSpace &&
                 this.RoomsCount == a.RoomsCount;
         }
+
+        public override string ToString()
+        {
+            return "ConnectorId: " + this.ConnectorId + "\n" +
+                "Description:" + this.Description + "\n" +
+                "HistoryLength:" + this.HistoryLength + "\n" +
+                "IdOnWebSite:" + this.IdOnWebSite + "\n" +
+                "Price:" + this.Price + "\n" +
+                "PublishDate:" + this.PublishDate + "\n" +
+                "Url:" + this.Url + "\n" +
+                "IsNewBuilding:" + this.IsNewBuilding + "\n" +
+                "RoomsCount:" + this.RoomsCount + "\n" +
+                "LivingSpace:" + this.LivingSpace + "\n" +
+                "Floor:" + this.Floor + "\n" +
+                "FloorsCount:" + this.FloorsCount + "\n" +
+                "CommissioningDate:" + this.CommissioningDate + "\n" +
+                "Address:" + this.Address + "\n" +
+                "Images:" + (this.Images == null ? "none" : string.Join("\n", this.Images.Select(img => "\t" + img.PreviewUrl + "\t" + img.Url)));        
+        }
     }
 }

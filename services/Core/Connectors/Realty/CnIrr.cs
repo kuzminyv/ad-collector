@@ -65,7 +65,7 @@ namespace Core.Connectors
 		    );            		
         }
 
-        protected override void FillAdDetails(Ad ad, Match match)
+        public override void FillAdDetails(Ad ad, Match match)
         {
             ad.Images = match.GetByPath(@"Images\Preview\Url", true).Select(previewUrl => new AdImage() 
             {

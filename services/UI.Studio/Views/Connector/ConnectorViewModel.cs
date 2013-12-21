@@ -125,6 +125,17 @@ namespace UI.Studio.Views
         #endregion
 
         #region Commands
+
+        private ICommand _loadConnectorSourcesCommand;
+        public ICommand LoadConnectorSourcesCommand
+        {
+            get
+            {
+                return _loadConnectorSourcesCommand;
+            }
+        }
+
+
         private ICommand _closeCommand;
         public ICommand CloseCommand
         {
@@ -160,6 +171,7 @@ namespace UI.Studio.Views
             _closeCommand = new DelegateCommand(Close);
             _runConnectorCommand = new DelegateCommand(o => RunConnector(GetOperationOptions(), new CancelationToken()));
             _saveConnectorSourcesCommand = new DelegateCommand(SaveConnectorSources);
+            _loadConnectorSourcesCommand = new DelegateCommand(LoadConnectorSources);
         }
 
         private void Close()
@@ -258,19 +270,32 @@ namespace UI.Studio.Views
 
         private void FillAdsFromMatches(BasicConnector connector, IEnumerable<Match> matches, bool isDetailsPage)
         {
+            var ads = new List<Ad>();
             if (isDetailsPage)
             {
                 foreach (var match in matches)
                 {
-                    //connector.FillDetails(new AdRealty(), match);
+                    var ad = new AdRealty();
+                    connector.FillAdDetails(ad, match);
+                    ads.Add(ad);
                 }
             }
             else
             {
-                var ads = new List<Ad>();
+                
                 foreach (var match in matches)
                 {
                     ads.Add(connector.CreateAd(match));
+                }
+            }
+
+            foreach (var ad in ads)
+            {
+                Parent.Errors.AddError("\n=============================\n" + ad.ToString());
+                IVerificator verificator = new RealtyVerificator();
+                if (verificator.Verify(ad) != null)
+                {
+                    Parent.Errors.AddError(verificator.Verify(ad));
                 }
             }
         }

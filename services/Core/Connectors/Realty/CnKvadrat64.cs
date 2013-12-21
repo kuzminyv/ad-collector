@@ -74,7 +74,7 @@ namespace Core.Connectors
                 new HtmlPathSelector("ImagePreviewUrl", "/table/tr[4]/td[2]/a/img/@src", true, false, "src"));
         }
 
-        protected override void FillAdDetails(Ad ad, Match match)
+        public override void FillAdDetails(Ad ad, Match match)
         {
             ad.Images = match.GetByPath(@"Details\ImagePreviewUrl", true).Select(previewUrl => new AdImage()
             {

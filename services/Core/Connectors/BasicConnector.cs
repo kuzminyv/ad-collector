@@ -36,7 +36,7 @@ namespace Core.Connectors
             Selector slector = CreateSelector();
             int adsCountOnLastPage = 0;
             int maxErrorsPerPage = 10;
-
+            IVerificator verificator = new RealtyVerificator();
             foreach (var pageUrlFormat in GetPageUrlFormats())
             {
                 int maxPages = GetAvailablePagesCount(pageUrlFormat);
@@ -59,6 +59,10 @@ namespace Core.Connectors
                             try
                             {
                                 ad = CreateAd(match);
+                                if (verificator.Verify(ad) != null)
+                                {
+                                    throw new Exception(verificator.Verify(ad));
+                                }
                             }
                             catch (Exception ex)
                             {
@@ -89,7 +93,7 @@ namespace Core.Connectors
             return null;
         }
 
-        protected virtual void FillAdDetails(Ad ad, Match match)
+        public virtual void FillAdDetails(Ad ad, Match match)
         {
         }
 
@@ -102,6 +106,12 @@ namespace Core.Connectors
                 if (detailsMatches.Count == 1)
                 {
                     FillAdDetails(ad, detailsMatches[0]);
+                    IVerificator verificator = new RealtyVerificator();
+                    if (verificator.Verify(ad) != null)
+                    {
+                        throw new Exception(verificator.Verify(ad));
+                    }
+
                     return true;
                 }
                 else
