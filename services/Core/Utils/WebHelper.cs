@@ -13,6 +13,7 @@ namespace Core.Utils
 	{
 		private string _sourceUrl;
 		private string _htmlContent;
+        private WebClientOptions _options;
 
 
 		/// <summary>
@@ -203,19 +204,56 @@ namespace Core.Utils
 
 		private byte[] ReadAllBytesFromUrl(Uri url, out string contentType)
 		{
-			WebClient client = new WebClient();
-			client.Credentials = CredentialCache.DefaultCredentials;
-			using (Stream stream = client.OpenRead(url))
-			{
-				BinaryReaderEx reader = new BinaryReaderEx(stream);
-				byte[] data = reader.ReadToEnd();
-				contentType = client.ResponseHeaders["Content-Type"];
-				return data;
-			}
+            using (WebClient client = new WebClient())
+            {
+                client.Credentials = CredentialCache.DefaultCredentials;
+
+                WebHeaderCollection headers = null;
+                Stream stream = null;
+                try
+                {
+                    try
+                    {
+                        stream = client.OpenRead(url);
+                        headers = client.ResponseHeaders;
+                    }
+                    catch (WebException ex)
+                    {
+                        if (_options.IgnoreError404 && ex.Status == WebExceptionStatus.ProtocolError && ex.Response != null &&
+                            ((HttpWebResponse)ex.Response).StatusCode == HttpStatusCode.NotFound)
+                        {
+                            stream = ex.Response.GetResponseStream();
+                            headers = ex.Response.Headers;
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+
+                    BinaryReaderEx reader = new BinaryReaderEx(stream);
+                    byte[] data = reader.ReadToEnd();
+                    contentType = headers["Content-Type"];
+                    return data;
+                }
+                finally
+                {
+                    if (stream != null)
+                    {
+                        stream.Dispose();
+                    }
+                }
+            }
 		}
 
+        private WebHelper(string sourceUrl, WebClientOptions options)
+        {
+            _sourceUrl = sourceUrl;
+            _options = options;
+        }
 
 		private WebHelper(string sourceUrl)
+            :this(sourceUrl, WebClientOptions.Default)
 		{
 			_sourceUrl = sourceUrl;
 		}
@@ -237,12 +275,17 @@ namespace Core.Utils
 			_htmlContent = encoding.GetString(data);
 		}
 
-		public static string GetStringFromUrl(string url)
+		public static WebClientResult GetStringFromUrl(string url, WebClientOptions options)
 		{
-			var h = new WebHelper(url);
+			var h = new WebHelper(url, options);
 			h.ImportFromWeb();
-			return h._htmlContent;
+			return new WebClientResult() { Content = h._htmlContent};
 		}
+
+        public static string GetStringFromUrl(string url)
+        {
+            return GetStringFromUrl(url, WebClientOptions.Default).Content;
+        }
 
 		public static Image GetImageFromUrl(string url)
 		{

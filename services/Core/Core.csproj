@@ -214,6 +214,8 @@
     <Compile Include="Utils\DynamicLinq.cs" />
     <Compile Include="Utils\HtmlUtils.cs" />
     <Compile Include="Utils\RuntimeCompiler.cs" />
+    <Compile Include="Utils\WebClientOptions.cs" />
+    <Compile Include="Utils\WebClientResult.cs" />
     <Compile Include="Utils\WebHelper.cs" />
     <Compile Include="Entities\Ad.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

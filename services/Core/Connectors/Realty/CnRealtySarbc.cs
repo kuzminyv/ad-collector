@@ -23,6 +23,11 @@ namespace Core.Connectors
             get { return @"http://realty.sarbc.ru/catalog/buy/flat/?page={0}"; }
         }
 
+        public override WebClientOptions GetWebClientOptions()
+        {
+            return new WebClientOptions() { IgnoreError404 = true };
+        }
+
         public override Selector CreateSelector()
         {
 
@@ -75,8 +80,8 @@ namespace Core.Connectors
                 adImages.Add(new AdImage()
                 {
                     AdId = ad.Id,
-                    PreviewUrl = "http://realty.sarbc.ru/board" + previews[i],
-                    Url = "http://realty.sarbc.ru/board" + images[i]
+                    PreviewUrl = "http://realty.sarbc.ru" + previews[i],
+                    Url = "http://realty.sarbc.ru" + images[i]
                 });
             }
             ad.Images = adImages;

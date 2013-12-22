@@ -1,4 +1,7 @@
-﻿using HtmlAgilityPack;
+﻿using Core.DAL;
+using Core.Entities;
+using Core.Utils;
+using HtmlAgilityPack;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +14,11 @@ namespace TestConsole
     {
         static void Main(string[] args)
         {
-            HtmlDocument d = new HtmlDocument();
-            HtmlNode node = HtmlNode.CreateNode("<div><span>abc</span></div>");
-
-
-
-            DynLinqTest.Run();
+            Ad ad = Repositories.AdsRepository.GetItem(259818);
+            WebClientResult content = WebHelper.GetStringFromUrl("http://realty.sarbc.ru/board/350002.html", new WebClientOptions() { IgnoreError404 = true });
+            Console.WriteLine(content.Content);
+            Console.ReadLine();
+            //DynLinqTest.Run();
         }
     }
 }

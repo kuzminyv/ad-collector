@@ -26,6 +26,11 @@ namespace Core.Connectors
             return int.MaxValue;
         }
 
+        public virtual WebClientOptions GetWebClientOptions()
+        {
+            return WebClientOptions.Default;
+        }
+
         protected virtual IEnumerable<string> GetPageUrlFormats()
         {
             yield return PageUrlFormat;
@@ -101,8 +106,8 @@ namespace Core.Connectors
         {
             if (_detailsSelector != null)
             {
-                string content = WebHelper.GetStringFromUrl(ad.Url);
-                var detailsMatches = _detailsSelector.Match(content).ToList();
+                WebClientResult webResult = WebHelper.GetStringFromUrl(ad.Url, GetWebClientOptions());
+                var detailsMatches = _detailsSelector.Match(webResult.Content).ToList();
                 if (detailsMatches.Count == 1)
                 {
                     FillAdDetails(ad, detailsMatches[0]);
@@ -117,7 +122,7 @@ namespace Core.Connectors
                 else
                 {
                     Managers.LogEntriesManager.AddItem(SeverityLevel.Warning,
-                        string.Format("{0} No matches found on details page {1}", this.GetType().Name, ad.Url), content);
+                        string.Format("{0} No matches found on details page {1}", this.GetType().Name, ad.Url), webResult.Content);
                 }
             }
             return false;
