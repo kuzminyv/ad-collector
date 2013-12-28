@@ -158,6 +158,7 @@
     </Compile>
     <Compile Include="DAL\MsSql\Common\MsSqlRepository.cs" />
     <Compile Include="DAL\MsSql\AdImagesRepository.cs" />
+    <Compile Include="DAL\MsSql\Common\SqlDataReaderExtension.cs" />
     <Compile Include="DAL\MsSql\StreetsRepository.cs" />
     <Compile Include="DAL\MsSql\MetadataRepository.cs" />
     <Compile Include="DAL\MsSql\LogEntriesRepository.cs" />

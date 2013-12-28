@@ -8,7 +8,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectVersion>4.1</ProjectVersion>
     <ProjectGuid>{76f0cdae-6423-45eb-8467-2869c74d629e}</ProjectGuid>
-    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql100DatabaseSchemaProvider</DSP>
+    <DSP>Microsoft.Data.Tools.Schema.Sql.Sql110DatabaseSchemaProvider</DSP>
     <OutputType>Database</OutputType>
     <RootPath>
     </RootPath>
@@ -54,6 +54,8 @@
   <ItemGroup>
     <Folder Include="Properties" />
     <Folder Include="Tables" />
+    <Folder Include="Procedures" />
+    <Folder Include="Utils" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\AdLinks.sql" />
@@ -64,6 +66,8 @@
     <Build Include="Tables\Streets.sql" />
     <Build Include="Tables\AdImages.sql" />
     <Build Include="Tables\Connectors.sql" />
+    <Build Include="Procedures\AdsRealty_Search.sql" />
+    <Build Include="Utils\AdsFullTextCatalog.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Db.MsSql.refactorlog" />

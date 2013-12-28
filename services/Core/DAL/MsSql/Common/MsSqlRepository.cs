@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Db = Core.DAL.MsSql.Common;
 using System.Threading;
 using Core.DAL.API;
+using SQL = System.Data.SqlClient;
 
 namespace Core.DAL.MsSql
 {
@@ -30,6 +31,28 @@ namespace Core.DAL.MsSql
             //context.Configuration.ValidateOnSaveEnabled = false;
             return context;
 
+        }
+
+        private object _connectionStringSync = new object();
+        private string _connectionString;
+        private string ConnectionString
+        {
+            get
+            {
+                if (_connectionString == null)
+                {
+                    lock (_connectionStringSync)
+                    {
+                        if (_connectionString == null)
+                        {
+                            var builder = new System.Data.Common.DbConnectionStringBuilder();
+                            builder.ConnectionString = System.Configuration.ConfigurationManager.ConnectionStrings["AdCollectorDBEntities"].ConnectionString;
+                            _connectionString = builder["provider connection string"].ToString();
+                        }
+                    }
+                }
+                return _connectionString;
+            }
         }
 
         protected TResult ExecuteDbOperation<TResult>(Func<Db.AdCollectorDBEntities, TResult> operation)
@@ -69,6 +92,15 @@ namespace Core.DAL.MsSql
                 operation(context);
                 return null;
             });
+        }
+
+        protected void ExecuteSqlOperation(Action<SQL.SqlConnection> operation)
+        {
+            using (var conn = new SQL.SqlConnection(ConnectionString))
+            {
+                conn.Open();
+                operation(conn);
+            }
         }
 
         protected virtual void ConfigureEntityMapping()

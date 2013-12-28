@@ -37,8 +37,8 @@ namespace Core.Connectors
                 new RegexSelector("Address", "address.*>.*>(?<Address>.*)</a>"),
                 new RegexSelector("Price", "price.*>.*>(?<Price>.*)</span>\\sруб"),
                 new RegexSelector("Floor", "Этаж:\\s</span>(?<Floor>\\d{1,2});"),
-                new RegexSelector("Floors", "Этажность\\sдома:\\s</span>(?<Floors>\\d{1,2});"),
-                new RegexSelector("LivingSpace", "Общая\\sплощадь:\\s</span>(?<LivingSpace>\\d{1,3});"),
+                new RegexSelector("Floors", "(?:Этажность\\sдома|Этажей\\sв\\sдоме):\\s</span>(?<Floors>\\d{1,2});"),
+                new RegexSelector("LivingSpace", "лощадь:\\s</span>(?<LivingSpace>\\d{1,3})(?:;|\\s)"),
                 new RegexSelector("Id", "other-board-id\\\">ID\\s(?<Id>\\d{2,10})</span>"));
         }
 

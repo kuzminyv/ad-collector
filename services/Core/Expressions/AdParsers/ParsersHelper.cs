@@ -68,6 +68,10 @@ namespace Core.Expressions.AdParsers
             {
                 str = RemoveAny(str, strToRemove);
             }
+            if (string.IsNullOrEmpty(str))
+            {
+                return default(int);
+            }
             return int.Parse(str);
         }
 
@@ -89,6 +93,10 @@ namespace Core.Expressions.AdParsers
             if (strToRemove.Length > 0)
             {
                 str = RemoveAny(str, strToRemove);
+            }
+            if (string.IsNullOrEmpty(str))
+            {
+                return default(int);
             }
             return double.Parse(str, CultureInfo.InvariantCulture);
         }
