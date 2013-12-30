@@ -3,7 +3,7 @@
 	@limit int,
 	@sortOrder int,-- 0 asc
 	@sortBy nvarchar(20),
-	@connectorId int = NULL,
+	@connectorId nvarchar(1000) = NULL,
 	@priceMin float = NULL,
 	@priceMax float = NULL,
 	@detailsDownloadStatus int = NULL,
@@ -16,6 +16,7 @@ DECLARE @order nvarchar(4)
 SELECT @order = IIF(@sortOrder = 0, 'ASC', 'DESC')
 
 DECLARE @ads TABLE (
+	[_order] int identity(1,1),
 	[Id] int NOT NULL PRIMARY KEY, 
 	[Title] nvarchar(250) NULL, 
 	[Description] nvarchar(4000) NULL, 
@@ -30,6 +31,7 @@ DECLARE @ads TABLE (
 	[FloorsCount] int, 
 	[LivingSpace] float, 
 	[IsNewBuilding] bit,
+	[ConnectorId] nvarchar(1000),
 	[HistoryLength] int,
 	[TotalCount] int
 ) 
@@ -37,30 +39,29 @@ DECLARE @ads TABLE (
 SET @sql = '
 WITH TempResult AS (
 SELECT 
-	a.[Id], 
-	a.[Title], 
-	a.[Description], 
-	a.[PublishDate], 
-	a.[CollectDate], 
-	a.[Url], 
-	a.[Price], 
-	a.[CreationDate],
-	r.[Address], 
-	r.[RoomsCount], 
-	r.[Floor], 
-	r.[FloorsCount], 
-	r.[LivingSpace], 
-	r.[IsNewBuilding],
-	(SELECT COUNT(h.[AdId]) FROM dbo.AdHistoryItems h WHERE h.[AdId] = a.[Id]) as [HistoryLength]
-FROM dbo.Ads a left join 
-	 dbo.AdsRealty r on a.Id = r.AdId	 
-WHERE 
-	(@connectorId is null or a.[ConnectorId] = @connectorId) and
-	(@priceMin is null or a.[Price] >= @priceMin) and
-	(@priceMax is null or a.[Price] <= @priceMax) and
-	(@detailsDownloadStatus is null or a.[DetailsDownloadStatus] = @detailsDownloadStatus)' + 
-	IIF(@searchCondition is NULL, '',  
-		' and (CONTAINS((a.[Title], a.[Description], a.[Url], a.[SystemTags]),  @searchCondition) or CONTAINS(r.[Address], @searchCondition))') +
+	rv.[Id], 
+	rv.[Title], 
+	rv.[Description], 
+	rv.[PublishDate], 
+	rv.[CollectDate], 
+	rv.[Url], 
+	rv.[Price], 
+	rv.[CreationDate],
+	rv.[Address], 
+	rv.[RoomsCount], 
+	rv.[Floor], 
+	rv.[FloorsCount], 
+	rv.[LivingSpace], 
+	rv.[IsNewBuilding],
+	rv.[ConnectorId],
+	(SELECT COUNT(h.[AdId]) FROM dbo.AdHistoryItems h WHERE h.[AdId] = rv.[Id]) as [HistoryLength]
+FROM dbo.AdsRealtyView rv ' +
+'WHERE 0 = 0 ' +
+IIF(@connectorId is null, '', ' and rv.[ConnectorId] = @connectorId') +
+IIF(@priceMin is null, '',    ' and rv.[Price] >= @priceMin') +
+IIF(@priceMax is null, '',    ' and rv.[Price] <= @priceMax') +
+IIF(@searchCondition is null, '', ' and CONTAINS(([Title], [Description], [Url], [SystemTags], [Address]),  @searchCondition)') +
+IIF(@detailsDownloadStatus is null, '', ' and rv.[DetailsDownloadStatus] = @detailsDownloadStatus') + 	
 '), TempCount AS (SELECT COUNT(*) AS TotalCount FROM TempResult)' +
 ' SELECT * FROM TempResult, TempCount ' +
 ' ORDER BY ' + @sortBy + ' ' + @order +
@@ -68,10 +69,10 @@ WHERE
 ' FETCH NEXT @limit ROWS ONLY'
 
 INSERT INTO @ads 
-EXECUTE sp_executesql @sql, N'@offset int, @limit int, @connectorId int, @priceMin float, @priceMax float, @detailsDownloadStatus int, @searchCondition nvarchar(200)', 
-						      @offset,     @limit,     @connectorId,     @priceMin,       @priceMax,       @detailsDownloadStatus,     @searchCondition
+EXECUTE sp_executesql @sql, N'@offset int, @limit int, @connectorId nvarchar(1000), @priceMin float, @priceMax float, @detailsDownloadStatus int, @searchCondition nvarchar(200)', 
+						      @offset,     @limit,     @connectorId,                @priceMin,       @priceMax,       @detailsDownloadStatus,     @searchCondition
 
-SELECT * FROM @ads
+SELECT * FROM @ads ORDER BY [_order]
 SELECT [Id], [AdId], [Url], [PreviewUrl] FROM dbo.AdImages i WHERE i.[AdId] in (SELECT [Id] FROM @ads)
 
 END

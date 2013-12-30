@@ -192,83 +192,26 @@ namespace Core.DAL.MsSql
             return result;
         }
 
-        protected IQueryable<DbAdsRealty> ApplyOrder(AdCollectorDBEntities context, IQueryable<DbAdsRealty> entities, List<Sort> list)
-        {
-            var result = entities;
-            Sort sort = list.First();
-            switch (sort.Name)
-            { 
-                case "CollectDate":
-                    if (sort.SortOrder == SortOrder.Ascending)
-                        result = result.OrderBy(a => a.CollectDate);
-                    else
-                        result = result.OrderByDescending(a => a.CollectDate);
-                    break;
-                case "PublishDate":
-                    if (sort.SortOrder == SortOrder.Ascending)
-                        result = result.OrderBy(a => a.PublishDate);
-                    else
-                        result = result.OrderByDescending(a => a.PublishDate);
-                    break;
-                case "Price":
-                    if (sort.SortOrder == SortOrder.Ascending)
-                        result = result.OrderBy(a => a.Price);
-                    else
-                        result = result.OrderByDescending(a => a.Price);
-                    break;
-                default:
-                    throw new Exception(string.Format("Not supported sort {0}!", sort.Name));
-            }
-            return result;
-        }
-
-        private IQueryable<DbAdsRealtyContainer> FillAdditionalProperties(IQueryable<DbAdsRealty> entities, List<string> optionalFields)
-        {
-            //This is the temporary implementation
-            //There is the limitation in EF ("http://msdn.microsoft.com/en-us/library/bb896317.aspx" - Projecting to an Anonymous Type)
-            return entities.Select(a => new DbAdsRealtyContainer()
-            {
-                Ad = a,
-                HistoryLength = a.AdHistoryItems.Count(),
-                Images = a.AdImages,
-                Metadata = a.Metadatas.FirstOrDefault()
-            });
-            
-            //DbQuery<DbAd> result = entities;
-            //foreach (var fieldName in optionalFields)
-            //{         
-            //    switch (fieldName)
-            //    {
-            //        case "Metadata":
-            //            result = result.Include("Metadatas");
-            //            break;
-            //        case "Images":
-            //            result = result.Include("AdImages");
-            //            break;
-            //    }
-            //}
-            //return result;
-        }
-
         protected AdRealty ReadAdRealty(SQL.SqlDataReader reader)
         {
             AdRealty ad = new AdRealty()
             {
-	            Id = reader.GetInt32(0),
-                Title = reader.GetNullableString(1),
-                Description = reader.GetNullableString(2),
-                PublishDate = reader.GetDateTime(3),
-	            CollectDate = reader.GetDateTime(4), 
-	            Url = reader.GetString(5), 
-	            Price = reader.GetDouble(6), 
-	            CreationDate = reader.GetNullableDateTime(7),
-	            Address = reader.GetNullableString(8), 
-	            RoomsCount = reader.GetInt32(9), 
-	            Floor = reader.GetInt32(10), 
-	            FloorsCount = reader.GetInt32(11), 
-	            LivingSpace = (float)reader.GetDouble(12), 
-	            IsNewBuilding = reader.GetBoolean(13),
-	            HistoryLength = reader.GetInt32(14)
+	            Id = reader.GetInt32(1),
+                Title = reader.GetNullableString(2),
+                Description = reader.GetNullableString(3),
+                PublishDate = reader.GetDateTime(4),
+	            CollectDate = reader.GetDateTime(5), 
+	            Url = reader.GetString(6), 
+	            Price = reader.GetDouble(7), 
+	            CreationDate = reader.GetNullableDateTime(8),
+	            Address = reader.GetNullableString(9), 
+	            RoomsCount = reader.GetInt32(10), 
+	            Floor = reader.GetInt32(11), 
+	            FloorsCount = reader.GetInt32(12), 
+	            LivingSpace = (float)reader.GetDouble(13), 
+	            IsNewBuilding = reader.GetBoolean(14),
+                ConnectorId = reader.GetString(15),
+	            HistoryLength = reader.GetInt32(16)
             };
             return ad;
         }
@@ -304,7 +247,7 @@ namespace Core.DAL.MsSql
                 cmd.Parameters.Add("@sortBy", System.Data.SqlDbType.NVarChar).Value = Sorts.GetSortNameOrDefault(sort);
 
                 var connectorFilter = query.Filters.FirstOrDefault(f => f.Name == "ConnectorId");
-                cmd.Parameters.Add("@connectorId", System.Data.SqlDbType.Int).Value = connectorFilter == null ? null : connectorFilter.Value;
+                cmd.Parameters.Add("@connectorId", System.Data.SqlDbType.NVarChar).Value = connectorFilter == null ? null : connectorFilter.Value;
 
                 var priceMinFilter = query.Filters.FirstOrDefault(f => f.Name == "PriceMin");
                 cmd.Parameters.Add("@priceMin", System.Data.SqlDbType.Float).Value = priceMinFilter == null ? null : priceMinFilter.Value;
@@ -352,57 +295,6 @@ namespace Core.DAL.MsSql
             });
 
             return new QueryResult<AdRealty>(ads.Values.ToList(), totalCount);
-
-            //QueryResult<AdRealty> result = null;
-            //int? totalCount = null;
-
-            //ExecuteDbOperation(context =>
-            //{
-            //    IQueryable<DbAdsRealty> dbEntities = GetDbEntities(context).OfType<DbAdsRealty>();
-
-            //    if (query != null)
-            //    {
-            //        if (query.HasFilters)
-            //        {
-            //            dbEntities = ApplyFilter(context, dbEntities, query.Filters);
-            //        }
-            //        if (query.HasSorts)
-            //        {
-            //            dbEntities = ApplyOrder(context, dbEntities, query.Sorts);
-            //        }
-            //        if (query.Start.HasValue && query.Limit.HasValue)
-            //        {
-            //            totalCount = dbEntities.Count();
-            //            if (query.Start > 0)
-            //            {
-            //                dbEntities = dbEntities.Skip(query.Start.Value);
-            //            }
-            //            dbEntities = dbEntities.Take(query.Limit.Value);
-            //        }
-            //        if (query.HasOptionalFields)
-            //        {
-            //            result = new QueryResult<AdRealty>(ConvertAllToEntity(FillAdditionalProperties(dbEntities, query.OptionalFields)).ToList(), totalCount);
-            //        }
-
-            //        //if (query.HasOptionalFields && query.OptionalFields.Contains("HistoryLength"))
-            //        //{
-            //        //    result = new QueryResult<AdRealty>(ConvertAllToEntity(dbEntities.Select(a => new DbAdsRealtyContainer()
-            //        //    {
-            //        //        Ad = a//,
-            //        //        //HistoryLength = a.AdHistoryItems.Count()
-            //        //    }).Include("Ad.AdImages")).ToList(), totalCount);
-            //        //}
-            //    }
-            //    else
-            //    {
-            //        dbEntities = GetDbEntities(context).OfType<DbAdsRealty>();
-            //    }
-
-            //    result = result ?? new QueryResult<AdRealty>(
-            //                ConvertAllToEntity(dbEntities).ToList(), totalCount);
-            //});
-
-            //return result;
         }
 
         public List<AdRealty> GetLastAds(string connectorId, int limit)

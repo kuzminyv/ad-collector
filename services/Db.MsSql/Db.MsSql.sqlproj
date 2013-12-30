@@ -56,6 +56,7 @@
     <Folder Include="Tables" />
     <Folder Include="Procedures" />
     <Folder Include="Utils" />
+    <Folder Include="Views" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="Tables\AdLinks.sql" />
@@ -68,6 +69,7 @@
     <Build Include="Tables\Connectors.sql" />
     <Build Include="Procedures\AdsRealty_Search.sql" />
     <Build Include="Utils\AdsFullTextCatalog.sql" />
+    <Build Include="Views\AdsRealtyView.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Db.MsSql.refactorlog" />

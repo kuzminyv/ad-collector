@@ -13,4 +13,3 @@
 
 GO
 
-CREATE FULLTEXT INDEX ON [dbo].[AdsRealty] ([Address]) KEY INDEX [PK_AdsRealty] ON [AdsFulltextCatalog] WITH CHANGE_TRACKING AUTO

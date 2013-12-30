@@ -30,4 +30,3 @@ CREATE INDEX [IX_Ads_Price] ON [dbo].[Ads] ([Price])
 
 GO
 
-CREATE FULLTEXT INDEX ON [dbo].[Ads] ([Title], [Description], [Url], [IdOnWebSite], [SystemTags]) KEY INDEX [PK_Ads] ON [AdsFulltextCatalog] WITH CHANGE_TRACKING AUTO
