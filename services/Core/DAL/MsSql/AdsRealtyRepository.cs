@@ -145,53 +145,6 @@ namespace Core.DAL.MsSql
         }
         #endregion
 
-        protected IQueryable<DbAdsRealty> ApplyFilter(AdCollectorDBEntities context, IQueryable<DbAdsRealty> entities, List<Filter> filters)
-        {
-            var result = entities;
-            foreach (var filter in filters)
-            {
-                switch (filter.Name)
-                {
-                    case "Suspect":
-                        var suspect = (bool)filter.Value;
-                        result = result.Where(t => t.IsSuspicious == suspect);
-                        break;
-                    case "ConnectorId":
-                        var connectorId = (string)filter.Value;
-                        result = result.Where(t => t.ConnectorId == connectorId);
-                        break;
-                    case "TextFilter":
-                        var textFilter = (string)filter.Value;
-                        if (string.IsNullOrEmpty(textFilter))
-                        {
-                            continue;
-                        }
-                        result = result.Where(t =>
-                            t.Title.Contains(textFilter) ||
-                            t.Description.Contains(textFilter) ||
-                            t.Url.Contains(textFilter));
-                        break;
-                    case "PriceMin":
-                        double priceMin = (int)filter.Value;
-                        result = result.Where(t => t.Price >= priceMin);
-                        break;
-                    case "PriceMax":
-                        double priceMax = (int)filter.Value;
-                        result = result.Where(t => t.Price <= priceMax || t.Price == 0);
-                        break;
-                    case "DetailsDownloadStatus":
-                        var status = (DetailsDownloadStatus)filter.Value;
-                        result = result.Where(t => (DetailsDownloadStatus)t.DetailsDownloadStatus == status);
-                        break;
-                    case "IsNew":
-                        break;
-                    default:
-                        throw new Exception(string.Format("Unknown filter '{0}'!", filter.Name));
-                }
-            }
-            return result;
-        }
-
         protected AdRealty ReadAdRealty(SQL.SqlDataReader reader)
         {
             AdRealty ad = new AdRealty()
@@ -319,6 +272,7 @@ namespace Core.DAL.MsSql
                             a.FloorsCount == adRealty.FloorsCount &&
                             a.IdOnWebSite == adRealty.IdOnWebSite &&
                             a.LivingSpace == adRealty.LivingSpace &&
+                            a.ConnectorId == adRealty.ConnectorId &&
                             a.RoomsCount == adRealty.RoomsCount)).ToList();
                         
             });

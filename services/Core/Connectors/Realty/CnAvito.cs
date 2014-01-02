@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using Core.Expressions;
+using Core.Expressions.AdParsers;
 using Core.Utils;
 using System;
 using System.Collections.Generic;
@@ -14,78 +15,92 @@ namespace Core.Connectors
     {
         public override string Id
         {
-            get { return "http://www.avito.ru/saratov/kvartiry/prodam/vtorichka"; }
+            get { return "http://www.avito.ru/saratov/kvartiry/prodam"; }
         }
 
         public override string PageUrlFormat
         {
-            get { return @"http://www.avito.ru/saratov/kvartiry/prodam/vtorichka?p={0}"; }
+            get { return @"http://www.avito.ru/saratov/kvartiry/prodam?p={0}"; }
         }
+
 
         public override Selector CreateSelector()
         {
-            return new BoundExpressionSelector("Ad", new BoundExpression(
-                    new BoundExpressionGroup("Date", new BoundSelector("t_i_i t_i_odd t_i_e_r", "t_i_date\">", "<")),
-                    new BoundExpressionGroup("Time", new BoundSelector("t_i_time\">", "<")),
-                    new BoundExpressionGroup("Url", new BoundSelector("href=\"", "\"")),
-                    new BoundExpressionGroup("Title", new BoundSelector("title=\"", "\">")),
-                    new BoundExpressionGroup("Description", new BoundSelector("t_i_description", ">", "</div>"))
-                ));
+            return new HtmlPathSelector("Ad", "//div[@class=\"b-catalog-table\"]/div[starts-with(@id, \"i\")]", false,
+                new HtmlPathSelector("Date", "//div[@class=\"date\"]/text()", true),
+                new HtmlPathSelector("Time", "//span[@class=\"time\"]/text()", true),
+                new HtmlPathSelector("Url", "//h3[@class=\"title\"]/a/@href", true, false, "href"),
+                new HtmlPathSelector("Title", "//h3[@class=\"title\"]/a/text()", true,
+                    new RegexSelector("Rooms", "(?<Rooms>\\d)-к"),
+                    new RegexSelector("LivingSpace", @"(?<LivingSpace>\d{1,3})\sм"),
+                    new RegexSelector("Floor", @"(?<Floor>\d{1,2})/\d{1,2}\sэт"),
+                    new RegexSelector("Floors", @"\d{1,2}/(?<Floors>\d{1,2})\sэт")
+                ),
+                new HtmlPathSelector("About", "//div[@class=\"about\"]", true, 
+                    FilterSelector.HtmlToText(new RegexSelector("Price", @"(?<Price>[0-9\s]{1,12})\sруб"))),
+                new HtmlPathSelector("Address", "//p[@class=\"address fader\"]/text()", true)
+            );
+        }
+
+        public override Selector CreateDetailsSelector()
+        {
+            return new HtmlPathSelector("Item", "//div[@class=\"item\"]", false,
+                new HtmlPathSelector("Image", "//div[@id=\"photo\"]//div[@class=\"items\"]/div", true,
+                    new HtmlPathSelector("Big", "//a/@href", true, false, "href"),
+                    new HtmlPathSelector("Small", "//img/@src", true, false, "src")
+                ),
+                new HtmlPathSelector("Description", "//div[@id=\"desc_text\"]/p/text()", true)
+            );
         }
 
         public override Ad CreateAd(Match match)
         {
-            return new AdRealty()
+            Thread.Sleep(500);
+            AdRealty ad = new AdRealty()
             {
-                Url = "http://www.avito.ru" + match["Url"]
+                ConnectorId = this.Id,
+                CreationDate = DateTime.Now,
+                PublishDate = ParsersHelper.ParseDate(match["Date"].Trim() + " " + match["Time"].Trim(), "d MMM.", "HH:mm", CultureInfo.CreateSpecificCulture("ru-Ru"), "сегодня", "вчера"),
+                Url = "http://www.avito.ru" + match["Url"],
+                RoomsCount = ParsersHelper.ParseInt(match["Title\\Rooms"]),
+                LivingSpace = ParsersHelper.ParseFloat(match["Title\\LivingSpace"], "."),
+                Floor = ParsersHelper.ParseInt(match["Title\\Floor"]),
+                FloorsCount = ParsersHelper.ParseInt(match["Title\\Floors"]),
+                Price = ParsersHelper.ParseDouble(match["About\\Price"]),
+                Address = match["Address"],
+                IdOnWebSite = match["Url"].Substring(match["Url"].LastIndexOf('/'))
             };
-        }
 
-        protected int ParseRooms(string rooms)
-        {
-            return int.Parse(rooms);
-        }
-
-        protected double ParsePrice(string price)
-        {
-            if (price.Contains("договор") || price.Contains("м") || price.Contains("$")) 
+            if ((ad.PublishDate - DateTime.Now).TotalDays > 30)
             {
-                return 0;
+                ad.PublishDate = ad.PublishDate.AddYears(-1);
             }
-            return double.Parse(price.Replace("тыс. руб", "").Replace(",", "").Trim(), CultureInfo.InvariantCulture) * 1000;
+            return string.IsNullOrEmpty(ad.Address) ? null : ad;
         }
 
-        protected float ParseSize(string size)
+        public override void FillAdDetails(Ad ad, Match match)
         {
-            return float.Parse(size.Trim().Split(new string[] { "/" }, StringSplitOptions.RemoveEmptyEntries)[0], CultureInfo.InvariantCulture);
-        }
+            Thread.Sleep(5000);
 
-        protected int ParseFloors(string floors)
-        {
-            string[] parts = floors.Split(new string[] { "из" }, StringSplitOptions.RemoveEmptyEntries);
-            if (parts.Length == 1)
+            ad.Description = match["Description"];
+
+            var bigImages = match.GetByPath("Item\\Image\\Big", false).ToList();
+            var smallImages = match.GetByPath("Item\\Image\\Small", false).ToList();
+
+            if (smallImages.Count > 0)
             {
-                return int.Parse(parts[0].Trim());
+                ad.Images = new List<AdImage>();
+                for (int i = 0; i < bigImages.Count; i++)
+                {
+                    ad.Images.Add(new AdImage()
+                    {
+                        AdId = ad.Id,
+                        Url = "http:" + bigImages[i].Value,
+                        PreviewUrl = "http:" + smallImages[i].Value
+                    });
+                }
             }
-            return int.Parse(parts[1].Trim());
-        }
-
-        protected int ParseFloor(string floor)
-        {
-            return int.Parse(floor.Split(new string[] { "из" }, StringSplitOptions.RemoveEmptyEntries)[0].Trim());
-        }
-
-        protected DateTime ParseDate(string date)
-        {
-            if (date.Contains("сегодня"))
-            {
-                DateTime time = DateTime.ParseExact(date.Replace("сегодня", "").Trim(), "H:mm", CultureInfo.InvariantCulture);
-                return DateTime.Today.AddHours(time.Hour).AddMinutes(time.Minute);
-            }
-            else
-            {
-                return DateTime.ParseExact(date.Trim(), "dd.MM.yyyy", CultureInfo.InvariantCulture);
-            }
+            
         }
     }
 }

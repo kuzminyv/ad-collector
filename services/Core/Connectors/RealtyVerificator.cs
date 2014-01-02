@@ -37,6 +37,11 @@ namespace Core.Connectors
                 return string.Format("Invalid Url value '{0}'", adRealty.Url);
             }
 
+            if (string.IsNullOrEmpty(ad.ConnectorId))
+            {
+                return string.Format("ConnectorId is null or empty.", adRealty.Url);
+            }
+
             if (adRealty.Images != null)
             {
                 foreach (var img in adRealty.Images)

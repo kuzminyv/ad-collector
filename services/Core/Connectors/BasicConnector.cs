@@ -14,6 +14,7 @@ namespace Core.Connectors
     public abstract class BasicConnector : IConnector
     {
         private Selector _detailsSelector;
+        private IVerificator _verificator;
 
         public abstract string Id { get; }
         public abstract string PageUrlFormat { get; }
@@ -36,12 +37,27 @@ namespace Core.Connectors
             yield return PageUrlFormat;
         }
 
+        protected virtual IVerificator GetVerificator()
+        {
+            if (_verificator == null)
+            {
+                _verificator = new RealtyVerificator();
+            }
+            return _verificator;
+        }
+
+        protected virtual string VerifyAd(Ad ad)
+        {
+            IVerificator verificator = GetVerificator();
+            return verificator.Verify(ad);
+        }
+
         public IEnumerable<Ad> GetAds()
         {
             Selector slector = CreateSelector();
             int adsCountOnLastPage = 0;
             int maxErrorsPerPage = 10;
-            IVerificator verificator = new RealtyVerificator();
+            
             foreach (var pageUrlFormat in GetPageUrlFormats())
             {
                 int maxPages = GetAvailablePagesCount(pageUrlFormat);
@@ -64,9 +80,14 @@ namespace Core.Connectors
                             try
                             {
                                 ad = CreateAd(match);
-                                if (verificator.Verify(ad) != null)
+                                if (ad == null)
                                 {
-                                    throw new Exception(verificator.Verify(ad));
+                                    continue;
+                                }
+                                string verificationResult = VerifyAd(ad);
+                                if (verificationResult != null)
+                                {
+                                    throw new Exception(verificationResult);
                                 }
                             }
                             catch (Exception ex)

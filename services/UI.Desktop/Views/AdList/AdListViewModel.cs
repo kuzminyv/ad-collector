@@ -306,7 +306,7 @@ namespace UI.Desktop.Views
 
         private void StartLoadItems()
         {
-            Query query = new Query();
+            Query query = new Query(0, 10000);
             query.AddSort(SortBySelectedItem.Key, SortOrderSelectedItem.Key);
             query.AddFields("LinkedAdsCount");
             query.AddFields("HistoryLength");

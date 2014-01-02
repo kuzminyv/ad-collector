@@ -106,6 +106,28 @@ namespace Core.Expressions.AdParsers
             return (float)ParseDouble(str, decimalPoint, onlyDigits, strToRemove);
         }
 
+        public static DateTime ParseDate(string str, string dateFormat, string timeFormat, CultureInfo cultureInfo, params string[] dayNames)
+        {
+            var culture = cultureInfo ?? CultureInfo.InvariantCulture;
+            for (int i = 0; i < dayNames.Length; i++)
+            {
+                if (str.IndexOf(dayNames[i], StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    DateTime date = DateTime.Now.Date.AddDays(-i); 
+
+                    str = NumbersOnly(str, ':', ' ').Trim();
+                    if (!string.IsNullOrEmpty(str) && !string.IsNullOrEmpty(timeFormat))
+                    {
+                        DateTime time = DateTime.ParseExact(str, timeFormat, culture);
+                        date = date.AddHours(time.Hour);
+                        date = date.AddMinutes(time.Minute);
+                    }
+                    return date;
+                }
+            }
+            return DateTime.ParseExact(str.Trim(), dateFormat + " " + timeFormat, culture);
+        }
+
         public static DateTime ParseDate(string str, string format)
         {
             return DateTime.ParseExact(str.Trim(), format, CultureInfo.InvariantCulture);

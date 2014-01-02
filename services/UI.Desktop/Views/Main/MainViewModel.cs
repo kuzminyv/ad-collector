@@ -63,7 +63,7 @@ namespace UI.Desktop.Views
 
         public MainViewModel()
         {
-            TotalAdsCount = Managers.AdManager.GetAds().Count;
+            TotalAdsCount = 0;
 
             Query query = new Query(0, 1);
             query.AddFilter("IsNew", true);

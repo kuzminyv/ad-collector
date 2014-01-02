@@ -72,7 +72,19 @@ namespace Core.Expressions
         {
             get
             {
-                var match = _matches.FirstOrDefault(m => m.Name == name);
+                var names = name.Split(new char[]{'\\'}, StringSplitOptions.RemoveEmptyEntries);
+                var matches = this.Matches;
+                Match match = null;
+
+                for (int i = 0; i < names.Length; i++)
+                {
+                    match = matches.FirstOrDefault(m => m.Name == names[i]);
+                    if (match == null)
+                    {
+                        break;
+                    }
+                    matches = match.Matches;
+                }
                 if (match != null)
                 {
                     return string.IsNullOrEmpty(match.Value) ? match.Value : match.Value.HTMLToText();
