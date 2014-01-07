@@ -31,6 +31,19 @@ namespace UI.Desktop.Views
             }
         }
 
+        private MetadataViewModel _metadata;
+        public MetadataViewModel Metadata
+        {
+            get
+            {
+                if (_metadata == null)
+                {
+                    _metadata = new MetadataViewModel(this, _model.Metadata ?? new Metadata() { AdId = _model.Id, UserId = 1 });
+                }
+                return _metadata;
+            }
+        }
+
 		public string Text
 		{
 			get

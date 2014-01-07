@@ -5,7 +5,8 @@ using System.Diagnostics;
 namespace UI.Desktop.Views
 {
     public class ViewModel<TModel, TParent> : ViewModel
-        where TParent : ViewModel
+        where TParent : ViewModel 
+        where TModel : class
     {
         public TModel Model
         {
@@ -19,12 +20,19 @@ namespace UI.Desktop.Views
             protected set;
         }
 
-        public ViewModel(TParent parent)
+        public ViewModel(TParent parent, TModel model)
         {
             Parent = parent;
+            Model = model;
+        }
+
+        public ViewModel(TParent parent)
+            : this(parent, null)
+        {
         }
 
         public ViewModel()
+           : this(null, null)
         { 
         }
     }

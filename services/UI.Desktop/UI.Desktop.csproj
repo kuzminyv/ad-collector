@@ -115,6 +115,9 @@
     <Compile Include="Commands\AppCommands.cs" />
     <Compile Include="Commands\ShowAdListCommand.cs" />
     <Compile Include="Utils\Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Utils\DataVirtualization\AsyncVirtualizingCollection.cs" />
+    <Compile Include="Utils\DataVirtualization\IItemsProvider.cs" />
+    <Compile Include="Utils\DataVirtualization\VirtualizingCollection.cs" />
     <Compile Include="Utils\EventArgs.cs" />
     <Compile Include="Utils\HyperlinkHelper.cs" />
     <Compile Include="Utils\ResourceHelper.cs" />
@@ -134,6 +137,8 @@
       <DependentUpon>AdItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\AdItem\AdItemViewModel.cs" />
+    <Compile Include="Views\AdItem\MetadataViewModel.cs" />
+    <Compile Include="Views\AdList\AdListProvider.cs" />
     <Compile Include="Views\AdList\AdListView.xaml.cs">
       <DependentUpon>AdListView.xaml</DependentUpon>
     </Compile>

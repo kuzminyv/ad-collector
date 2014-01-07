@@ -181,6 +181,19 @@ namespace Core.DAL.MsSql
             return image;
         }
 
+        protected Metadata ReadMetadata(SQL.SqlDataReader reader)
+        {
+            Metadata metadata = new Metadata()
+            {
+                Id = reader.GetInt32(0),
+                UserId = reader.GetInt32(1),
+                AdId = reader.GetInt32(2),
+                IsFavorite = reader.GetBoolean(3),
+                Note = reader.GetNullableString(4)                
+            };
+            return metadata;
+        }
+
         public override QueryResult<AdRealty> GetList(Query query)
         {
             query = query == null ? new Query() : query;
@@ -220,6 +233,24 @@ namespace Core.DAL.MsSql
                                   .Where(s => s.Length >= 2 && Char.IsLetterOrDigit(s[0]))
                                   .Select(s => string.Format("(\"{0}*\")", s)));
 
+                var isFavoriteFilter = query.Filters.FirstOrDefault(f => f.Name == "IsFavorite");
+                cmd.Parameters.Add("@isFavorite", System.Data.SqlDbType.Bit).Value = isFavoriteFilter == null ? null : isFavoriteFilter.Value;
+
+                cmd.Parameters.Add("@userId", System.Data.SqlDbType.Int).Value = 1;
+
+                var floorMinFilter = query.Filters.FirstOrDefault(f => f.Name == "FloorMin");
+                cmd.Parameters.Add("@floorMin", System.Data.SqlDbType.Int).Value = floorMinFilter == null ? null : floorMinFilter.Value;
+
+                var floorMaxFilter = query.Filters.FirstOrDefault(f => f.Name == "FloorMax");
+                cmd.Parameters.Add("@floorMax", System.Data.SqlDbType.Int).Value = floorMaxFilter == null ? null : floorMaxFilter.Value;
+
+                var floorsMinFilter = query.Filters.FirstOrDefault(f => f.Name == "FloorsMin");
+                cmd.Parameters.Add("@floorsMin", System.Data.SqlDbType.Int).Value = floorsMinFilter == null ? null : floorsMinFilter.Value;
+
+                var floorsMaxFilter = query.Filters.FirstOrDefault(f => f.Name == "FloorsMax");
+                cmd.Parameters.Add("@floorsMax", System.Data.SqlDbType.Int).Value = floorsMaxFilter == null ? null : floorsMaxFilter.Value;
+
+
                 var reader = cmd.ExecuteReader();
 
                 if (reader.Read())
@@ -244,6 +275,13 @@ namespace Core.DAL.MsSql
                         ad.Images = new List<AdImage>();
                     }
                     ad.Images.Add(image);
+                }
+
+                reader.NextResult();
+                while (reader.Read())
+                {
+                    var metadata = ReadMetadata(reader);
+                    ads[metadata.AdId].Metadata = metadata;
                 }
             });
 

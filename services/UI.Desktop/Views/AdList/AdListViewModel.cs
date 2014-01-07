@@ -9,15 +9,15 @@ using Core.BLL;
 using UI.Desktop.Utils;
 using Core.Entities;
 using Core.DAL.Common;
+using Utils.DataVirtualization;
+using Core.Utils;
 
 namespace UI.Desktop.Views
 {
 	public class AdListViewModel : ViewModel
 	{
-        private AsyncOperation<Query, QueryResult<Ad>> _loadItemsOperation;
-
-		private ObservableCollection<AdItemViewModel> _items;
-		public ObservableCollection<AdItemViewModel> Items
+		private AsyncVirtualizingCollection<AdItemViewModel> _items;
+		public AsyncVirtualizingCollection<AdItemViewModel> Items
 		{
 			get
 			{
@@ -230,6 +230,24 @@ namespace UI.Desktop.Views
             }
         }
 
+        private bool _isFavoriteFilter;
+        public bool IsFavoriteFilter
+        {
+            get
+            {
+                return _isFavoriteFilter;
+            }
+            set
+            {
+                if (_isFavoriteFilter != value)
+                {
+                    _isFavoriteFilter = value;
+                    ApplyFilter();
+                    OnPropertyChanged("IsFavoriteFilter");
+                }
+            }
+        }
+
 		private AdItemViewModel _selectedItem;
 		public AdItemViewModel SelectedItem
 		{
@@ -269,8 +287,6 @@ namespace UI.Desktop.Views
         
         public AdListViewModel()
         {
-            _loadItemsOperation = new AsyncOperation<Query, QueryResult<Ad>>((query, token) => Managers.AdManager.GetAds(query), ItemsLoaded, 300, true);
-
             App.AppContext.CheckForNewAdsComplete += AppContext_CheckForNewAdsComplete;
             App.AppContext.CheckForNewAdsStateChanged += AppContext_CheckForNewAdsStateChanged;
             App.AppContext.CheckForNewAdsStart += AppContext_CheckForNewAdsStart;
@@ -282,7 +298,7 @@ namespace UI.Desktop.Views
 
         private void ApplyFilter()
         {
-            StartLoadItems();
+            BufferedAction.DelayAction(() => App.AppContext.Dispatcher.Invoke(StartLoadItems), 200);
         }
 
         private void AppContext_CheckForNewAdsStart(object sender, EventArgs e)
@@ -304,7 +320,7 @@ namespace UI.Desktop.Views
             Items = null;
         }
 
-        private void StartLoadItems()
+        private Query BuildQuery()
         {
             Query query = new Query(0, 10000);
             query.AddSort(SortBySelectedItem.Key, SortOrderSelectedItem.Key);
@@ -325,15 +341,16 @@ namespace UI.Desktop.Views
             {
                 query.AddFilter("PriceMax", PriceMax.Value);
             }
-
-            _loadItemsOperation.RunAsync(query);
+            if (IsFavoriteFilter)
+            {
+                query.AddFilter("IsFavorite", true);
+            }
+            return query;
         }
 
-        private void ItemsLoaded(QueryResult<Ad> result)
+        private void StartLoadItems()
         {
-            Items = new ObservableCollection<AdItemViewModel>(result.Items.Select(ad => new AdItemViewModel(ad)));
-            TotalAdsCount = Items.Count;
-
+            Items = new AsyncVirtualizingCollection<AdItemViewModel>(new AdListProvider(BuildQuery()), 100, int.MaxValue);
         }
 	}
 }
