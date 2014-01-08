@@ -19,7 +19,7 @@ namespace UI.Desktop.Views
             _query.Start = 0;
             _query.Limit = 100;
             _fetchCountResult = Managers.AdManager.GetAds(_query);
-            return _fetchCountResult.TotalCount.Value;
+            return Math.Min(10000, _fetchCountResult.TotalCount.Value);
         }
 
         public IList<AdItemViewModel> FetchRange(int startIndex, int count)

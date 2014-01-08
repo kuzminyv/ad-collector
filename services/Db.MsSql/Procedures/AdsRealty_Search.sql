@@ -39,6 +39,7 @@ DECLARE @ads TABLE (
 	[IsNewBuilding] bit,
 	[ConnectorId] nvarchar(1000),
 	[HistoryLength] int,
+	[PricePerMeter] float,
 	[TotalCount] int
 ) 
 
@@ -60,7 +61,8 @@ SELECT
 	rv.[LivingSpace], 
 	rv.[IsNewBuilding],
 	rv.[ConnectorId],
-	(SELECT COUNT(h.[AdId]) FROM dbo.AdHistoryItems h WHERE h.[AdId] = rv.[Id]) as [HistoryLength]
+	(SELECT COUNT(h.[AdId]) FROM dbo.AdHistoryItems h WHERE h.[AdId] = rv.[Id]) as [HistoryLength],
+	rv.[PricePerMeter]
 FROM dbo.AdsRealtyView rv ' +
 'WHERE 0 = 0 ' +
 

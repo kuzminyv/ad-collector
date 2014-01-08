@@ -78,6 +78,15 @@ namespace Core.Entities
             set;
         }
 
+        [DataMember(Name = "pricePerMeter")]
+        public double PricePerMeter
+        {
+            get
+            {
+                return LivingSpace > 0 ? Price / LivingSpace : 0;
+            }            
+        }
+
         public override bool IsSameAd(Ad ad)
         {
             AdRealty a = (AdRealty)ad;

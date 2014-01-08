@@ -86,6 +86,7 @@
           <Property Name="ConnectorId" Type="nvarchar" MaxLength="1000" />
           <Property Name="CreationDate" Type="datetime2" />
           <Property Name="DetailsDownloadStatus" Type="int" Nullable="false" />
+          <Property Name="SystemTags" Type="nvarchar" MaxLength="500" />
         </EntityType>
         <EntityType Name="AdsRealty">
           <Key>
@@ -98,6 +99,7 @@
           <Property Name="FloorsCount" Type="int" Nullable="false" />
           <Property Name="LivingSpace" Type="float" Nullable="false" />
           <Property Name="IsNewBuilding" Type="bit" Nullable="false" />
+          <Property Name="PricePerMeter" Type="float" Nullable="false" />
         </EntityType>
         <EntityType Name="Connectors">
           <Key>
@@ -144,7 +146,9 @@
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
         </EntityType>
         <Association Name="FK_AdHistoryItems_ToAds">
-          <End Role="Ads" Type="AdCollectorDBModel.Store.Ads" Multiplicity="1" />
+          <End Role="Ads" Type="AdCollectorDBModel.Store.Ads" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="AdHistoryItems" Type="AdCollectorDBModel.Store.AdHistoryItems" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Ads">
@@ -156,7 +160,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_AdImages_ToAds">
-          <End Role="Ads" Type="AdCollectorDBModel.Store.Ads" Multiplicity="1" />
+          <End Role="Ads" Type="AdCollectorDBModel.Store.Ads" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="AdImages" Type="AdCollectorDBModel.Store.AdImages" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Ads">
@@ -192,7 +198,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_AdsRealty_ToAds">
-          <End Role="Ads" Type="AdCollectorDBModel.Store.Ads" Multiplicity="1" />
+          <End Role="Ads" Type="AdCollectorDBModel.Store.Ads" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="AdsRealty" Type="AdCollectorDBModel.Store.AdsRealty" Multiplicity="0..1" />
           <ReferentialConstraint>
             <Principal Role="Ads">
@@ -204,7 +212,9 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_Metadata_ToAds">
-          <End Role="Ads" Type="AdCollectorDBModel.Store.Ads" Multiplicity="1" />
+          <End Role="Ads" Type="AdCollectorDBModel.Store.Ads" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="Metadata" Type="AdCollectorDBModel.Store.Metadata" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Ads">
@@ -283,6 +293,7 @@
           <Property Type="DateTime" Name="CreationDate" Precision="7" />
           <Property Type="String" Name="Url" Unicode="true" MaxLength="4000" FixedLength="false" Nullable="true" />
           <Property Type="Int32" Name="DetailsDownloadStatus" Nullable="false" />
+          <Property Type="String" Name="SystemTags" MaxLength="500" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="DbAdsRealty" BaseType="AdCollectorDBModel.DbAd">
           <Property Name="Address" Type="String" MaxLength="500" Unicode="true" FixedLength="false" />
@@ -291,6 +302,7 @@
           <Property Type="Int32" Name="FloorsCount" Nullable="false" />
           <Property Type="Double" Name="LivingSpace" Nullable="false" />
           <Property Type="Boolean" Name="IsNewBuilding" Nullable="false" />
+          <Property Type="Double" Name="PricePerMeter" Nullable="false" />
         </EntityType>
         <EntityType Name="DbLogEntry">
           <Key>
@@ -437,6 +449,7 @@
           <EntitySetMapping Name="Ads">
             <EntityTypeMapping TypeName="IsTypeOf(AdCollectorDBModel.DbAd)">
               <MappingFragment StoreEntitySet="Ads">
+                <ScalarProperty Name="SystemTags" ColumnName="SystemTags" />
                 <ScalarProperty Name="DetailsDownloadStatus" ColumnName="DetailsDownloadStatus" />
                 <ScalarProperty Name="Url" ColumnName="Url" />
                 <ScalarProperty Name="CreationDate" ColumnName="CreationDate" />
@@ -453,6 +466,7 @@
             </EntityTypeMapping>
             <EntityTypeMapping TypeName="IsTypeOf(AdCollectorDBModel.DbAdsRealty)">
               <MappingFragment StoreEntitySet="AdsRealty">
+                <ScalarProperty Name="PricePerMeter" ColumnName="PricePerMeter" />
                 <ScalarProperty Name="IsNewBuilding" ColumnName="IsNewBuilding" />
                 <ScalarProperty Name="LivingSpace" ColumnName="LivingSpace" />
                 <ScalarProperty Name="FloorsCount" ColumnName="FloorsCount" />

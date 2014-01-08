@@ -116,7 +116,8 @@ namespace UI.Desktop.Views
                     {
                         new KeyValuePair<string, string>("CollectDate", "Collect Date"),
                         new KeyValuePair<string, string>("PublishDate", "Date"),
-                        new KeyValuePair<string, string>("Price", "Price")
+                        new KeyValuePair<string, string>("Price", "Price"),
+                        new KeyValuePair<string, string>("PricePerMeter", "Price per Meter")
                     };
                 }
                 return _sortByItems;
@@ -298,7 +299,7 @@ namespace UI.Desktop.Views
 
         private void ApplyFilter()
         {
-            BufferedAction.DelayAction(() => App.AppContext.Dispatcher.Invoke(StartLoadItems), 200);
+            BufferedAction.DelayAction(() => App.AppContext.Dispatcher.Invoke(StartLoadItems), 300);
         }
 
         private void AppContext_CheckForNewAdsStart(object sender, EventArgs e)
@@ -351,6 +352,15 @@ namespace UI.Desktop.Views
         private void StartLoadItems()
         {
             Items = new AsyncVirtualizingCollection<AdItemViewModel>(new AdListProvider(BuildQuery()), 100, int.MaxValue);
+            Items.CollectionChanged += Items_CollectionChanged;
+        }
+
+        private void Items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Reset)
+            {
+                TotalAdsCount = Items.Count;
+            }
         }
 	}
 }

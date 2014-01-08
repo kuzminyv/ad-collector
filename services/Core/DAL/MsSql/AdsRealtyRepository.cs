@@ -38,6 +38,7 @@ namespace Core.DAL.MsSql
                         case "CollectDate": return "CollectDate";
                         case "PublishDate": return "PublishDate";
                         case "Price": return "Price";
+                        case "PricePerMeter": return "PricePerMeter";
                     }
                 }
                 return "PublishDate";
@@ -98,7 +99,8 @@ namespace Core.DAL.MsSql
                 Title = entity.Title,
                 Url = entity.Url,
                 IsNewBuilding = entity.IsNewBuilding,
-                DetailsDownloadStatus = (int)entity.DetailsDownloadStatus
+                DetailsDownloadStatus = (int)entity.DetailsDownloadStatus,
+                PricePerMeter = entity.PricePerMeter
             };
         }
 
@@ -225,13 +227,14 @@ namespace Core.DAL.MsSql
                 cmd.Parameters.Add("@detailsDownloadStatus", System.Data.SqlDbType.Int).Value = detailsDownloadStatusFilter == null ? null : detailsDownloadStatusFilter.Value;
 
                 //WHERE CONTAINS(item.keywords, '("wi*") AND ("#4*")')
-                var searchCondition = query.Filters.FirstOrDefault(f => f.Name == "TextFilter");
-                var searchText = searchCondition == null ? null : (string)searchCondition.Value;
-                cmd.Parameters.Add("@searchCondition", System.Data.SqlDbType.NVarChar).Value = (string.IsNullOrWhiteSpace(searchText)) ? null : 
+                var textFilter = query.Filters.FirstOrDefault(f => f.Name == "TextFilter");
+                var searchText = textFilter == null ? null : (string)textFilter.Value;
+                var searchCondition = (string.IsNullOrWhiteSpace(searchText)) ? null : 
                     string.Join(" AND ",
                         searchText.Split(new char[]{' ', ',', '.', '?', ';', '!', ':', '\'', '"', '*', '+', '-'}, StringSplitOptions.RemoveEmptyEntries)
                                   .Where(s => s.Length >= 2 && Char.IsLetterOrDigit(s[0]))
                                   .Select(s => string.Format("(\"{0}*\")", s)));
+                cmd.Parameters.Add("@searchCondition", System.Data.SqlDbType.NVarChar).Value = string.IsNullOrWhiteSpace(searchCondition) ? null : searchCondition;
 
                 var isFavoriteFilter = query.Filters.FirstOrDefault(f => f.Name == "IsFavorite");
                 cmd.Parameters.Add("@isFavorite", System.Data.SqlDbType.Bit).Value = isFavoriteFilter == null ? null : isFavoriteFilter.Value;

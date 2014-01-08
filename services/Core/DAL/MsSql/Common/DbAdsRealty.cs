@@ -20,5 +20,6 @@ namespace Core.DAL.MsSql.Common
         public int FloorsCount { get; set; }
         public double LivingSpace { get; set; }
         public bool IsNewBuilding { get; set; }
+        public double PricePerMeter { get; set; }
     }
 }
