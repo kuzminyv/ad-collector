@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Threading;
+using UI.Desktop;
 
 namespace Utils.DataVirtualization
 {
@@ -170,14 +172,15 @@ namespace Utils.DataVirtualization
         private void LoadCountWork(object args)
         {
             int count = FetchCount();
-            SynchronizationContext.Send(LoadCountCompleted, count);
+            App.AppContext.RunOnUiThread(new Action(() => LoadCountCompleted(count)));
+            //SynchronizationContext.Send();
         }
 
         /// <summary>
         /// Performed on UI-thread after LoadCountWork.
         /// </summary>
         /// <param name="args">Number of items returned.</param>
-        private void LoadCountCompleted(object args)
+        private void LoadCountCompleted(int args)
         {
             Count = (int)args;
             IsLoading = false;
@@ -202,7 +205,8 @@ namespace Utils.DataVirtualization
         {
             int pageIndex = (int)args;
             IList<T> page = FetchPage(pageIndex);
-            SynchronizationContext.Send(LoadPageCompleted, new object[]{ pageIndex, page });
+            App.AppContext.RunOnUiThread(new Action(() => LoadPageCompleted(new object[]{ pageIndex, page })));
+            //SynchronizationContext.Send(LoadPageCompleted, new object[] { pageIndex, page });
         }
 
         /// <summary>

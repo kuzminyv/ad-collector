@@ -11,6 +11,7 @@ using Core.Entities;
 using Core.DAL.Common;
 using Utils.DataVirtualization;
 using Core.Utils;
+using System.Windows.Threading;
 
 namespace UI.Desktop.Views
 {
@@ -231,6 +232,96 @@ namespace UI.Desktop.Views
             }
         }
 
+        private int? _pricePerMeterMax;
+        public int? PricePerMeterMax
+        {
+            get
+            {
+                return _pricePerMeterMax;
+            }
+            set
+            {
+                if (_pricePerMeterMax != value)
+                {
+                    _pricePerMeterMax = value;
+                    ApplyFilter();
+                    OnPropertyChanged("PricePerMeterMax");
+                }
+            }
+        }
+
+        private int? _pricePerMeterMin;
+        public int? PricePerMeterMin
+        {
+            get
+            {
+                return _pricePerMeterMin;
+            }
+            set
+            {
+                if (_pricePerMeterMin != value)
+                {
+                    _pricePerMeterMin = value;
+                    ApplyFilter();
+                    OnPropertyChanged("PricePerMeterMin");
+                }
+            }
+        }
+
+        private int? _livingSpaceMin;
+        public int? LivingSpaceMin
+        {
+            get
+            {
+                return _livingSpaceMin;
+            }
+            set
+            {
+                if (_livingSpaceMin != value)
+                {
+                    _livingSpaceMin = value;
+                    ApplyFilter();
+                    OnPropertyChanged("LivingSpaceMin");
+                }
+            }
+        }
+
+        private int? _livingSpaceMax;
+        public int? LivingSpaceMax
+        {
+            get
+            {
+                return _livingSpaceMax;
+            }
+            set
+            {
+                if (_livingSpaceMax != value)
+                {
+                    _livingSpaceMax = value;
+                    ApplyFilter();
+                    OnPropertyChanged("LivingSpaceMax");
+                }
+            }
+        }
+       
+        private int? _floorMin;
+        public int? FloorMin
+        {
+            get
+            {
+                return _floorMin;
+            }
+            set
+            {
+                if (_floorMin != value)
+                {
+                    _floorMin = value;
+                    ApplyFilter();
+                    OnPropertyChanged("FloorMin");
+                }
+            }
+        }
+
         private bool _isFavoriteFilter;
         public bool IsFavoriteFilter
         {
@@ -299,7 +390,7 @@ namespace UI.Desktop.Views
 
         private void ApplyFilter()
         {
-            BufferedAction.DelayAction(() => App.AppContext.Dispatcher.Invoke(StartLoadItems), 300);
+            BufferedAction.DelayAction(() => App.AppContext.Dispatcher.BeginInvoke(new Action(StartLoadItems), DispatcherPriority.Normal), 500);
         }
 
         private void AppContext_CheckForNewAdsStart(object sender, EventArgs e)
@@ -342,6 +433,27 @@ namespace UI.Desktop.Views
             {
                 query.AddFilter("PriceMax", PriceMax.Value);
             }
+            if (PricePerMeterMax.HasValue && PricePerMeterMax.Value > 0)
+            {
+                query.AddFilter("PricePerMeterMax", PricePerMeterMax.Value);
+            }
+            if (PricePerMeterMin.HasValue && PricePerMeterMin.Value > 0)
+            {
+                query.AddFilter("PricePerMeterMin", PricePerMeterMin.Value);
+            }
+            if (LivingSpaceMin.HasValue && LivingSpaceMin.Value > 0)
+            {
+                query.AddFilter("LivingSpaceMin", LivingSpaceMin.Value);
+            }
+            if (LivingSpaceMax.HasValue && LivingSpaceMax.Value > 0)
+            {
+                query.AddFilter("LivingSpaceMax", LivingSpaceMax.Value);
+            }
+            if (FloorMin.HasValue && FloorMin.Value > 0)
+            {
+                query.AddFilter("FloorMin", FloorMin.Value);
+            }
+
             if (IsFavoriteFilter)
             {
                 query.AddFilter("IsFavorite", true);
@@ -351,7 +463,7 @@ namespace UI.Desktop.Views
 
         private void StartLoadItems()
         {
-            Items = new AsyncVirtualizingCollection<AdItemViewModel>(new AdListProvider(BuildQuery()), 100, int.MaxValue);
+            Items = new AsyncVirtualizingCollection<AdItemViewModel>(new AdListProvider(BuildQuery()), 10, int.MaxValue);
             Items.CollectionChanged += Items_CollectionChanged;
         }
 

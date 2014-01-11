@@ -32,7 +32,7 @@ namespace Core.Connectors
                 new HtmlPathSelector("Url", "//h3[@class=\"title\"]/a/@href", true, false, "href"),
                 new HtmlPathSelector("Title", "//h3[@class=\"title\"]/a/text()", true,
                     new RegexSelector("Rooms", "(?<Rooms>\\d)-к"),
-                    new RegexSelector("LivingSpace", @"(?<LivingSpace>\d{1,3})\sм"),
+                    new RegexSelector("LivingSpace", @"(?<LivingSpace>[0-9\.]{1,4})\sм"),
                     new RegexSelector("Floor", @"(?<Floor>\d{1,2})/\d{1,2}\sэт"),
                     new RegexSelector("Floors", @"\d{1,2}/(?<Floors>\d{1,2})\sэт")
                 ),

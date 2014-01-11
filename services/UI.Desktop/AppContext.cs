@@ -36,6 +36,11 @@ namespace UI.Desktop
             }
         }
 
+        public void RunOnUiThread(Action action)
+        {
+            Dispatcher.BeginInvoke(action);
+        }
+
         public void CheckForNewAds()
         {
             if (_isCheckForNewAdsInProgress)

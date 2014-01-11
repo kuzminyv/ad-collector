@@ -78,7 +78,6 @@ namespace Core.Entities
             set;
         }
 
-        [DataMember(Name = "pricePerMeter")]
         public double PricePerMeter
         {
             get

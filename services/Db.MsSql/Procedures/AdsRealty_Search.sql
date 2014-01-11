@@ -13,7 +13,11 @@
 	@floorMin int = NULL,
 	@floorMax int = NULL,
 	@floorsMin int = NULL,
-	@floorsMax int = NULL
+	@floorsMax int = NULL,
+	@pricePerMeterMin float = NULL,
+	@pricePerMeterMax float = NULL,
+	@livingSpaceMin float = NULL,
+	@livingSpaceMax float = NULL
 AS
 BEGIN
 
@@ -69,6 +73,10 @@ FROM dbo.AdsRealtyView rv ' +
 IIF(@connectorId is null, '', ' and rv.[ConnectorId] = @connectorId') +
 IIF(@priceMin is null, '',    ' and rv.[Price] >= @priceMin') +
 IIF(@priceMax is null, '',    ' and rv.[Price] <= @priceMax') +
+IIF(@pricePerMeterMin is null, '',    ' and rv.[PricePerMeter] >= @pricePerMeterMin') +
+IIF(@pricePerMeterMax is null, '',    ' and rv.[PricePerMeter] <= @pricePerMeterMax') +
+IIF(@livingSpaceMin is null, '',    ' and rv.[LivingSpace] >= @livingSpaceMin') +
+IIF(@livingSpaceMax is null, '',    ' and rv.[LivingSpace] <= @livingSpaceMax') +
 IIF(@floorMin is null, '',    ' and rv.[Floor] >= @floorMin') +
 IIF(@floorMax is null, '',    ' and rv.[Floor] <= @floorMax') +
 IIF(@floorsMin is null, '',    ' and rv.[Floors] >= @floorsMin') +
@@ -85,9 +93,9 @@ IIF(@isFavorite is null, '', ' and rv.[Id] in (SELECT AdId FROM dbo.Metadata WHE
 
 INSERT INTO @ads 
 EXECUTE sp_executesql @sql, N'@offset int, @limit int, @connectorId nvarchar(1000), @priceMin float, @priceMax float, @detailsDownloadStatus int, @searchCondition nvarchar(200), @userId int,
-@isFavorite bit, @floorMin int, @floorMax int, @floorsMin int, @floorsMax int',
+@isFavorite bit, @floorMin int, @floorMax int, @floorsMin int, @floorsMax int,  @pricePerMeterMin float, @pricePerMeterMax float, @livingSpaceMin float, @livingSpaceMax float',
 						      @offset,     @limit,     @connectorId,                @priceMin,       @priceMax,       @detailsDownloadStatus,     @searchCondition,               @userId,
-@isFavorite,     @floorMin,     @floorMax,     @floorsMin,     @floorsMax
+@isFavorite,     @floorMin,     @floorMax,     @floorsMin,     @floorsMax,      @pricePerMeterMin,       @pricePerMeterMax,       @livingSpaceMin,       @livingSpaceMax
 
 --ads
 SELECT * FROM @ads ORDER BY [_order]

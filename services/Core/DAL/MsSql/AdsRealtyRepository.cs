@@ -253,6 +253,18 @@ namespace Core.DAL.MsSql
                 var floorsMaxFilter = query.Filters.FirstOrDefault(f => f.Name == "FloorsMax");
                 cmd.Parameters.Add("@floorsMax", System.Data.SqlDbType.Int).Value = floorsMaxFilter == null ? null : floorsMaxFilter.Value;
 
+                var pricePerMeterMaxFilter = query.Filters.FirstOrDefault(f => f.Name == "PricePerMeterMax");
+                cmd.Parameters.Add("@pricePerMeterMax", System.Data.SqlDbType.Float).Value = pricePerMeterMaxFilter == null ? null : pricePerMeterMaxFilter.Value;
+
+                var pricePerMeterMinFilter = query.Filters.FirstOrDefault(f => f.Name == "PricePerMeterMin");
+                cmd.Parameters.Add("@pricePerMeterMin", System.Data.SqlDbType.Float).Value = pricePerMeterMinFilter == null ? null : pricePerMeterMinFilter.Value;
+
+                var livingSpaceMaxFilter = query.Filters.FirstOrDefault(f => f.Name == "LivingSpaceMax");
+                cmd.Parameters.Add("@livingSpaceMax", System.Data.SqlDbType.Float).Value = livingSpaceMaxFilter == null ? null : livingSpaceMaxFilter.Value;
+
+                var livingSpaceMinFilter = query.Filters.FirstOrDefault(f => f.Name == "LivingSpaceMin");
+                cmd.Parameters.Add("@livingSpaceMin", System.Data.SqlDbType.Float).Value = livingSpaceMinFilter == null ? null : livingSpaceMinFilter.Value;
+
 
                 var reader = cmd.ExecuteReader();
 

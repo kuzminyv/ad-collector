@@ -6,7 +6,7 @@
 	xmlns:views ="clr-namespace:UI.Desktop.Views"
 	Title="Ads"
 	Height="600"
-	Width="820"
+	Width="950"
     SnapsToDevicePixels="True"
     x:Name="window"
 	WindowStartupLocation="CenterScreen"
@@ -100,7 +100,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="0"/> <!--0-->
                         <ColumnDefinition/>
-                        <ColumnDefinition Width="150"/><!--2-->
+                        <ColumnDefinition Width="120"/><!--2-->
                         
                         <ColumnDefinition Width="20"/><!--3-->
                         <ColumnDefinition/>
@@ -108,9 +108,13 @@
 
                         <ColumnDefinition Width="20"/>
                         <ColumnDefinition/>
-                        <ColumnDefinition Width="100"/>
+                        <ColumnDefinition Width="80"/>
 
-                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="120"/>
+
+                        <ColumnDefinition Width="30"/>
                         <ColumnDefinition Width="*"/><!--10-->
                     </Grid.ColumnDefinitions>
 
@@ -138,12 +142,32 @@
                         </ComboBox.Items>
                     </ComboBox>
 
-                    <!--<TextBlock Grid.Column="7" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 3 0" Text="Sort Order:"/>
-                    <ComboBox Grid.Column="8" Grid.Row="1" Height="22" ItemsSource="{Binding SortOrderItems}" DisplayMemberPath="Value" SelectedItem="{Binding SortOrderSelectedItem}"/>-->
+                    <TextBlock Grid.Column="7" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 3 0" Text="Min Floor:"/>
+                    <toolkit:IntegerUpDown Grid.Column="8" Grid.Row="1" Height="22"  Value="{Binding PriceMin}"/>
+
+                    <TextBlock Grid.Column="7" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 3 0" Text="Min Floor:"/>
+                    <toolkit:IntegerUpDown Grid.Column="8" Grid.Row="1" Height="22"  Value="{Binding FloorMin}"/>
+
+
+
+                    <TextBlock Grid.Column="10" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 3 0" Text="Sq Price:"/>
+                    <StackPanel Orientation="Horizontal" Grid.Column="11">
+                        <toolkit:IntegerUpDown Height="22" Width="50" HorizontalAlignment="Stretch" Value="{Binding PricePerMeterMin}"/>
+                        <TextBlock VerticalAlignment="Center" Text=" - "/>
+                        <toolkit:IntegerUpDown Height="22" Width="50" HorizontalAlignment="Stretch" Value="{Binding PricePerMeterMax}"/>
+                    </StackPanel>
+
+                    <TextBlock Grid.Column="10" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 3 0" Text="Space:"/>
+                    <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="11">
+                        <toolkit:IntegerUpDown Height="22" Width="50" HorizontalAlignment="Stretch" Value="{Binding LivingSpaceMin}"/>
+                        <TextBlock VerticalAlignment="Center" Text=" - "/>
+                        <toolkit:IntegerUpDown Height="22" Width="50" HorizontalAlignment="Stretch" Value="{Binding LivingSpaceMax}"/>
+                    </StackPanel>
+
 
 
                     <StackPanel
-                            Grid.Column="10"
+                            Grid.Column="13"
                             Grid.RowSpan="2"
                         Orientation="Horizontal">
                         <Button

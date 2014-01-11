@@ -17,3 +17,11 @@ GO
 
 
 CREATE INDEX [IX_AdsRealty_PricePerMeter] ON [dbo].[AdsRealty] ([PricePerMeter])
+
+GO
+
+CREATE INDEX [IX_AdsRealty_Floor] ON [dbo].[AdsRealty] ([Floor])
+
+GO
+
+CREATE INDEX [IX_AdsRealty_LivingSpace] ON [dbo].[AdsRealty] ([LivingSpace])
