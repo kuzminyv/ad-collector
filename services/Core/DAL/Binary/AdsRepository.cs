@@ -113,6 +113,10 @@ namespace Core.DAL.Binary
                         result = result.GroupJoin(Repositories.AdHistoryItemsRepository.GetList(null).Items, a => a.Id, h => h.AdId,
                             (ad, historyItems) => { ad.HistoryLength = historyItems.Count(); return ad; });
                         break;
+                    case "Images":
+                        result = result.GroupJoin(Repositories.AdImagesRepository.GetList(null).Items, a => a.Id, i => i.AdId,
+                            (ad, images) => { ad.Images = images.ToList(); return ad; });
+                        break;
                     default:
                         throw new Exception(string.Format("Unknown field '{0}'!", field));
                 }

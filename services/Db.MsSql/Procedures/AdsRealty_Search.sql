@@ -17,7 +17,9 @@
 	@pricePerMeterMin float = NULL,
 	@pricePerMeterMax float = NULL,
 	@livingSpaceMin float = NULL,
-	@livingSpaceMax float = NULL
+	@livingSpaceMax float = NULL,
+	@publishDateMin datetime2(7) = NULL,
+	@publishDateMax datetime2(7) = NULL
 AS
 BEGIN
 
@@ -81,6 +83,8 @@ IIF(@floorMin is null, '',    ' and rv.[Floor] >= @floorMin') +
 IIF(@floorMax is null, '',    ' and rv.[Floor] <= @floorMax') +
 IIF(@floorsMin is null, '',    ' and rv.[Floors] >= @floorsMin') +
 IIF(@floorsMax is null, '',    ' and rv.[Floors] <= @floorsMax') +
+IIF(@publishDateMin is null, '',    ' and rv.[PublishDate] >= @publishDateMin') +
+IIF(@publishDateMax is null, '',    ' and rv.[PublishDate] <= @publishDateMax') +
 IIF(@searchCondition is null, '', ' and CONTAINS(([Title], [Description], [Url], [SystemTags], [Address]),  @searchCondition)') +
 IIF(@detailsDownloadStatus is null, '', ' and rv.[DetailsDownloadStatus] = @detailsDownloadStatus') + 	
 IIF(@isFavorite is null, '', ' and rv.[Id] in (SELECT AdId FROM dbo.Metadata WHERE UserId = @userId and IsFavorite = @isFavorite)') + 
@@ -93,9 +97,11 @@ IIF(@isFavorite is null, '', ' and rv.[Id] in (SELECT AdId FROM dbo.Metadata WHE
 
 INSERT INTO @ads 
 EXECUTE sp_executesql @sql, N'@offset int, @limit int, @connectorId nvarchar(1000), @priceMin float, @priceMax float, @detailsDownloadStatus int, @searchCondition nvarchar(200), @userId int,
-@isFavorite bit, @floorMin int, @floorMax int, @floorsMin int, @floorsMax int,  @pricePerMeterMin float, @pricePerMeterMax float, @livingSpaceMin float, @livingSpaceMax float',
+@isFavorite bit, @floorMin int, @floorMax int, @floorsMin int, @floorsMax int,  @pricePerMeterMin float, @pricePerMeterMax float, @livingSpaceMin float, @livingSpaceMax float,
+@publishDateMin datetime2(7), @publishDateMax datetime2(7)',
 						      @offset,     @limit,     @connectorId,                @priceMin,       @priceMax,       @detailsDownloadStatus,     @searchCondition,               @userId,
-@isFavorite,     @floorMin,     @floorMax,     @floorsMin,     @floorsMax,      @pricePerMeterMin,       @pricePerMeterMax,       @livingSpaceMin,       @livingSpaceMax
+@isFavorite,     @floorMin,     @floorMax,     @floorsMin,     @floorsMax,      @pricePerMeterMin,       @pricePerMeterMax,       @livingSpaceMin,       @livingSpaceMax,
+@publishDateMin,              @publishDateMax
 
 --ads
 SELECT * FROM @ads ORDER BY [_order]

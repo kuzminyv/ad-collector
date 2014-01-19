@@ -265,6 +265,13 @@ namespace Core.DAL.MsSql
                 var livingSpaceMinFilter = query.Filters.FirstOrDefault(f => f.Name == "LivingSpaceMin");
                 cmd.Parameters.Add("@livingSpaceMin", System.Data.SqlDbType.Float).Value = livingSpaceMinFilter == null ? null : livingSpaceMinFilter.Value;
 
+                var publishDateMinFilter = query.Filters.FirstOrDefault(f => f.Name == "PublishDateMin");
+                cmd.Parameters.Add("@publishDateMin", System.Data.SqlDbType.DateTime2).Value = publishDateMinFilter == null ? null : publishDateMinFilter.Value;
+
+                var publishDateMaxFilter = query.Filters.FirstOrDefault(f => f.Name == "PublishDateMax");
+                cmd.Parameters.Add("@publishDateMax", System.Data.SqlDbType.DateTime2).Value = publishDateMaxFilter == null ? null : publishDateMaxFilter.Value;
+
+
 
                 var reader = cmd.ExecuteReader();
 

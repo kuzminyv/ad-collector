@@ -12,6 +12,7 @@ using System.Threading;
 using Core.BLL.Common;
 using System.Threading.Tasks;
 using Core.DAL.API;
+using Core.DAL.Common;
 
 namespace Core.BLL
 {
@@ -34,14 +35,14 @@ namespace Core.BLL
 
         private  void ExportToBinary(Action<OperationState> stateChangedCallback, Action completedCallback, CancellationToken cancelationToken)
         {
-            var ads = new MsSql.AdsRepository().GetList(null).Items;
-            var histories = new MsSql.AdHistoryItemsRepository().GetList(null).Items;
-
             Export<Ad>(stateChangedCallback, cancelationToken,
-                    ads, new Bin.AdsRepository(), ads.Count);
+                    (start, limit) => new MsSql.AdsRepository().GetList(new Query(start, limit)), new Bin.AdsRepository(), 1000);
+
+            Export<AdImage>(stateChangedCallback, cancelationToken,
+                 (start, limit) => new MsSql.AdImagesRepository().GetList(new Query(start, limit)), new Bin.AdImagesRepository(), 1000);
 
             Export<AdHistoryItem>(stateChangedCallback, cancelationToken,
-                histories, new Bin.AdHistoryItemsRepository(), histories.Count);
+                 (start, limit) => new MsSql.AdHistoryItemsRepository().GetList(new Query(start, limit)), new Bin.AdHistoryItemsRepository(), 1000);
             completedCallback();
         }
 
@@ -51,18 +52,22 @@ namespace Core.BLL
         }
 
         private void Export<TEntity>(Action<OperationState> stateChangedCallback, CancellationToken cancelationToken,
-            List<TEntity> sourceEntities, IRepository<TEntity> targetRepository, int bufferSize)
+            Func<int, int, QueryResult<TEntity>> sourceEntities, IRepository<TEntity> targetRepository, int bufferSize)
         {
+            int total = sourceEntities(0, 1).TotalCount.Value; 
+
             OperationState state = new OperationState();
 
             state.Progress = 0;
-            state.ProgressTotal = sourceEntities.Count();
+            state.ProgressTotal = total;
             state.Description = typeof(TEntity).Name;
             stateChangedCallback(state);
 
+            
+
             if (bufferSize == 1)
             {
-                for (int i = 0; i < sourceEntities.Count(); i++)
+                for (int i = 0; i < total; i++)
                 {
                     if (cancelationToken.IsCancellationRequested)
                     {
@@ -70,14 +75,14 @@ namespace Core.BLL
                         stateChangedCallback(state);
                         break;
                     }
-                    targetRepository.AddItem(sourceEntities[i]);
+                    targetRepository.AddItem(sourceEntities(i, bufferSize).Items[0]);
                     state.Progress++;
                     stateChangedCallback(state);
                 }
             }
             else
             {
-                for (int i = 0; i <= sourceEntities.Count / bufferSize; i++)
+                for (int i = 0; i <= total / bufferSize; i++)
                 {
                     if (cancelationToken.IsCancellationRequested)
                     {
@@ -85,7 +90,7 @@ namespace Core.BLL
                         stateChangedCallback(state);
                         break;
                     }
-                    var entitiesToAdd = sourceEntities.Skip(i * bufferSize).Take(bufferSize).ToList();
+                    var entitiesToAdd = sourceEntities(i * bufferSize, bufferSize).Items;
                     targetRepository.AddList(entitiesToAdd);
                     state.Progress += entitiesToAdd.Count();
                     stateChangedCallback(state);
@@ -101,7 +106,7 @@ namespace Core.BLL
             var adIds = ads.Select(a => a.Id).ToList();
 
             Export<Ad>(stateChangedCallback, cancelationToken,
-               ads, new MsSql.AdsRepository(), 1);
+               (start, limit) => new QueryResult<Ad>(ads.Skip(start).Take(limit).ToList(), ads.Count) , new MsSql.AdsRepository(), 1);
 
             var adIdMap = new Dictionary<int, int>();
             for (int i = 0; i < adIds.Count(); i++)
@@ -114,7 +119,7 @@ namespace Core.BLL
             }
 
             Export<AdHistoryItem>(stateChangedCallback, cancelationToken,
-                histories, new MsSql.AdHistoryItemsRepository(), 100);
+                (start, limit) => new QueryResult<AdHistoryItem>(histories.Skip(start).Take(limit).ToList(), histories.Count), new MsSql.AdHistoryItemsRepository(), 100);
 
             completedCallback();
         }

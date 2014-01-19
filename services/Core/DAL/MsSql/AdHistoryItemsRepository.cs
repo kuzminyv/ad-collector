@@ -30,6 +30,11 @@ namespace Core.DAL.MsSql
             return entities;
         }
 
+        protected override IQueryable<DbAdHistoryItem> ApplyDefaultOrder(AdCollectorDBEntities context, IQueryable<DbAdHistoryItem> dbEntities)
+        {
+            return dbEntities.OrderBy(entity => entity.Id);
+        }
+
         protected override DbAdHistoryItem CreateDbEntity(int id)
         {
             return new DbAdHistoryItem() { Id = id };

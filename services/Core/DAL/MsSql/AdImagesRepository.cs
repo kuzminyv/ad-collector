@@ -35,6 +35,11 @@ namespace Core.DAL.MsSql
             return new DbAdImage() { Id = id };
         }
 
+        protected override IQueryable<DbAdImage> ApplyDefaultOrder(AdCollectorDBEntities context, IQueryable<DbAdImage> dbEntities)
+        {
+            return dbEntities.OrderBy(entity => entity.Id);
+        }
+
         protected override void UpdateEntityId(AdImage entity, DbAdImage dbEntity)
         {
             entity.Id = dbEntity.Id;

@@ -154,6 +154,9 @@ namespace Core.DAL.MsSql
                     {
                         dbEntities = ApplyOrder(context, dbEntities, query.Sorts);
                     }
+                    else {
+                        dbEntities = ApplyDefaultOrder(context, dbEntities);
+                    }
                     if (query.Start.HasValue && query.Limit.HasValue)
                     {
                         totalCount = dbEntities.Count();
@@ -170,6 +173,11 @@ namespace Core.DAL.MsSql
             });
 
             return result;
+        }
+
+        protected virtual IQueryable<TDbModelEntity> ApplyDefaultOrder(Db.AdCollectorDBEntities context, IQueryable<TDbModelEntity> dbEntities)
+        {
+            return dbEntities;
         }
 
         public void AddItem(TEntity entity)

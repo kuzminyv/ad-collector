@@ -70,6 +70,7 @@
     <Build Include="Procedures\AdsRealty_Search.sql" />
     <Build Include="Utils\AdsFullTextCatalog.sql" />
     <Build Include="Views\AdsRealtyView.sql" />
+    <Build Include="Tables\Tags.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Db.MsSql.refactorlog" />

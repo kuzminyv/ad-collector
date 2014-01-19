@@ -340,6 +340,24 @@ namespace UI.Desktop.Views
             }
         }
 
+        private DateTime? _publishDateMin;
+        public DateTime? PublishDateMin
+        {
+            get
+            {
+                return _publishDateMin;
+            }
+            set
+            {
+                if (_publishDateMin != value)
+                {
+                    _publishDateMin = value;
+                    ApplyFilter();
+                    OnPropertyChanged("PublishDateMin");
+                }
+            }
+        }
+
 		private AdItemViewModel _selectedItem;
 		public AdItemViewModel SelectedItem
 		{
@@ -452,6 +470,10 @@ namespace UI.Desktop.Views
             if (FloorMin.HasValue && FloorMin.Value > 0)
             {
                 query.AddFilter("FloorMin", FloorMin.Value);
+            }
+            if (PublishDateMin.HasValue)
+            {
+                query.AddFilter("PublishDateMin", PublishDateMin.Value);
             }
 
             if (IsFavoriteFilter)

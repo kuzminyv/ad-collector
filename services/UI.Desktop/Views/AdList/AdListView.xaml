@@ -6,7 +6,7 @@
 	xmlns:views ="clr-namespace:UI.Desktop.Views"
 	Title="Ads"
 	Height="600"
-	Width="950"
+	Width="1160"
     SnapsToDevicePixels="True"
     x:Name="window"
 	WindowStartupLocation="CenterScreen"
@@ -112,8 +112,12 @@
 
                         <ColumnDefinition Width="20"/>
                         <ColumnDefinition/>
-                        <ColumnDefinition Width="120"/>
+                        <ColumnDefinition Width="150"/>
 
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="110"/>
+                        
                         <ColumnDefinition Width="30"/>
                         <ColumnDefinition Width="*"/><!--10-->
                     </Grid.ColumnDefinitions>
@@ -152,22 +156,28 @@
 
                     <TextBlock Grid.Column="10" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 3 0" Text="Sq Price:"/>
                     <StackPanel Orientation="Horizontal" Grid.Column="11">
-                        <toolkit:IntegerUpDown Height="22" Width="50" HorizontalAlignment="Stretch" Value="{Binding PricePerMeterMin}"/>
+                        <toolkit:IntegerUpDown Height="22" Width="65" HorizontalAlignment="Stretch" Value="{Binding PricePerMeterMin}"/>
                         <TextBlock VerticalAlignment="Center" Text=" - "/>
-                        <toolkit:IntegerUpDown Height="22" Width="50" HorizontalAlignment="Stretch" Value="{Binding PricePerMeterMax}"/>
+                        <toolkit:IntegerUpDown Height="22" Width="70" HorizontalAlignment="Stretch" Value="{Binding PricePerMeterMax}"/>
                     </StackPanel>
 
                     <TextBlock Grid.Column="10" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 3 0" Text="Space:"/>
                     <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="11">
-                        <toolkit:IntegerUpDown Height="22" Width="50" HorizontalAlignment="Stretch" Value="{Binding LivingSpaceMin}"/>
+                        <toolkit:IntegerUpDown Height="22" Width="65" HorizontalAlignment="Stretch" Value="{Binding LivingSpaceMin}"/>
                         <TextBlock VerticalAlignment="Center" Text=" - "/>
-                        <toolkit:IntegerUpDown Height="22" Width="50" HorizontalAlignment="Stretch" Value="{Binding LivingSpaceMax}"/>
+                        <toolkit:IntegerUpDown Height="22" Width="70" HorizontalAlignment="Stretch" Value="{Binding LivingSpaceMax}"/>
                     </StackPanel>
 
 
+                    <TextBlock Grid.Column="13" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 3 0" Text="Min Date:"/>
+                    <toolkit:DateTimePicker  Grid.Column="14" Grid.Row="0" Height="22" Value="{Binding PublishDateMin}" Format="MonthDay"/>
+
+                    <!--<TextBlock Grid.Column="7" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right" Margin="0 0 3 0" Text="Min Floor:"/>
+                    <toolkit:IntegerUpDown Grid.Column="8" Grid.Row="1" Height="22"  Value="{Binding FloorMin}"/>-->
+
 
                     <StackPanel
-                            Grid.Column="13"
+                            Grid.Column="16"
                             Grid.RowSpan="2"
                         Orientation="Horizontal">
                         <Button

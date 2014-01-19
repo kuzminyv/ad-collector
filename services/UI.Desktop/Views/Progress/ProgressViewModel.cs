@@ -114,7 +114,7 @@ namespace UI.Desktop.Views
                     {
                         if (state.Exception != null) {
                             progressWindow.Close();
-                            throw state.Exception;
+                            throw new Exception("Exception in background thread", state.Exception);
                         }
                         model.OperationState = state; 
                     })),
