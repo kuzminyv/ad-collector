@@ -330,7 +330,6 @@ namespace Core.DAL.MsSql
                             a.Address == adRealty.Address &&
                             a.Floor == adRealty.Floor &&
                             a.FloorsCount == adRealty.FloorsCount &&
-                            a.IdOnWebSite == adRealty.IdOnWebSite &&
                             a.LivingSpace == adRealty.LivingSpace &&
                             a.ConnectorId == adRealty.ConnectorId &&
                             a.RoomsCount == adRealty.RoomsCount)).ToList();

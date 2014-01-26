@@ -408,7 +408,7 @@ namespace UI.Desktop.Views
 
         private void ApplyFilter()
         {
-            BufferedAction.DelayAction(() => App.AppContext.Dispatcher.BeginInvoke(new Action(StartLoadItems), DispatcherPriority.Normal), 500);
+            BufferedAction.DelayAction(() => App.AppContext.Dispatcher.BeginInvoke(new Action(StartLoadItems), DispatcherPriority.Normal), 1000);
         }
 
         private void AppContext_CheckForNewAdsStart(object sender, EventArgs e)

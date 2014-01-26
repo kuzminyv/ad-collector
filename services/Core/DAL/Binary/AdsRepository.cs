@@ -49,10 +49,10 @@ namespace Core.DAL.Binary
                                 string word = token.Substring(1);
                                 result = result.Where(t =>
                                     !(
-                                        (t.Description == null || t.Description.IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0) ||
-                                        (t.Title == null || t.Title.IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0) ||
-                                        (t.Url == null || t.Url.IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0) ||
-                                        (t.ConnectorId == null || t.ConnectorId.IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                                        (t.Description != null && t.Description.IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                                        (t.Title != null && t.Title.IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                                        (t.Url != null && t.Url.IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0) ||
+                                        (t.ConnectorId != null && t.ConnectorId.IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0) ||
                                         (t.Price.ToString(CultureInfo.InvariantCulture).IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0) ||
                                         (t.PublishDate.ToString(CultureInfo.InvariantCulture).IndexOf(word, StringComparison.OrdinalIgnoreCase) >= 0)
                                     )
@@ -62,10 +62,10 @@ namespace Core.DAL.Binary
                         if (words.Length > 0)
                         {
                             result = result.Where(t =>
-                                (t.Description == null || ContainsAny(t.Description, words)) ||
-                                (t.Title == null || ContainsAny(t.Title, words)) ||
-                                (t.Url == null || ContainsAny(t.Url, words)) ||
-                                (t.ConnectorId == null || ContainsAny(t.ConnectorId, words)) ||
+                                (t.Description != null && ContainsAny(t.Description, words)) ||
+                                (t.Title != null && ContainsAny(t.Title, words)) ||
+                                (t.Url != null && ContainsAny(t.Url, words)) ||
+                                (t.ConnectorId != null && ContainsAny(t.ConnectorId, words)) ||
                                 ContainsAny(t.Price.ToString(CultureInfo.InvariantCulture), words) ||
                                 ContainsAny(t.PublishDate.ToString(CultureInfo.InvariantCulture), words));
                         }
