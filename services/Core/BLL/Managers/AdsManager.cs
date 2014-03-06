@@ -251,7 +251,7 @@ namespace Core.BLL
 
         private Dictionary<Ad, AdAcceptance> AddNewOrCreateHistory(List<Ad> ads)
         {
-            int historyAcceptanceHours = 168;
+            int historyAcceptanceHours = 5*24;
             var result = new Dictionary<Ad, AdAcceptance>(ads.Count);
             for (int i = ads.Count - 1; i >= 0; i--)
             {

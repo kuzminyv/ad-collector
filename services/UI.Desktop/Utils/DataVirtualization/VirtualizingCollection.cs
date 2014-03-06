@@ -152,7 +152,7 @@ namespace Utils.DataVirtualization
                 RequestPage(pageIndex);
 
                 // if accessing upper 50% then request next page
-                if ( pageOffset > PageSize/2 && pageIndex < Count / PageSize)
+                if ( pageOffset >= PageSize/2 && pageIndex < Count / PageSize)
                     RequestPage(pageIndex + 1);
 
                 // if accessing lower 50% then request prev page
@@ -163,7 +163,7 @@ namespace Utils.DataVirtualization
                 CleanUpPages();
 
                 // defensive check in case of async load
-                if (_pages[pageIndex] == null)
+                if (_pages[pageIndex] == null || _pages[pageIndex].Count <= pageOffset)
                     return default(T);
 
                 // return requested item

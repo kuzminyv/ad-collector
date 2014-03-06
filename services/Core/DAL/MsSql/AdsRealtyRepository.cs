@@ -229,12 +229,25 @@ namespace Core.DAL.MsSql
                 //WHERE CONTAINS(item.keywords, '("wi*") AND ("#4*")')
                 var textFilter = query.Filters.FirstOrDefault(f => f.Name == "TextFilter");
                 var searchText = textFilter == null ? null : (string)textFilter.Value;
-                var searchCondition = (string.IsNullOrWhiteSpace(searchText)) ? null : 
-                    string.Join(" AND ",
-                        searchText.Split(new char[]{' ', ',', '.', '?', ';', '!', ':', '\'', '"', '*', '+', '-'}, StringSplitOptions.RemoveEmptyEntries)
-                                  .Where(s => s.Length >= 2 && Char.IsLetterOrDigit(s[0]))
-                                  .Select(s => string.Format("(\"{0}*\")", s)));
-                cmd.Parameters.Add("@searchCondition", System.Data.SqlDbType.NVarChar).Value = string.IsNullOrWhiteSpace(searchCondition) ? null : searchCondition;
+
+                string searchCondition = null;
+                string searchConditionOnExclude = null;
+                if (!string.IsNullOrWhiteSpace(searchText))
+                {
+                    var tokens = searchText.Split(new char[] { ' ', ',', '.', '?', ';', '!', ':', '\'', '"', '*' }, StringSplitOptions.RemoveEmptyEntries);
+                    var includeTokens = tokens.Where(t => t.Length > 2 && Char.IsLetterOrDigit(t[0]));
+                    var excludeTokens = tokens.Where(t => t.Length > 3 && t[0] == '-').Select(t => t.Substring(1));
+
+                    searchCondition = string.Join(" OR ", (new string[] 
+                    {
+                        string.Join(" AND ", includeTokens.Where(t => t[0] != '+').Select(s => string.Format("(\"{0}*\")", s))),
+                        string.Join(" OR ", includeTokens.Where(t => t[0] == '+' && t.Length > 3).Select(t => t.Substring(1)).Select(t => string.Format("(\"{0}*\")", t)))
+                    }).Where(cond => cond.Length > 2));
+
+                    searchConditionOnExclude = string.Join(" OR ", excludeTokens.Select(t => string.Format("(\"{0}*\")", t)));                     
+                }
+                cmd.Parameters.Add("@searchCondition", System.Data.SqlDbType.NVarChar).Value = string.IsNullOrEmpty(searchCondition) ? null : searchCondition;
+                cmd.Parameters.Add("@searchConditionOnExclude", System.Data.SqlDbType.NVarChar).Value = string.IsNullOrEmpty(searchConditionOnExclude) ? null : searchConditionOnExclude;
 
                 var isFavoriteFilter = query.Filters.FirstOrDefault(f => f.Name == "IsFavorite");
                 cmd.Parameters.Add("@isFavorite", System.Data.SqlDbType.Bit).Value = isFavoriteFilter == null ? null : isFavoriteFilter.Value;

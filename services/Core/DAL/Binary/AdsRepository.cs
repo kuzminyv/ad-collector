@@ -79,6 +79,50 @@ namespace Core.DAL.Binary
                         double priceMax = (int)filter.Value;
                         result = result.Where(t => t.Price <= priceMax || t.Price == 0);
                         break;
+                    case "IsFavorite":
+                        bool isFavorit = (bool)filter.Value;
+                        result = result.Where(t => !isFavorit || (t.Metadata != null && t.Metadata.IsFavorite));
+                        break;
+                    case "FloorMin":
+                        int floorMin = (int)filter.Value;
+                        result = result.Where(t => ((AdRealty)t).Floor >= floorMin);
+                        break;
+                    case "FloorMax":
+                        int floorMax = (int)filter.Value;
+                        result = result.Where(t => ((AdRealty)t).Floor <= floorMax);
+                        break;
+                    case "FloorsMin":
+                        int floorsMin = (int)filter.Value;
+                        result = result.Where(t => ((AdRealty)t).FloorsCount >= floorsMin);
+                        break;
+                    case "FloorsMax":
+                        int floorsMax = (int)filter.Value;
+                        result = result.Where(t => ((AdRealty)t).FloorsCount <= floorsMax);
+                        break;
+                    case "PricePerMeterMax":
+                        double pricePerMeterMax = (int)filter.Value;
+                        result = result.Where(t => ((AdRealty)t).PricePerMeter <= pricePerMeterMax);
+                        break;
+                    case "PricePerMeterMin":
+                        double pricePerMeterMin = (int)filter.Value;
+                        result = result.Where(t => ((AdRealty)t).PricePerMeter >= pricePerMeterMin);
+                        break;
+                    case "LivingSpaceMax":
+                        float livingSpaceMax = (int)filter.Value;
+                        result = result.Where(t => ((AdRealty)t).LivingSpace <= livingSpaceMax);
+                        break;
+                    case "LivingSpaceMin":
+                        float livingSpaceMin = (int)filter.Value;
+                        result = result.Where(t => ((AdRealty)t).LivingSpace >= livingSpaceMin);
+                        break;
+                    case "PublishDateMin":
+                        DateTime publishDateMin = (DateTime)filter.Value;
+                        result = result.Where(t => ((AdRealty)t).PublishDate >= publishDateMin);
+                        break;
+                    case "PublishDateMax":
+                        DateTime publishDateMax = (DateTime)filter.Value;
+                        result = result.Where(t => ((AdRealty)t).PublishDate >= publishDateMax);
+                        break;
                     default:
                         throw new Exception(string.Format("Unknown filter '{0}'!", filter.Name));
                 }
