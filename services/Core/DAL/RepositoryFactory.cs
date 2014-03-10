@@ -44,6 +44,7 @@ namespace Core.DAL.Common
             _repositoryActivators.Add(typeof(IMetadataRepository), () => new MsSql.MetadataRepository());
             _repositoryActivators.Add(typeof(IAdImagesRepository), () => new MsSql.AdImagesRepository());
             _repositoryActivators.Add(typeof(IStreetsRepository), () => new MsSql.StreetsRepository());
+            _repositoryActivators.Add(typeof(IUserProfilesRepository), () => new MsSql.UserProfilesRepository());
         }
 
         public RepositoryFactory(DbProvider dbProvider)

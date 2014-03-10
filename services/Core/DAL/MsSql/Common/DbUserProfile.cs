@@ -12,10 +12,10 @@ namespace Core.DAL.MsSql.Common
     using System;
     using System.Collections.Generic;
     
-    public partial class Connector
+    public partial class DbUserProfile
     {
-        public string Id { get; set; }
-        public bool Disabled { get; set; }
-        public Nullable<System.DateTime> LastCheckDate { get; set; }
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public string AdsQuery { get; set; }
     }
 }

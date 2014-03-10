@@ -16,6 +16,8 @@
           <EntitySet Name="Metadata" EntityType="AdCollectorDBModel.Store.Metadata" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Settings" EntityType="AdCollectorDBModel.Store.Settings" store:Type="Tables" Schema="dbo" />
           <EntitySet Name="Streets" EntityType="AdCollectorDBModel.Store.Streets" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Tags" EntityType="AdCollectorDBModel.Store.Tags" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="UserProfiles" EntityType="AdCollectorDBModel.Store.UserProfiles" store:Type="Tables" Schema="dbo" />
           <AssociationSet Name="FK_AdHistoryItems_ToAds" Association="AdCollectorDBModel.Store.FK_AdHistoryItems_ToAds">
             <End Role="Ads" EntitySet="Ads" />
             <End Role="AdHistoryItems" EntitySet="AdHistoryItems" />
@@ -145,6 +147,20 @@
           <Property Name="LocationId" Type="int" Nullable="false" />
           <Property Name="Name" Type="nvarchar" Nullable="false" MaxLength="100" />
         </EntityType>
+        <EntityType Name="Tags">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserProfiles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="AdsQuery" Type="xml" />
+        </EntityType>
         <Association Name="FK_AdHistoryItems_ToAds">
           <End Role="Ads" Type="AdCollectorDBModel.Store.Ads" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -258,7 +274,9 @@
             <End Role="DbAd" EntitySet="Ads" />
             <End Role="AdImage" EntitySet="DbAdImages" />
           </AssociationSet>
-          <EntitySet Name="Connectors" EntityType="AdCollectorDBModel.Connector" />
+          <EntitySet Name="DbConnectors" EntityType="AdCollectorDBModel.DbConnector" />
+          <EntitySet Name="DbTags" EntityType="AdCollectorDBModel.DbTag" />
+          <EntitySet Name="DbUserProfiles" EntityType="AdCollectorDBModel.DbUserProfile" />
         </EntityContainer>
         <EntityType Name="DbAdLink">
           <Key>
@@ -422,13 +440,27 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Connector">
+        <EntityType Name="DbConnector">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Type="String" Name="Id" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Type="Boolean" Name="Disabled" Nullable="false" />
           <Property Type="DateTime" Name="LastCheckDate" Precision="7" />
+        </EntityType>
+        <EntityType Name="DbTag">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DbUserProfile">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Type="Int32" Name="Id" Nullable="false" />
+          <Property Type="Int32" Name="UserId" Nullable="false" />
+          <Property Type="String" Name="AdsQuery" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
       </Schema>
     </edmx:ConceptualModels>
@@ -538,11 +570,27 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Connectors">
-            <EntityTypeMapping TypeName="AdCollectorDBModel.Connector">
+          <EntitySetMapping Name="DbConnectors">
+            <EntityTypeMapping TypeName="AdCollectorDBModel.DbConnector">
               <MappingFragment StoreEntitySet="Connectors">
                 <ScalarProperty Name="LastCheckDate" ColumnName="LastCheckDate" />
                 <ScalarProperty Name="Disabled" ColumnName="Disabled" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DbTags">
+            <EntityTypeMapping TypeName="AdCollectorDBModel.DbTag">
+              <MappingFragment StoreEntitySet="Tags">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DbUserProfiles">
+            <EntityTypeMapping TypeName="AdCollectorDBModel.DbUserProfile">
+              <MappingFragment StoreEntitySet="UserProfiles">
+                <ScalarProperty Name="AdsQuery" ColumnName="AdsQuery" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

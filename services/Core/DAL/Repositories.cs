@@ -133,5 +133,18 @@ namespace Core.DAL
                 return _adImagesRepository;
             }
         }
+
+        private static IUserProfilesRepository _userProfilesRepository;
+        public static IUserProfilesRepository UserProfilesRepository
+        {
+            get
+            {
+                if (_userProfilesRepository == null)
+                {
+                    _userProfilesRepository = Factory.CreateRepository<IUserProfilesRepository>();
+                }
+                return _userProfilesRepository;
+            }
+        }
     }
 }

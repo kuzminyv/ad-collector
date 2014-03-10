@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="d37ad518e30a40349ff792db547d3bf4" Name="Diagram1" ZoomLevel="109">
+      <Diagram DiagramId="d37ad518e30a40349ff792db547d3bf4" Name="Diagram1" ZoomLevel="91">
         <EntityTypeShape EntityType="AdCollectorDBModel.DbAdLink" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
         <EntityTypeShape EntityType="AdCollectorDBModel.DbAd" Width="1.5" PointX="0.75" PointY="2" IsExpanded="true" />
         <EntityTypeShape EntityType="AdCollectorDBModel.DbAdsRealty" Width="1.5" PointX="3" PointY="4" IsExpanded="true" />
@@ -20,7 +20,9 @@
         <EntityTypeShape EntityType="AdCollectorDBModel.DbAdImage" Width="1.5" PointX="2.625" PointY="6.75" />
         <EntityTypeShape EntityType="AdCollectorDBModel.DbStreet" Width="1.5" PointX="8" PointY="6.375" />
         <AssociationConnector Association="AdCollectorDBModel.FK_AdImages_ToAds" />
-        <EntityTypeShape EntityType="AdCollectorDBModel.Connector" Width="1.5" PointX="2.1522964640298379" PointY="19.883229890783891" />
+        <EntityTypeShape EntityType="AdCollectorDBModel.DbConnector" Width="1.5" PointX="4.375" PointY="9.125" />
+        <EntityTypeShape EntityType="AdCollectorDBModel.DbTag" Width="1.5" PointX="6" PointY="9.125" />
+        <EntityTypeShape EntityType="AdCollectorDBModel.DbUserProfile" Width="1.5" PointX="2.625" PointY="9.125" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -86,5 +86,14 @@ namespace Core.BLL
                 return _streetsManager;
             }
         }
+
+        private static UserProfileManager _userProfileManager = new UserProfileManager();
+        public static UserProfileManager UserProfileManager
+        {
+            get
+            {
+                return _userProfileManager;
+            }
+        }
 	}
 }

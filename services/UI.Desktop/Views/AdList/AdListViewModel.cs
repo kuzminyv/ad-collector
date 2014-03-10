@@ -15,7 +15,7 @@ using System.Windows.Threading;
 
 namespace UI.Desktop.Views
 {
-	public class AdListViewModel : ViewModel
+    public class AdListViewModel : BaseWindowModel
 	{
 		private AsyncVirtualizingCollection<AdItemViewModel> _items;
 		public AsyncVirtualizingCollection<AdItemViewModel> Items
@@ -196,36 +196,36 @@ namespace UI.Desktop.Views
             }
         }
 
-        private int? _minPrice;
+        private int? _priceMin;
         public int? PriceMin
         {
             get
             {
-                return _minPrice;
+                return _priceMin;
             }
             set
             {
-                if (_minPrice != value)
+                if (_priceMin != value)
                 {
-                    _minPrice = value;
+                    _priceMin = value;
                     ApplyFilter();
                     OnPropertyChanged("PriceMin");
                 }
             }
         }
 
-        private int? _maxPrice;
+        private int? _priceMax;
         public int? PriceMax
         {
             get
             {
-                return _maxPrice;
+                return _priceMax;
             }
             set
             {
-                if (_maxPrice != value)
+                if (_priceMax != value)
                 {
-                    _maxPrice = value;
+                    _priceMax = value;
                     ApplyFilter();
                     OnPropertyChanged("PriceMax");
                 }
@@ -404,6 +404,48 @@ namespace UI.Desktop.Views
 
             _sortBySelectedItem = SortByItems.First();
             _sortOrderSelectedItem = SortOrderItems.First();
+            RestoreUserSession();
+        }
+
+        public override bool WindowClosing()
+        {
+            SaveUserSession();
+            return base.WindowClosing();
+        }
+
+        private void RestoreUserSession()
+        {
+            var userProfile = Managers.UserProfileManager.GetItem(1);
+            if (userProfile != null && userProfile.AdsQuery != null)
+            {
+                AdsQuery lastQuery = userProfile.AdsQuery;
+                _textFilter = lastQuery.SearchExpression;
+                _priceMin = (int?)lastQuery.PriceMin;
+                _priceMax = (int?)lastQuery.PriceMax;
+                _pricePerMeterMin = (int?)lastQuery.PricePerMeterMin;
+                _pricePerMeterMax = (int?)lastQuery.PricePerMeterMax;
+                _floorMin = lastQuery.FloorMin;
+                _sortOrderSelectedItem = SortOrderItems.Where(item => item.Key == lastQuery.SortOrder).First();
+            }
+        }
+
+        private void SaveUserSession()
+        {
+            var userProfile = Managers.UserProfileManager.GetItem(1) ?? new UserProfile() { UserId = 1 };
+            if (userProfile.AdsQuery == null)
+            {
+                userProfile.AdsQuery = new AdsQuery();
+            }
+            AdsQuery lastQuery = userProfile.AdsQuery;
+            lastQuery.SearchExpression = TextFilter;
+            lastQuery.PriceMin = PriceMin;
+            lastQuery.PriceMax = PriceMax;
+            lastQuery.PricePerMeterMin = PricePerMeterMin;
+            lastQuery.PricePerMeterMax = PricePerMeterMax;
+            lastQuery.FloorMin = FloorMin;
+            lastQuery.SortOrder = SortOrderSelectedItem.Key;
+
+            Managers.UserProfileManager.SaveItem(userProfile);
         }
 
         private void ApplyFilter()

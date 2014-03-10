@@ -34,6 +34,8 @@ namespace Core.DAL.MsSql.Common
         public DbSet<DbMetadata> DbMetadatas { get; set; }
         public DbSet<DbAdImage> DbAdImages { get; set; }
         public DbSet<DbStreet> DbStreets { get; set; }
-        public DbSet<Connector> Connectors { get; set; }
+        public DbSet<DbConnector> DbConnectors { get; set; }
+        public DbSet<DbTag> DbTags { get; set; }
+        public DbSet<DbUserProfile> DbUserProfiles { get; set; }
     }
 }

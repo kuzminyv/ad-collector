@@ -235,7 +235,7 @@ namespace Core.DAL.MsSql
                 if (!string.IsNullOrWhiteSpace(searchText))
                 {
                     var tokens = searchText.Split(new char[] { ' ', ',', '.', '?', ';', '!', ':', '\'', '"', '*' }, StringSplitOptions.RemoveEmptyEntries);
-                    var includeTokens = tokens.Where(t => t.Length > 2 && Char.IsLetterOrDigit(t[0]));
+                    var includeTokens = tokens.Where(t => t.Length > 2 && (Char.IsLetterOrDigit(t[0]) || t[0] == '+'));
                     var excludeTokens = tokens.Where(t => t.Length > 3 && t[0] == '-').Select(t => t.Substring(1));
 
                     searchCondition = string.Join(" OR ", (new string[] 

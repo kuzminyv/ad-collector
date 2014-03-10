@@ -71,6 +71,7 @@
     <Build Include="Utils\AdsFullTextCatalog.sql" />
     <Build Include="Views\AdsRealtyView.sql" />
     <Build Include="Tables\Tags.sql" />
+    <Build Include="Tables\UserProfiles.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="Db.MsSql.refactorlog" />

@@ -74,6 +74,7 @@
     <Compile Include="BLL\Managers\AdsManager.cs" />
     <Compile Include="BLL\Managers\CheckForNewAdsState.cs" />
     <Compile Include="BLL\Managers.cs" />
+    <Compile Include="BLL\Managers\UserProfileManager.cs" />
     <Compile Include="BLL\Managers\StreetsManager.cs" />
     <Compile Include="BLL\Managers\ExportManager.cs" />
     <Compile Include="BLL\Managers\LogEntriesManager.cs" />
@@ -95,6 +96,7 @@
     <Compile Include="DAL\API\IAdLinksRepository.cs" />
     <Compile Include="DAL\API\IAdsRepository.cs" />
     <Compile Include="DAL\API\IRepository.cs" />
+    <Compile Include="DAL\API\IUserProfilesRepository.cs" />
     <Compile Include="DAL\Binary\AdLinksRepository.cs" />
     <Compile Include="DAL\Binary\AdsRepository.cs" />
     <Compile Include="DAL\Binary\Common\BinaryRepository.cs" />
@@ -111,9 +113,6 @@
     <Compile Include="DAL\MsSql\AdLinksRepository.cs" />
     <Compile Include="DAL\MsSql\AdsRealtyRepository.cs" />
     <Compile Include="DAL\MsSql\AdsRepository.cs" />
-    <Compile Include="DAL\MsSql\Common\Connector.cs">
-      <DependentUpon>DbModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="DAL\MsSql\Common\DbAd.cs">
       <DependentUpon>DbModel.tt</DependentUpon>
     </Compile>
@@ -127,6 +126,9 @@
       <DependentUpon>DbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DAL\MsSql\Common\DbAdsRealty.cs">
+      <DependentUpon>DbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\MsSql\Common\DbConnector.cs">
       <DependentUpon>DbModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DAL\MsSql\Common\DbLogEntry.cs">
@@ -156,9 +158,16 @@
     <Compile Include="DAL\MsSql\Common\DbStreet.cs">
       <DependentUpon>DbModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="DAL\MsSql\Common\DbTag.cs">
+      <DependentUpon>DbModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="DAL\MsSql\Common\DbUserProfile.cs">
+      <DependentUpon>DbModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="DAL\MsSql\Common\MsSqlRepository.cs" />
     <Compile Include="DAL\MsSql\AdImagesRepository.cs" />
     <Compile Include="DAL\MsSql\Common\SqlDataReaderExtension.cs" />
+    <Compile Include="DAL\MsSql\UserProfilesRepository.cs" />
     <Compile Include="DAL\MsSql\StreetsRepository.cs" />
     <Compile Include="DAL\MsSql\MetadataRepository.cs" />
     <Compile Include="DAL\MsSql\LogEntriesRepository.cs" />
@@ -175,7 +184,9 @@
     <Compile Include="Entities\AdLink.cs" />
     <Compile Include="Entities\AdRealty.cs" />
     <Compile Include="Entities\AdImage.cs" />
+    <Compile Include="Entities\Queries\AdsQuery.cs" />
     <Compile Include="Entities\Common\OptionalAttribute.cs" />
+    <Compile Include="Entities\Enums\AdSort.cs" />
     <Compile Include="Entities\Enums\DetailsDownloadStatus.cs" />
     <Compile Include="Entities\Street.cs" />
     <Compile Include="Entities\Metadata.cs" />
@@ -187,6 +198,7 @@
     <Compile Include="Entities\LogEntry.cs" />
     <Compile Include="Entities\Setting.cs" />
     <Compile Include="Entities\Settings.cs" />
+    <Compile Include="Entities\UserProfile.cs" />
     <Compile Include="Expressions\AdRecognizers\IRecognizer.cs" />
     <Compile Include="Expressions\AdRecognizers\RealtyRecognizer.cs" />
     <Compile Include="Expressions\BoundExpressionSelector.cs" />
@@ -215,6 +227,7 @@
     <Compile Include="Utils\DynamicLinq.cs" />
     <Compile Include="Utils\HtmlUtils.cs" />
     <Compile Include="Utils\RuntimeCompiler.cs" />
+    <Compile Include="Utils\Serializer.cs" />
     <Compile Include="Utils\WebClientOptions.cs" />
     <Compile Include="Utils\WebClientResult.cs" />
     <Compile Include="Utils\WebHelper.cs" />
