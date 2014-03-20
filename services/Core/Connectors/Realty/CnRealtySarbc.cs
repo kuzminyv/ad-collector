@@ -44,7 +44,7 @@ namespace Core.Connectors
 
         public override Selector CreateDetailsSelector()
         {
-            return new HtmlPathSelector("Details", "//*[@id=\"item\"]", false,
+            return new HtmlPathSelector("Details", "//*[@id=\"content\"]", false,
                 new HtmlPathSelector("ImageUrl", "//*[@class=\"fancybox item-photo-link\"]", true, false, "href"),
                 new HtmlPathSelector("ImagePreviewUrl", "//*[@class=\"item-photo\"]", true, false, "src"),
                 new HtmlPathSelector("Description", "//*[@class=\"item-text\"]/text()", true));

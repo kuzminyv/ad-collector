@@ -1,4 +1,4 @@
-﻿using Core.Entities;
+using Core.Entities;
 using Core.Expressions;
 using Core.Expressions.AdParsers;
 using Core.Utils;
@@ -32,7 +32,7 @@ namespace Core.Connectors
                 new HtmlPathSelector("Url", "//h3[@class=\"title\"]/a/@href", true, false, "href"),
                 new HtmlPathSelector("Title", "//h3[@class=\"title\"]/a/text()", true,
                     new RegexSelector("Rooms", "(?<Rooms>\\d)-к"),
-                    new RegexSelector("LivingSpace", @"(?<LivingSpace>[0-9\.]{1,4})\sм"),
+                    new RegexSelector("LivingSpace", @"(?<LivingSpace>[0-9\.]{1,6})\sм"),
                     new RegexSelector("Floor", @"(?<Floor>\d{1,2})/\d{1,2}\sэт"),
                     new RegexSelector("Floors", @"\d{1,2}/(?<Floors>\d{1,2})\sэт")
                 ),
@@ -74,6 +74,10 @@ namespace Core.Connectors
             if ((ad.PublishDate - DateTime.Now).TotalDays > 30)
             {
                 ad.PublishDate = ad.PublishDate.AddYears(-1);
+            }
+            if (ad.Price > 500 && ad.Price < 50000)
+            {
+                ad.Price = ad.Price * 1000;
             }
             return string.IsNullOrEmpty(ad.Address) ? null : ad;
         }

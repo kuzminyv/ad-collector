@@ -7,8 +7,8 @@
 	@priceMin float = NULL,
 	@priceMax float = NULL,
 	@detailsDownloadStatus int = NULL,
-	@searchCondition nvarchar(200) = NULL,
-	@searchConditionOnExclude nvarchar(200) = NULL,
+	@searchCondition nvarchar(2000) = NULL,
+	@searchConditionOnExclude nvarchar(2000) = NULL,
 	@isFavorite bit = NULL,
 	@userId int = NULL,
 	@floorMin int = NULL,
@@ -98,9 +98,9 @@ IIF(@isFavorite is null, '', ' and rv.[Id] in (SELECT AdId FROM dbo.Metadata WHE
 ' FETCH NEXT @limit ROWS ONLY'
 
 INSERT INTO @ads 
-EXECUTE sp_executesql @sql, N'@offset int, @limit int, @connectorId nvarchar(1000), @priceMin float, @priceMax float, @detailsDownloadStatus int, @searchCondition nvarchar(200), @userId int,
+EXECUTE sp_executesql @sql, N'@offset int, @limit int, @connectorId nvarchar(1000), @priceMin float, @priceMax float, @detailsDownloadStatus int, @searchCondition nvarchar(2000), @userId int,
 @isFavorite bit, @floorMin int, @floorMax int, @floorsMin int, @floorsMax int,  @pricePerMeterMin float, @pricePerMeterMax float, @livingSpaceMin float, @livingSpaceMax float,
-@publishDateMin datetime2(7), @publishDateMax datetime2(7), @searchConditionOnExclude nvarchar(200)',
+@publishDateMin datetime2(7), @publishDateMax datetime2(7), @searchConditionOnExclude nvarchar(2000)',
 						      @offset,     @limit,     @connectorId,                @priceMin,       @priceMax,       @detailsDownloadStatus,     @searchCondition,               @userId,
 @isFavorite,     @floorMin,     @floorMax,     @floorsMin,     @floorsMax,      @pricePerMeterMin,       @pricePerMeterMax,       @livingSpaceMin,       @livingSpaceMax,
 @publishDateMin,              @publishDateMax,              @searchConditionOnExclude
