@@ -80,6 +80,8 @@
     <Compile Include="BLL\Managers\LogEntriesManager.cs" />
     <Compile Include="BLL\Managers\MetadataManager.cs" />
     <Compile Include="BLL\Managers\SettingsManager.cs" />
+    <Compile Include="Connectors\ICorrector.cs" />
+    <Compile Include="Connectors\RealtyCorrector.cs" />
     <Compile Include="Connectors\RealtyVerificator.cs" />
     <Compile Include="Connectors\BasicConnector.cs" />
     <Compile Include="Connectors\IVerificator.cs" />

@@ -26,7 +26,7 @@ namespace Core.Connectors
 
         public override Selector CreateSelector()
         {
-            return new HtmlPathSelector("Ad", "//div[@class=\"b-catalog-table\"]/div[starts-with(@id, \"i\")]", false,
+            return new HtmlPathSelector("Ad", "//div[@class=\"b-catalog-table\"]//div[starts-with(@id, \"i\")]", false,
                 new HtmlPathSelector("Date", "//div[@class=\"date\"]/text()", true),
                 new HtmlPathSelector("Time", "//span[@class=\"time\"]/text()", true),
                 new HtmlPathSelector("Url", "//h3[@class=\"title\"]/a/@href", true, false, "href"),
@@ -55,7 +55,7 @@ namespace Core.Connectors
 
         public override Ad CreateAd(Match match)
         {
-            Thread.Sleep(500);
+            Thread.Sleep(300);
             AdRealty ad = new AdRealty()
             {
                 ConnectorId = this.Id,
@@ -75,16 +75,12 @@ namespace Core.Connectors
             {
                 ad.PublishDate = ad.PublishDate.AddYears(-1);
             }
-            if (ad.Price > 500 && ad.Price < 50000)
-            {
-                ad.Price = ad.Price * 1000;
-            }
             return string.IsNullOrEmpty(ad.Address) ? null : ad;
         }
 
         public override void FillAdDetails(Ad ad, Match match)
         {
-            Thread.Sleep(5000);
+            Thread.Sleep(2000);
 
             ad.Description = match["Description"];
 

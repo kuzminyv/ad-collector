@@ -15,6 +15,7 @@ namespace Core.Connectors
     {
         private Selector _detailsSelector;
         private IVerificator _verificator;
+        private ICorrector _corrector;
 
         public abstract string Id { get; }
         public abstract string PageUrlFormat { get; }
@@ -46,10 +47,24 @@ namespace Core.Connectors
             return _verificator;
         }
 
+        protected virtual ICorrector GetCorrector()
+        {
+            if (_corrector == null)
+            {
+                _corrector = new RealtyCorrector();
+            }
+            return _corrector;
+        }
+
         protected virtual string VerifyAd(Ad ad)
         {
             IVerificator verificator = GetVerificator();
             return verificator.Verify(ad);
+        }
+
+        protected virtual void CorrectAd(Ad ad)
+        {
+            GetCorrector().Correct(ad);
         }
 
         public IEnumerable<Ad> GetAds()
@@ -84,6 +99,7 @@ namespace Core.Connectors
                                 {
                                     continue;
                                 }
+                                CorrectAd(ad);
                                 string verificationResult = VerifyAd(ad);
                                 if (verificationResult != null)
                                 {

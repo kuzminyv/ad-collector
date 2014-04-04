@@ -13,5 +13,23 @@ namespace Core.BLL
             get;
             set;
         }
+
+        public int FrameTotalAds
+        {
+            get;
+            set;
+        }
+
+        public int FrameNewAds
+        {
+            get;
+            set;
+        }
+
+        public double FrameProgress
+        {
+            get;
+            set;
+        }
     }
 }

@@ -61,13 +61,15 @@ namespace Core.BLL
             int minAds = 300;
             double minNewAdsInFrame = 0.05;
 
+            List<Task> fillDetailsTasks = new List<Task>();
+
             foreach (var connector in Managers.ConnectorsManager.GetConnectors())
             {
                 Managers.LogEntriesManager.AddItem(SeverityLevel.Information, string.Format("Starting download from {0}.", connector.Id));
                 int adsCount = 0;
 
                 List<Ad> connectorResult = new List<Ad>();
-                List<Ad> lastAds = Repositories.AdsRepository.GetLastAds(connector.Id, maxAds);
+                List<Ad> lastAds = Repositories.AdsRepository.GetLastAds(connector.Id, maxAds*3);
                 Ad lastAd = lastAds.FirstOrDefault();
                 DateTime lastCollectionDate = lastAd == null ? DateTime.Now.Date : lastAd.CollectDate.Date;
 
@@ -85,6 +87,10 @@ namespace Core.BLL
                         state.Progress = totalProcessed;
                         state.SourceUrl = connector.Id;
                         state.Canceled = cancelationToken.IsCancellationRequested;
+                        state.FrameTotalAds = frame.Count;
+                        state.FrameNewAds = frame.Where(item => item).Count();
+                        state.FrameProgress = state.FrameNewAds > 0 ? (1 - ((double)state.FrameNewAds / (double)state.FrameTotalAds)) / (1 - minNewAdsInFrame) : 0;
+
                         state.Description = "Processing...";
                         stateChangedCallback(state);
 
@@ -107,7 +113,7 @@ namespace Core.BLL
                     state.Description = "Analyzing...";
                     stateChangedCallback(state);
 
-                    var acceptance = AddNewOrCreateHistory(connectorResult);
+                    var acceptance = AddNewOrCreateHistory(connectorResult, state, stateChangedCallback);
                     Managers.LogEntriesManager.AddItem(SeverityLevel.Information,
                         string.Format("{0} Collection from {1} finished. Processed: {2}; New ads: {3}; Added to History: {4}; Rejected: {5};",
                         this.GetType().Name, connector.Id,
@@ -116,12 +122,16 @@ namespace Core.BLL
                         acceptance.Where(a => a.Value == AdAcceptance.History).Count(),
                         acceptance.Where(a => a.Value == AdAcceptance.Rejected).Count()));
 
-                    FillDetails(
-                        st => { state.Description = st.Description; state.Progress = st.Progress; stateChangedCallback(state); },
-                        () => { },
-                        cancelationToken,
-                        acceptance.Where(kvp => (kvp.Value == AdAcceptance.Accepted || kvp.Value == AdAcceptance.History) && kvp.Key.DetailsDownloadStatus == DetailsDownloadStatus.NotDownloaded)
-                        .Select(kvp => kvp.Key).ToList());
+                    var adsToFill = acceptance.Where(kvp => (kvp.Value == AdAcceptance.Accepted || kvp.Value == AdAcceptance.History) && kvp.Key.DetailsDownloadStatus == DetailsDownloadStatus.NotDownloaded)
+                            .Select(kvp => kvp.Key).ToList();
+                    fillDetailsTasks.Add(Task.Run(() =>
+                    {
+                        FillDetails(
+                            st => { state.Description = st.Description; state.Progress = st.Progress; stateChangedCallback(state); },
+                            () => { },
+                            cancelationToken,
+                            adsToFill);
+                    }));
 
                     result.AddRange(connectorResult);
                 }
@@ -136,6 +146,9 @@ namespace Core.BLL
                     break;
                 }
             }
+
+            Task.WaitAll(fillDetailsTasks.ToArray());
+
             FillDetails(
                 st => { state.Description = st.Description; state.Progress = st.Progress; stateChangedCallback(state); },
                 () => { },
@@ -165,6 +178,7 @@ namespace Core.BLL
             Dictionary<string, IConnector> connectorsCache = new Dictionary<string, IConnector>();
             OperationState state = new OperationState();
             state.ProgressTotal = ads.Count;
+            state.Progress = 0;
 
             Dictionary<string, int> errorsByConnectorId = new Dictionary<string, int>();
             int maxErrors = 3;
@@ -190,6 +204,11 @@ namespace Core.BLL
                     {
                         result = connector.FillDetails(ad);
                         errorsByConnectorId[connector.Id] = 0;
+                        if (!result)
+                        {
+                            ad.DetailsDownloadStatus = DetailsDownloadStatus.ParserError;
+                            Repositories.AdsRepository.UpdateItem(ad);
+                        }
                         Thread.Sleep(5000);
                     }
                     catch (Exception fillEx)
@@ -228,7 +247,7 @@ namespace Core.BLL
                         errorsByConnectorId[connector.Id] = errorsByConnectorId[connector.Id] + 1;
                     }
                     state.Description = string.Format("Fill details {0}.", ad.Url);
-                    state.ProgressTotal++;
+                    state.Progress++;
                     stateCallback(state);
                 }
                 catch (Exception ex)
@@ -249,12 +268,14 @@ namespace Core.BLL
             }
         }
 
-        private Dictionary<Ad, AdAcceptance> AddNewOrCreateHistory(List<Ad> ads)
+        private Dictionary<Ad, AdAcceptance> AddNewOrCreateHistory(List<Ad> ads, CheckForNewAdsState state, Action<CheckForNewAdsState> stateCallback)
         {
-            int historyAcceptanceHours = 5*24;
+            int historyAcceptanceHours = 3*24;
             var result = new Dictionary<Ad, AdAcceptance>(ads.Count);
             for (int i = ads.Count - 1; i >= 0; i--)
             {
+                state.Description = string.Format("Analyzing {0}/{1}", ads.Count - i - 1, ads.Count);
+                stateCallback(state);
                 var ad = ads[i];
                 var adForSameObject = Repositories.AdsRepository.GetAdsForTheSameObject(ad).FirstOrDefault();
                 if (adForSameObject != null)
@@ -305,7 +326,7 @@ namespace Core.BLL
 
         protected bool IsNewOrRepublishedAd(Ad ad, List<Ad> lastAds)
         {
-            return !lastAds.Any(a => a.IsSameAd(ad) && (ad.PublishDate - a.PublishDate).Hours < 48/*if difference in time more than 48 hours we consider that this is republished ad*/);
+            return !lastAds.AsParallel().Any(a => a.IsSameAd(ad) && (ad.PublishDate - a.PublishDate).TotalHours < (3*24)/*if difference in time more than 48 hours we consider that this is republished ad*/);
         }
 	}
 }

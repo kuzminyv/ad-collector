@@ -55,8 +55,8 @@ namespace UI.Desktop.Views
             }
         }
 
-        private int _processedAdsCount;
-        public int ProcessedAdsCount
+        private string _processedAdsCount;
+        public string ProcessedAdsCount
         {
             get
             {
@@ -102,6 +102,23 @@ namespace UI.Desktop.Views
                 {
                     _statusText = value;
                     OnPropertyChanged("StatusText");
+                }
+            }
+        }
+
+        private string _frameStatus;
+        public string FrameStatus
+        {
+            get
+            {
+                return _frameStatus;
+            }
+            set
+            {
+                if (value != _frameStatus)
+                {
+                    _frameStatus = value;
+                    OnPropertyChanged("FrameStatus");
                 }
             }
         }
@@ -456,12 +473,16 @@ namespace UI.Desktop.Views
         private void AppContext_CheckForNewAdsStart(object sender, EventArgs e)
         {
             StatusText = "Downloading...";
+            ProcessedAdsCount = "";
+            FrameStatus = "";
         }
 
         private void AppContext_CheckForNewAdsStateChanged(object sender, EventArgs<CheckForNewAdsState> e)
         {
-            ProcessedAdsCount = (int)e.Value.Progress;
+            ProcessedAdsCount = e.Value.ProgressTotal > 0 ? string.Format("{0}/{1}", (int)e.Value.Progress, (int)e.Value.ProgressTotal) : e.Value.Progress.ToString();
             StatusText = e.Value.Description + " " + e.Value.SourceUrl;
+
+            FrameStatus = string.Format("{0}/{1} {2,7:f}%", e.Value.FrameNewAds, e.Value.FrameTotalAds, e.Value.FrameProgress * 100);
 
         }
 
