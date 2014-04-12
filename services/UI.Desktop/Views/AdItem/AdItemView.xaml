@@ -164,21 +164,21 @@
 						        Command="{Binding ShowAdHistoryCommand}"
 						        CommandParameter="{Binding Model}">
 				                <TextBlock
-							        FontWeight="Bold"
+                                    x:Name="txtAdHistory"
 							        FontSize="12"
 							        Text="{Binding AdHistoryInfo}" />
 			                </Hyperlink>
 		                </TextBlock>
                         <TextBlock
-                            Margin="10 0 0 0"
-                            Width="30">
+                            Margin="30 0 0 0"
+                            Width="100">
 			                <Hyperlink
 						        Command="{Binding ShowAdHistoryCommand}"
 						        CommandParameter="{Binding Model}">
 				                <TextBlock
                                     x:Name="txtPriceDynamic"
 							        FontWeight="Bold"
-                                    Foreground="Green"
+                                    Foreground="Red"
 							        FontSize="12"
 							        Text="{Binding PriceDynamicInfo}" />
 			                </Hyperlink>
@@ -216,13 +216,21 @@
 						Value="Green" />
                 </DataTrigger> 
                 <DataTrigger
-					Binding="{Binding IsPriceRaising}"
+					Binding="{Binding IsPriceRising}"
 					Value="True">
                     <Setter
 						TargetName="txtPriceDynamic"
 						Property="Foreground"
-						Value="Red" />
+						Value="Green" />
                 </DataTrigger>
+                <DataTrigger
+					Binding="{Binding IsPriceChanged}"
+					Value="True">
+                    <Setter
+						TargetName="txtAdHistory"
+						Property="FontWeight"
+						Value="Bold" />
+                </DataTrigger>                
             </DataTemplate.Triggers>
 		</DataTemplate>
 	</UserControl.Resources>

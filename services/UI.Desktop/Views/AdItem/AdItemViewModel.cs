@@ -131,13 +131,16 @@ namespace UI.Desktop.Views
                 {
                     if (_model.History != null && _model.History.Any())
                     {
-                        var last = _model.History.OrderByDescending(item => item.AdPublishDate).First();
-                        if (last.Price != _model.Price)
+                        var last = _model.History.OrderByDescending(item => item.AdPublishDate).Where(item => item.Price != _model.Price).FirstOrDefault();
+                        if (last != null)
                         {
-                            _priceDynamic = Math.Round(100 * last.Price / (_model.Price - last.Price), 1);
+                            _priceDynamic = Math.Round(100d * (_model.Price - last.Price) / last.Price, 1);
                         }
                     }
-                    _priceDynamic = 0;
+                    else
+                    {
+                        _priceDynamic = 0;
+                    }
                 }
                 return _priceDynamic;
             }
@@ -147,7 +150,31 @@ namespace UI.Desktop.Views
         {
             get
             {
-                return string.Format("0%", PriceDynamic);
+                if (PriceDynamic.HasValue && PriceDynamic.Value != 0)
+                {
+                    return string.Format("{0}%", PriceDynamic);
+                }
+                return null;
+            }
+        }
+
+        private bool? _isPriceChanged;
+        public bool? IsPriceChanged
+        {
+            get
+            {
+                if (_isPriceChanged == null)
+                {
+                    if ((PriceDynamic.HasValue && PriceDynamic.Value != 0d) && _model.History != null && _model.History.OrderByDescending(item => item.AdPublishDate).First().Price != _model.Price)
+                    {
+                        _isPriceChanged = true;
+                    }
+                    else
+                    {
+                        _isPriceChanged = false;
+                    }
+                }
+                return _isPriceChanged;
             }
         }
 
@@ -155,7 +182,7 @@ namespace UI.Desktop.Views
         {
             get
             {
-                return _priceDynamic.HasValue && _priceDynamic.Value > 0;
+                return PriceDynamic.HasValue && PriceDynamic.Value > 0d;
             }
         }
 

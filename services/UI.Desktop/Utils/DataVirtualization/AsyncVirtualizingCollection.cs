@@ -187,12 +187,20 @@ namespace Utils.DataVirtualization
             FireCollectionReset();
         }
 
+        private int _indexToLoad = -1;
+
         /// <summary>
         /// Asynchronously loads the page.
         /// </summary>
         /// <param name="index">The index.</param>
         protected override void LoadPage(int index)
         {
+            if (IsLoading)
+            {
+                _indexToLoad = index;
+                return;
+            }
+
             IsLoading = true;
             ThreadPool.QueueUserWorkItem(LoadPageWork, index);
         }
@@ -220,6 +228,11 @@ namespace Utils.DataVirtualization
 
             PopulatePage(pageIndex, page);
             IsLoading = false;
+            if (_indexToLoad >= 0)
+            {
+                LoadPage(_indexToLoad);
+                _indexToLoad = -1;
+            }
             FireCollectionReset();
         }
 
