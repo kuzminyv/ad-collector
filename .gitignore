@@ -7,6 +7,7 @@
 
 /services/Output/Debug
 /services/Services.IISHost/bin
+/services/packages
 
 Debug
 
@@ -24,12 +25,10 @@ EntityFramework.6.0.1
 
 Extended.Wpf.Toolkit.2.0.0
 
-/services/packages/HtmlAgilityPack.1.4.6
-
 /services/Backup
 
 /services/Output
 
 /services/Db.Deployment/Db.Deployment.csproj.user
 
-/services/packages/Antlr.3.4.1.9004
+
