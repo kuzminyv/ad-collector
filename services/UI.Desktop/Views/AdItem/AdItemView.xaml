@@ -135,7 +135,7 @@
 							Text="Дата: " />
 						<TextBlock
 							FontWeight="Bold"
-							Text="{Binding Date, StringFormat='dd MMM yyyy'}" />
+							Text="{Binding Date, StringFormat='dd MMM yyyy HH:mm'}" />
                         <TextBlock
                             Margin="10 0 0 0"
 							FontWeight="Bold"
@@ -166,11 +166,23 @@
 				                <TextBlock
 							        FontWeight="Bold"
 							        FontSize="12"
-                                    Foreground="Red"
 							        Text="{Binding AdHistoryInfo}" />
 			                </Hyperlink>
 		                </TextBlock>
-
+                        <TextBlock
+                            Margin="10 0 0 0"
+                            Width="30">
+			                <Hyperlink
+						        Command="{Binding ShowAdHistoryCommand}"
+						        CommandParameter="{Binding Model}">
+				                <TextBlock
+                                    x:Name="txtPriceDynamic"
+							        FontWeight="Bold"
+                                    Foreground="Green"
+							        FontSize="12"
+							        Text="{Binding PriceDynamicInfo}" />
+			                </Hyperlink>
+		                </TextBlock>
                         <TextBlock>
 				            <Hyperlink
 						        Command="{Binding OpenUrlCommand}"
@@ -180,7 +192,7 @@
     				        </Hyperlink>
     	        		</TextBlock>
                         <TextBlock Margin="20 0 0 0" Text="Collected: " />
-                        <TextBlock Text="{Binding CollectDate, StringFormat='dd MMM yyyy'}" />
+                        <TextBlock Text="{Binding CollectDate, StringFormat='dd MMM yyyy HH:mm'}" />
 
                     </StackPanel>
 
@@ -202,6 +214,14 @@
 						TargetName="tbDetails"
 						Property="Foreground"
 						Value="Green" />
+                </DataTrigger> 
+                <DataTrigger
+					Binding="{Binding IsPriceRaising}"
+					Value="True">
+                    <Setter
+						TargetName="txtPriceDynamic"
+						Property="Foreground"
+						Value="Red" />
                 </DataTrigger>
             </DataTemplate.Triggers>
 		</DataTemplate>

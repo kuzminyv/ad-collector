@@ -120,5 +120,16 @@ SELECT
 	[Note]
 FROM dbo.Metadata m WHERE m.[AdId] in (SELECT [Id] FROM @ads)
 
+--history
+SELECT 
+	h.[Id],
+	h.[AdId],
+	h.[Price],
+	h.[AdCollectDate],
+	h.[AdPublishDate]
+FROM
+	@ads a INNER JOIN
+	dbo.AdHistoryItems h ON h.[AdId] = a.[Id]
+
 END
 GO

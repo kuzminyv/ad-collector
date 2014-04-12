@@ -183,6 +183,19 @@ namespace Core.DAL.MsSql
             return image;
         }
 
+        protected AdHistoryItem ReadAdHistoryItem(SQL.SqlDataReader reader)
+        {
+            AdHistoryItem historyItem = new AdHistoryItem()
+            {
+                Id = reader.GetInt32(0),
+                AdId = reader.GetInt32(1),
+                Price = reader.GetDouble(2),
+                AdCollectDate = reader.GetDateTime(3),
+                AdPublishDate = reader.GetDateTime(4)
+            };
+            return historyItem;
+        }
+
         protected Metadata ReadMetadata(SQL.SqlDataReader reader)
         {
             Metadata metadata = new Metadata()
@@ -300,6 +313,7 @@ namespace Core.DAL.MsSql
                     ads.Add(ad.Id, ad); 
                 }
 
+                //images
                 reader.NextResult();
                 while (reader.Read())
                 {
@@ -312,12 +326,27 @@ namespace Core.DAL.MsSql
                     ad.Images.Add(image);
                 }
 
+                //metadata
                 reader.NextResult();
                 while (reader.Read())
                 {
                     var metadata = ReadMetadata(reader);
                     ads[metadata.AdId].Metadata = metadata;
                 }
+
+                //history
+                reader.NextResult();
+                while (reader.Read())
+                {
+                    var historyItem = ReadAdHistoryItem(reader);
+                    var ad = ads[historyItem.AdId];
+                    if (ad.History == null)
+                    {
+                        ad.History = new List<AdHistoryItem>();
+                    }
+                    ad.History.Add(historyItem);
+                }
+
             });
 
             return new QueryResult<AdRealty>(ads.Values.ToList(), totalCount);

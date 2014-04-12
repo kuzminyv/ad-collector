@@ -1,7 +1,7 @@
 ﻿CREATE VIEW [dbo].[AdsRealtyView]
 	WITH SCHEMABINDING
 	AS 
-	SELECT TOP 50000
+	SELECT
 		a.[Id], 
 		a.[Title], 
 		a.[Description], 
@@ -22,7 +22,7 @@
 		r.[LivingSpace], 
 		r.[IsNewBuilding],
 		r.[PricePerMeter]
-	FROM dbo.Ads a INNER JOIN dbo.AdsRealty r ON a.Id = r.AdId ORDER BY a.[CollectDate] DESC
+	FROM dbo.Ads a INNER JOIN dbo.AdsRealty r ON a.Id = r.AdId
 GO
 
 CREATE UNIQUE CLUSTERED INDEX IDX_AdsRealtyView_Id 

@@ -14,5 +14,6 @@ namespace Core.DAL.API
         QueryResult<AdHistoryItem> GetList(Query query);
         void AddItem(AdHistoryItem item);
         void AddList(List<AdHistoryItem> list);
+        void UpdateItem(AdHistoryItem historyItem);
     }
 }

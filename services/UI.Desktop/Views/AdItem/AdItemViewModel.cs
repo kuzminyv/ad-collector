@@ -122,6 +122,43 @@ namespace UI.Desktop.Views
             }
         }
 
+        private double? _priceDynamic;
+        public double? PriceDynamic
+        {
+            get
+            {
+                if (_priceDynamic == null)
+                {
+                    if (_model.History != null && _model.History.Any())
+                    {
+                        var last = _model.History.OrderByDescending(item => item.AdPublishDate).First();
+                        if (last.Price != _model.Price)
+                        {
+                            _priceDynamic = Math.Round(100 * last.Price / (_model.Price - last.Price), 1);
+                        }
+                    }
+                    _priceDynamic = 0;
+                }
+                return _priceDynamic;
+            }
+        }
+
+        public string PriceDynamicInfo
+        {
+            get
+            {
+                return string.Format("0%", PriceDynamic);
+            }
+        }
+
+        public bool IsPriceRising
+        {
+            get
+            {
+                return _priceDynamic.HasValue && _priceDynamic.Value > 0;
+            }
+        }
+
         public bool IsNewBuilding
         {
             get

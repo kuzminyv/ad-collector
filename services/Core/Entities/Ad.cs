@@ -145,6 +145,23 @@ namespace Core.Entities
         }
 
         [NonSerialized]
+        private List<AdHistoryItem> _history;
+
+        [Optional]
+        [DataMember(Name = "History")]
+        public List<AdHistoryItem> History
+        {
+            get
+            {
+                return _history;
+            }
+            set
+            {
+                _history = value;
+            }
+        }
+
+        [NonSerialized]
         private List<AdImage> _images;
 
         [Optional]

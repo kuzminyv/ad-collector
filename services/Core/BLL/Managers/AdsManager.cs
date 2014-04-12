@@ -69,7 +69,7 @@ namespace Core.BLL
                 int adsCount = 0;
 
                 List<Ad> connectorResult = new List<Ad>();
-                List<Ad> lastAds = Repositories.AdsRepository.GetLastAds(connector.Id, maxAds*3);
+                List<Ad> lastAds = Repositories.AdsRepository.GetLastAds(connector.Id, maxAds*2);
                 Ad lastAd = lastAds.FirstOrDefault();
                 DateTime lastCollectionDate = lastAd == null ? DateTime.Now.Date : lastAd.CollectDate.Date;
 
@@ -270,7 +270,7 @@ namespace Core.BLL
 
         private Dictionary<Ad, AdAcceptance> AddNewOrCreateHistory(List<Ad> ads, CheckForNewAdsState state, Action<CheckForNewAdsState> stateCallback)
         {
-            int historyAcceptanceHours = 3*24;
+            int historyAcceptanceHours = 5*24;
             var result = new Dictionary<Ad, AdAcceptance>(ads.Count);
             for (int i = ads.Count - 1; i >= 0; i--)
             {
@@ -287,15 +287,27 @@ namespace Core.BLL
                     }
                     else 
                     {
-                        AdHistoryItem historyItem = new AdHistoryItem()
+                        var historyItems = Repositories.AdHistoryItemsRepository.GetList(adForSameObject.Id).OrderByDescending(item => item.Id);
+                        if (historyItems.Count() > 1 && historyItems.First().Price == adForSameObject.Price)
                         {
-                            AdCollectDate = adForSameObject.CollectDate,
-                            AdPublishDate = adForSameObject.PublishDate,
-                            AdId = adForSameObject.Id,
-                            Price = adForSameObject.Price
-                        };
+                            var historyItem = historyItems.First();
+                            historyItem.AdCollectDate = adForSameObject.CollectDate;
+                            historyItem.AdPublishDate = adForSameObject.PublishDate;
+                            historyItem.Price = adForSameObject.Price;
+                            Repositories.AdHistoryItemsRepository.UpdateItem(historyItem);
+                        }
+                        else
+                        {
+                            AdHistoryItem historyItem = new AdHistoryItem()
+                            {
+                                AdCollectDate = adForSameObject.CollectDate,
+                                AdPublishDate = adForSameObject.PublishDate,
+                                AdId = adForSameObject.Id,
+                                Price = adForSameObject.Price
+                            };
 
-                        Repositories.AdHistoryItemsRepository.AddItem(historyItem);
+                            Repositories.AdHistoryItemsRepository.AddItem(historyItem);
+                        }
 
                         adForSameObject.PublishDate = ad.PublishDate;
                         adForSameObject.CollectDate = ad.CollectDate;
@@ -304,7 +316,7 @@ namespace Core.BLL
                         adForSameObject.IdOnWebSite = ad.IdOnWebSite;
                         adForSameObject.Price = ad.Price;
                         Repositories.AdsRepository.UpdateItem(adForSameObject);
-                        result.Add(adForSameObject, AdAcceptance.History);
+                        result.Add(adForSameObject, AdAcceptance.History);                        
                     }
                 }
                 else
@@ -326,7 +338,7 @@ namespace Core.BLL
 
         protected bool IsNewOrRepublishedAd(Ad ad, List<Ad> lastAds)
         {
-            return !lastAds.AsParallel().Any(a => a.IsSameAd(ad) && (ad.PublishDate - a.PublishDate).TotalHours < (3*24)/*if difference in time more than 48 hours we consider that this is republished ad*/);
+            return !lastAds.AsParallel().Any(a => a.IsSameAd(ad) && (ad.PublishDate - a.PublishDate).TotalHours < (5*24)/*if difference in time more than 48 hours we consider that this is republished ad*/);
         }
 	}
 }

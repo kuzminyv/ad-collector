@@ -1,6 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{746B21E4-966A-44F7-BF1D-CA8B70D8114F}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI.Desktop", "UI.Desktop\UI.Desktop.csproj", "{DCFE3F51-1B07-4DE0-8CCA-5036C55D2BE7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI.Desktop.NotifyIcon", "UI.Desktop.NotifyIcon\UI.Desktop.NotifyIcon.csproj", "{7AC63864-7638-41C4-969C-D3197EF2BED9}"
@@ -21,17 +30,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Db.Deployment", "Db.Deploym
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI.Studio", "UI.Studio\UI.Studio.csproj", "{6E4F6E78-DFB3-4182-9EB6-B6CB9B2BA0F1}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{746B21E4-966A-44F7-BF1D-CA8B70D8114F}"
-	ProjectSection(SolutionItems) = preProject
-		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI.Web", "UI.Web\UI.Web.csproj", "{3BF87D62-87DE-460D-BB57-C2526AB7739C}"
 EndProject
 Global
-	GlobalSection(TestCaseManagementSettings) = postSolution
-		CategoryFile = AdCollector.vsmdi
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|Mixed Platforms = Debug|Mixed Platforms
@@ -145,8 +146,21 @@ Global
 		{6E4F6E78-DFB3-4182-9EB6-B6CB9B2BA0F1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{6E4F6E78-DFB3-4182-9EB6-B6CB9B2BA0F1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{6E4F6E78-DFB3-4182-9EB6-B6CB9B2BA0F1}.Release|x86.ActiveCfg = Release|Any CPU
+		{3BF87D62-87DE-460D-BB57-C2526AB7739C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BF87D62-87DE-460D-BB57-C2526AB7739C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BF87D62-87DE-460D-BB57-C2526AB7739C}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{3BF87D62-87DE-460D-BB57-C2526AB7739C}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{3BF87D62-87DE-460D-BB57-C2526AB7739C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3BF87D62-87DE-460D-BB57-C2526AB7739C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BF87D62-87DE-460D-BB57-C2526AB7739C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BF87D62-87DE-460D-BB57-C2526AB7739C}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{3BF87D62-87DE-460D-BB57-C2526AB7739C}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{3BF87D62-87DE-460D-BB57-C2526AB7739C}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TestCaseManagementSettings) = postSolution
+		CategoryFile = AdCollector.vsmdi
 	EndGlobalSection
 EndGlobal

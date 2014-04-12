@@ -1,0 +1,7 @@
+<section ng-controller="RealtyController" ng-init="find()">
+    <div ng-repeat="ad in ads">
+        <div class="col-md-6">
+            <ng-include src="'views/realty/ad.html'"></ng-include>
+        </div>
+    </div>
+</section>
