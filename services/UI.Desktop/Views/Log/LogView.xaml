@@ -5,10 +5,10 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:views ="clr-namespace:UI.Desktop.Views"
     ShowInTaskbar="False"
-    ResizeMode="NoResize"
+    ResizeMode="CanResize"
 	Title="Application Log"
-	Height="600"
-	Width="800"
+	Height="800"
+	Width="900"
     SnapsToDevicePixels="True"
 	WindowStartupLocation="CenterScreen"
 				  Icon="/UI.Desktop;component/Images/ButterFly16.ico">

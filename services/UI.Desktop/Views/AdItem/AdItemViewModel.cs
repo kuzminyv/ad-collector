@@ -122,6 +122,24 @@ namespace UI.Desktop.Views
             }
         }
 
+        private bool _isLastHistoryItemCalculated;
+        private AdHistoryItem _lastHistoryItem;
+        public AdHistoryItem LastHistoryItem
+        {
+            get
+            {
+                if (!_isLastHistoryItemCalculated)
+                {
+                    if (_model.History != null)
+                    {
+                        _lastHistoryItem = _model.History.OrderByDescending(item => item.AdPublishDate).Where(item => item.Price != _model.Price).FirstOrDefault();
+                    }
+                    _isLastHistoryItemCalculated = true;
+                }
+                return _lastHistoryItem;
+            }
+        }
+
         private double? _priceDynamic;
         public double? PriceDynamic
         {
@@ -129,13 +147,9 @@ namespace UI.Desktop.Views
             {
                 if (_priceDynamic == null)
                 {
-                    if (_model.History != null && _model.History.Any())
+                    if (LastHistoryItem != null && LastHistoryItem.Price != 0)
                     {
-                        var last = _model.History.OrderByDescending(item => item.AdPublishDate).Where(item => item.Price != _model.Price).FirstOrDefault();
-                        if (last != null)
-                        {
-                            _priceDynamic = Math.Round(100d * (_model.Price - last.Price) / last.Price, 1);
-                        }
+                        _priceDynamic = Math.Round(100d * (_model.Price - LastHistoryItem.Price) / LastHistoryItem.Price, 1);
                     }
                     else
                     {
@@ -152,7 +166,7 @@ namespace UI.Desktop.Views
             {
                 if (PriceDynamic.HasValue && PriceDynamic.Value != 0)
                 {
-                    return string.Format("{0}%", PriceDynamic);
+                    return string.Format("{0}% ({1})", PriceDynamic, LastHistoryItem.AdPublishDate.ToString("dd MMM yyyy"));
                 }
                 return null;
             }
@@ -165,7 +179,7 @@ namespace UI.Desktop.Views
             {
                 if (_isPriceChanged == null)
                 {
-                    if ((PriceDynamic.HasValue && PriceDynamic.Value != 0d) && _model.History != null && _model.History.OrderByDescending(item => item.AdPublishDate).First().Price != _model.Price)
+                    if (LastHistoryItem != null && _model.History.OrderByDescending(item => item.AdPublishDate).First().Price != _model.Price)
                     {
                         _isPriceChanged = true;
                     }

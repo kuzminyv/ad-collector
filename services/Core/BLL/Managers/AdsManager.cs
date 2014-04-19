@@ -139,6 +139,8 @@ namespace Core.BLL
                 {
                     Managers.LogEntriesManager.AddItem(SeverityLevel.Error,
                         string.Format("{0} Download error. {1}", this.GetType().Name, ex.Message), ex.StackTrace);
+                    state.Description = string.Format("Error {0}", ex.Message);
+                    stateChangedCallback(state);
                 }
 
                 if (cancelationToken.IsCancellationRequested)
