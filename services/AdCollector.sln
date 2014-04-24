@@ -34,6 +34,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Research", "Research", "{3E
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Research.TextAnalyzer", "Research.TextAnalyzer\Research.TextAnalyzer.csproj", "{B2F604CF-20D0-4081-9CE1-40B141036625}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI.Web", "UI.Web\UI.Web.csproj", "{B3420D72-CB31-46DC-924B-5769BAB1E6D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -158,6 +160,16 @@ Global
 		{B2F604CF-20D0-4081-9CE1-40B141036625}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{B2F604CF-20D0-4081-9CE1-40B141036625}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{B2F604CF-20D0-4081-9CE1-40B141036625}.Release|x86.ActiveCfg = Release|Any CPU
+		{B3420D72-CB31-46DC-924B-5769BAB1E6D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3420D72-CB31-46DC-924B-5769BAB1E6D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3420D72-CB31-46DC-924B-5769BAB1E6D1}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{B3420D72-CB31-46DC-924B-5769BAB1E6D1}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{B3420D72-CB31-46DC-924B-5769BAB1E6D1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B3420D72-CB31-46DC-924B-5769BAB1E6D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3420D72-CB31-46DC-924B-5769BAB1E6D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3420D72-CB31-46DC-924B-5769BAB1E6D1}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{B3420D72-CB31-46DC-924B-5769BAB1E6D1}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{B3420D72-CB31-46DC-924B-5769BAB1E6D1}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
