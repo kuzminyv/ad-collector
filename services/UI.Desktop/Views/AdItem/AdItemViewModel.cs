@@ -69,8 +69,7 @@ namespace UI.Desktop.Views
 		{
 			get
 			{
-                return string.IsNullOrEmpty(_model.Title) ? string.Format("{0}, {1}, {2} ", _model.Price, ((AdRealty)_model).Address, ((AdRealty)_model).LivingSpace)
-                    : _model.Title;
+                return string.Format("{0}, {1}, {2} ", _model.Price, ((AdRealty)_model).Address, ((AdRealty)_model).LivingSpace);
 			}
 		}
 

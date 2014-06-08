@@ -106,14 +106,14 @@ namespace Core.Expressions.AdParsers
             return (float)ParseDouble(str, decimalPoint, onlyDigits, strToRemove);
         }
 
-        public static DateTime ParseDate(string str, string dateFormat, string timeFormat, CultureInfo cultureInfo, params string[] dayNames)
+        public static bool TryParseDate(out DateTime date, string str, string dateFormat, string timeFormat, CultureInfo cultureInfo, params string[] dayNames)
         {
             var culture = cultureInfo ?? CultureInfo.InvariantCulture;
             for (int i = 0; i < dayNames.Length; i++)
             {
                 if (str.IndexOf(dayNames[i], StringComparison.OrdinalIgnoreCase) >= 0)
                 {
-                    DateTime date = DateTime.Now.Date.AddDays(-i); 
+                    date = DateTime.Now.Date.AddDays(-i); 
 
                     str = NumbersOnly(str, ':', ' ').Trim();
                     if (!string.IsNullOrEmpty(str) && !string.IsNullOrEmpty(timeFormat))
@@ -122,11 +122,35 @@ namespace Core.Expressions.AdParsers
                         date = date.AddHours(time.Hour);
                         date = date.AddMinutes(time.Minute);
                     }
+                    return true;
+                }
+            }
+            return DateTime.TryParseExact(str.Trim(), dateFormat + " " + timeFormat, culture, DateTimeStyles.None, out date);
+        }
+
+        public static DateTime ParseDate(string str, string dateFormat, string timeFormat, CultureInfo cultureInfo, params string[] dayNames)
+        {
+            DateTime date;
+            if (TryParseDate(out date, str, dateFormat, timeFormat, cultureInfo, dayNames))
+            {
+                return date;
+            }
+            throw new ArgumentException("str", string.Format("\'{0}\' is not date in valid format.", str));
+        }
+
+        public static DateTime ParseDate(string str, string[] dateFormat, string timeFormat, CultureInfo cultureInfo, params string[] dayNames)
+        {
+            for (int i = 0; i < dateFormat.Length; i++)
+            {
+                DateTime date;
+                if (TryParseDate(out date, str, dateFormat[i], timeFormat, cultureInfo, dayNames))
+                {
                     return date;
                 }
             }
-            return DateTime.ParseExact(str.Trim(), dateFormat + " " + timeFormat, culture);
+            throw new ArgumentException("str", string.Format("\'{0}\' is not date in valid format.", str));
         }
+
 
         public static DateTime ParseDate(string str, string format)
         {

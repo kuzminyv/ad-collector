@@ -60,7 +60,7 @@ namespace Core.Connectors
             {
                 ConnectorId = this.Id,
                 CreationDate = DateTime.Now,
-                PublishDate = ParsersHelper.ParseDate(match["Date"].Trim() + " " + match["Time"].Trim(), "d MMM.", "HH:mm", CultureInfo.CreateSpecificCulture("ru-Ru"), "сегодня", "вчера"),
+                PublishDate = ParsersHelper.ParseDate(match["Date"].Trim() + " " + match["Time"].Trim(), new string[] { "d MMM.", "d MMMM" }, "HH:mm", CultureInfo.CreateSpecificCulture("ru-Ru"), "сегодня", "вчера"),
                 Url = "http://www.avito.ru" + match["Url"],
                 RoomsCount = ParsersHelper.ParseInt(match["Title\\Rooms"]),
                 LivingSpace = ParsersHelper.ParseFloat(match["Title\\LivingSpace"], "."),

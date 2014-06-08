@@ -1,4 +1,4 @@
-﻿using Core.Entities;
+using Core.Entities;
 using Core.Expressions;
 using Core.Utils;
 using System;
@@ -69,9 +69,9 @@ namespace Core.Connectors
 
         public override Selector CreateDetailsSelector()
         {
-            return new HtmlPathSelector("Details", "/html/body/table[3]/tr/td[1]/div/table[4]", false,
-                new HtmlPathSelector("Description", "/table/tr[2]/td[2]/span", true, true, null),
-                new HtmlPathSelector("ImagePreviewUrl", "/table/tr[4]/td[2]/a/img/@src", true, false, "src"));
+            return new HtmlPathSelector("Details", "/html/body/table[3]", false,
+                new HtmlPathSelector("Description", "//p[@class=\"dinfo\"]", true, true, null),
+                new HtmlPathSelector("ImagePreviewUrl", "//td[@class=\"tdimg\"]/a/img/@src", true, false, "src"));
         }
 
         public override void FillAdDetails(Ad ad, Match match)
