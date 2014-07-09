@@ -16,12 +16,22 @@ namespace Core.Connectors
         private Selector _detailsSelector;
         private IVerificator _verificator;
         private ICorrector _corrector;
+        private ConnectorOptions _connectorOptions;
 
         public abstract string Id { get; }
         public abstract string PageUrlFormat { get; }
         
         public abstract Selector CreateSelector();
         public abstract Ad CreateAd(Match match);
+
+        public virtual ConnectorOptions GetOptions()
+        {
+            if (_connectorOptions == null)
+            {
+                _connectorOptions = new ConnectorOptions();
+            }
+            return _connectorOptions;
+        }
 
         public virtual int GetAvailablePagesCount(string pageUrlFormat)
         {

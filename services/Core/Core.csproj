@@ -80,11 +80,13 @@
     <Compile Include="BLL\Managers\LogEntriesManager.cs" />
     <Compile Include="BLL\Managers\MetadataManager.cs" />
     <Compile Include="BLL\Managers\SettingsManager.cs" />
+    <Compile Include="Connectors\ConnectorOptions.cs" />
     <Compile Include="Connectors\ICorrector.cs" />
     <Compile Include="Connectors\RealtyCorrector.cs" />
     <Compile Include="Connectors\RealtyVerificator.cs" />
     <Compile Include="Connectors\BasicConnector.cs" />
     <Compile Include="Connectors\IVerificator.cs" />
+    <Compile Include="Connectors\Realty\CnRealtfin.cs" />
     <Compile Include="Connectors\Realty\CnRealtySarbc.cs" />
     <Compile Include="Connectors\Realty\CnKvadrat64.cs" />
     <Compile Include="Connectors\Realty\CnRealtySarbcNewBuildings.cs" />

@@ -28,10 +28,10 @@ namespace Core.Connectors
         protected override IEnumerable<string> GetPageUrlFormats()
         {
             yield return PageUrlFormat;
-            yield return "http://saratov.irr.ru/real-estate/apartments-sale/search/price=%D0%BC%D0%B5%D0%BD%D1%8C%D1%88%D0%B5+1200000/currency=RUR/page{0}/";
-            yield return "http://saratov.irr.ru/real-estate/apartments-sale/search/price=%D0%BE%D1%82+1200000+%D0%B4%D0%BE+1400000/currency=RUR/page{0}/";
+
             yield return "http://saratov.irr.ru/real-estate/apartments-sale/search/price=%D0%BE%D1%82+1400000+%D0%B4%D0%BE+1600000/currency=RUR/page{0}/";
             yield return "http://saratov.irr.ru/real-estate/apartments-sale/search/price=%D0%BE%D1%82+1600000+%D0%B4%D0%BE+1800000/currency=RUR/page{0}/";
+            yield return "http://saratov.irr.ru/real-estate/apartments-sale/search/price=%D0%BE%D1%82+1800000+%D0%B4%D0%BE+2200000/currency=RUR/page{0}/";
         }
 
         public override int GetAvailablePagesCount(string pageFormat)

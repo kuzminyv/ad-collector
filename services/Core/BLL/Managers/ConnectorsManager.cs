@@ -12,6 +12,7 @@ namespace Core.BLL
 		{ 
 			return new List<IConnector>(new IConnector[]
 				{
+                    new CnRealtfin(),
                     new CnAvito(),
                     new CnIrr(),
                     new CnKvadrat64NewBuildings(),

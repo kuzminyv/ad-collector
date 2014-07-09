@@ -7,6 +7,7 @@ namespace Core.Connectors
 {
 	public interface IConnector
 	{
+        ConnectorOptions GetOptions();
 		string Id { get; }
         IEnumerable<Ad> GetAds();
         bool FillDetails(Ad ad);

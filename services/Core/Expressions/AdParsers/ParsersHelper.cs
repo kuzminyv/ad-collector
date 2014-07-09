@@ -125,7 +125,7 @@ namespace Core.Expressions.AdParsers
                     return true;
                 }
             }
-            return DateTime.TryParseExact(str.Trim(), dateFormat + " " + timeFormat, culture, DateTimeStyles.None, out date);
+            return DateTime.TryParseExact(str.Trim(), dateFormat + (string.IsNullOrEmpty(timeFormat) ? "" : (" " + timeFormat)), culture, DateTimeStyles.None, out date);
         }
 
         public static DateTime ParseDate(string str, string dateFormat, string timeFormat, CultureInfo cultureInfo, params string[] dayNames)

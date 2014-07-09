@@ -14,6 +14,7 @@ using System.IO;
 using Core.Connectors;
 using Core.Utils;
 using Core.Expressions;
+using System.Reflection;
 
 namespace UI.Studio.Views
 {
@@ -101,6 +102,23 @@ namespace UI.Studio.Views
                 {
                     _throwOnError = value;
                     OnPropertyChanged("ThrowOnError");
+                }
+            }
+        }
+
+        private bool _debug;
+        public bool Debug
+        {
+            get
+            {
+                return _debug;
+            }
+            set
+            {
+                if (_debug != value)
+                {
+                    _debug = value;
+                    OnPropertyChanged("Debug");
                 }
             }
         }
@@ -244,7 +262,15 @@ namespace UI.Studio.Views
             BasicConnector connector;
             try
             {
-                connector = (new RuntimeCompiler()).CreateInstance<BasicConnector>(options.ConnectorSource);
+                if (this.Debug)
+                {
+
+                    connector = (BasicConnector)Activator.CreateInstance(Assembly.GetAssembly(typeof(BasicConnector)).ToString(), "Core.Connectors." + ContentId).Unwrap();
+                }
+                else
+                {
+                    connector = (new RuntimeCompiler()).CreateInstance<BasicConnector>(options.ConnectorSource);
+                }
             }
             catch (Exception exCompile)
             {
@@ -291,11 +317,14 @@ namespace UI.Studio.Views
 
             foreach (var ad in ads)
             {
-                Parent.Errors.AddError("\n=============================\n" + ad.ToString());
-                IVerificator verificator = new RealtyVerificator();
-                if (verificator.Verify(ad) != null)
+                if (ad != null)
                 {
-                    Parent.Errors.AddError(verificator.Verify(ad));
+                    Parent.Errors.AddError("\n=============================\n" + ad.ToString());
+                    IVerificator verificator = new RealtyVerificator();
+                    if (verificator.Verify(ad) != null)
+                    {
+                        Parent.Errors.AddError(verificator.Verify(ad));
+                    }
                 }
             }
         }

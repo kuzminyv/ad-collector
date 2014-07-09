@@ -57,14 +57,12 @@ namespace Core.BLL
             int totalProcessed = 0;
 
             int maxAds = Managers.SettingsManager.GetSettings().CheckForNewAdsMaxAdsCount;
-            int frameSize = 100;
-            int minAds = 300;
-            double minNewAdsInFrame = 0.05;
 
             List<Task> fillDetailsTasks = new List<Task>();
 
             foreach (var connector in Managers.ConnectorsManager.GetConnectors())
             {
+                var options = connector.GetOptions() ?? new ConnectorOptions();
                 Managers.LogEntriesManager.AddItem(SeverityLevel.Information, string.Format("Starting download from {0}.", connector.Id));
                 int adsCount = 0;
 
@@ -74,7 +72,7 @@ namespace Core.BLL
                 DateTime lastCollectionDate = lastAd == null ? DateTime.Now.Date : lastAd.CollectDate.Date;
 
 
-                Queue<bool> frame = new Queue<bool>(frameSize);/*true for new or republished ad, otherwise false*/
+                Queue<bool> frame = new Queue<bool>(options.FrameSize);/*true for new or republished ad, otherwise false*/
 
                 try
                 {
@@ -89,19 +87,19 @@ namespace Core.BLL
                         state.Canceled = cancelationToken.IsCancellationRequested;
                         state.FrameTotalAds = frame.Count;
                         state.FrameNewAds = frame.Where(item => item).Count();
-                        state.FrameProgress = state.FrameNewAds > 0 ? (1 - ((double)state.FrameNewAds / (double)state.FrameTotalAds)) / (1 - minNewAdsInFrame) : 0;
+                        state.FrameProgress = state.FrameNewAds > 0 ? (1 - ((double)state.FrameNewAds / (double)state.FrameTotalAds)) / (1 - options.MinNewAdsInFrame) : 0;
 
                         state.Description = "Processing...";
                         stateChangedCallback(state);
 
                         connectorResult.Add(ad);
                         frame.Enqueue(isNewAd);
-                        if (frame.Count > frameSize)
+                        if (frame.Count > options.FrameSize)
                         {
                             frame.Dequeue();
                         }
 
-                        if ((adsCount > minAds && frame.Count == frameSize && ((double)frame.Where(item => item).Count() / (double)frameSize) < minNewAdsInFrame) ||
+                        if ((adsCount > options.MinAds && frame.Count == options.FrameSize && ((double)frame.Where(item => item).Count() / (double)options.FrameSize) < options.MinNewAdsInFrame) ||
                             adsCount >= maxAds || cancelationToken.IsCancellationRequested)
                         {
                             break;
