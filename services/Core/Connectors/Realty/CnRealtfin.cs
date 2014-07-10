@@ -39,7 +39,7 @@ namespace Core.Connectors
                 new HtmlPathSelector("IsAdv", "div[@class='advInsert']", true),
                 new HtmlPathSelector("DateText", "div[@class='td1']/text()", true),
                 new HtmlPathSelector("Price", "//span[@class='value']/text()", true),
-                new HtmlPathSelector("LivingSpaceText", "//div[@class='area']/text()", true, new RegexSelector("LivingSpace", "(?<LivingSpace>\\d{1,3})[/\\s]")),
+                new HtmlPathSelector("LivingSpaceText", "//div[@class='area']/text()", true, new RegexSelector("LivingSpace", "(?<LivingSpace>\\d{1,3}\\.?\\d?)[/\\s]")),
                 new HtmlPathSelector("Rooms", "//span[@class='name']/span/text()", true),
                 new HtmlPathSelector("Address", "//span[@class='address']/text()", true),
                 new HtmlPathSelector("Details", "//div[@class='param-list']/text()", true,
@@ -53,6 +53,7 @@ namespace Core.Connectors
         public override Selector CreateDetailsSelector()
         {
             return new HtmlPathSelector("Details", "//div[@class=\"content\"]", false,
+                new HtmlPathSelector("Address", "//span[@class='address']/text()", true),
                 new HtmlPathSelector("ImagePreviewUrl", "//ul[@class='list-foto']/li/img", true, false, "src"));
         }
 
@@ -82,6 +83,7 @@ namespace Core.Connectors
 
         public override void FillAdDetails(Ad ad, Match match)
         {
+            Thread.Sleep(300);
             var previews = match.GetByPath("ImagePreviewUrl", true).Select(m => m.Value).ToList();
 
             List<AdImage> adImages = new List<AdImage>(previews.Count);
@@ -95,6 +97,9 @@ namespace Core.Connectors
                 });
             }
             ad.Images = adImages;
+
+            AdRealty adRealty = (AdRealty)ad;
+            adRealty.Address = match["Address"] ?? adRealty.Address;
         }
     }
 }
