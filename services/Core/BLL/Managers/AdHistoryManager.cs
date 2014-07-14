@@ -45,7 +45,7 @@ namespace Core.BLL
                     break;
                 }
 
-                var objAds = Repositories.AdsRepository.GetAdsForTheSameObject(obj).OrderByDescending(a => a.CollectDate);
+                var objAds = Repositories.AdsRepository.GetAdsForTheSameObject(obj, false).OrderByDescending(a => a.CollectDate);
                 Repositories.AdsRepository.DeleteItems(objAds.Skip(1).Select(a => a.Id).ToList());
                 AdRealty newestAd = (AdRealty)objAds.First();
 

@@ -24,7 +24,7 @@ namespace Core.Expressions
                 HtmlNodeCollection nodes;
                 if (_isHtmlFragment)
                 {
-                    nodes = HtmlNode.CreateNode(input). SelectNodes(_xPathExpression);
+                    nodes = HtmlNode.CreateNode(input).SelectNodes(_xPathExpression);
                 }
                 else
                 {

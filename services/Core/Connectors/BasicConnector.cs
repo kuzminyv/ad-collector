@@ -163,6 +163,10 @@ namespace Core.Connectors
                     {
                         throw new Exception(verificator.Verify(ad));
                     }
+                    if (GetOptions().IsSupportedIdOnWebSite && string.IsNullOrEmpty(ad.IdOnWebSite))
+                    {
+                        throw new Exception("Connector support identification by Id but Id is empty!");
+                    }
 
                     return true;
                 }

@@ -22,7 +22,7 @@ namespace Core.DAL
 
         QueryResult<Ad> GetList(Query query);
         List<TAd> GetAdsObjects<TAd>();
-        List<Ad> GetAdsForTheSameObject(Ad ad);
+        List<Ad> GetAdsForTheSameObject(Ad ad, bool isSupportedIdOnWebSite);
         void DeleteItems(List<int> ids);
         void UpdateItem(Ad ad);
 

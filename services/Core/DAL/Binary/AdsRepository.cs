@@ -213,7 +213,7 @@ namespace Core.DAL.Binary
             }
         }
 
-        public List<Ad> GetAdsForTheSameObject(Ad ad)
+        public List<Ad> GetAdsForTheSameObject(Ad ad, bool isSupportedIdOnWebSite)
         {
             lock (_lockObject)
             {
@@ -225,7 +225,8 @@ namespace Core.DAL.Binary
                                     a.FloorsCount == adRealty.FloorsCount &&
                                     a.IdOnWebSite == adRealty.IdOnWebSite &&
                                     a.LivingSpace == adRealty.LivingSpace &&
-                                    a.RoomsCount == adRealty.RoomsCount).ToList<Ad>();
+                                    a.RoomsCount == adRealty.RoomsCount ||
+                                    (isSupportedIdOnWebSite && a.IdOnWebSite == adRealty.IdOnWebSite)).ToList<Ad>();
             }
         }
     }

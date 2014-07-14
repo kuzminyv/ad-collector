@@ -80,7 +80,7 @@ namespace Core.BLL
                     {
                         adsCount++;
                         totalProcessed++;
-                        var isNewAd = IsNewOrRepublishedAd(ad, lastAds);
+                        var isNewAd = IsNewOrRepublishedAd(ad, lastAds, options);
 
                         state.Progress = totalProcessed;
                         state.SourceUrl = connector.Id;
@@ -111,7 +111,7 @@ namespace Core.BLL
                     state.Description = "Analyzing...";
                     stateChangedCallback(state);
 
-                    var acceptance = AddNewOrCreateHistory(connectorResult, state, stateChangedCallback);
+                    var acceptance = AddNewOrCreateHistory(connectorResult, options, state, stateChangedCallback);
                     Managers.LogEntriesManager.AddItem(SeverityLevel.Information,
                         string.Format("{0} Collection from {1} finished. Processed: {2}; New ads: {3}; Added to History: {4}; Rejected: {5};",
                         this.GetType().Name, connector.Id,
@@ -268,7 +268,7 @@ namespace Core.BLL
             }
         }
 
-        private Dictionary<Ad, AdAcceptance> AddNewOrCreateHistory(List<Ad> ads, CheckForNewAdsState state, Action<CheckForNewAdsState> stateCallback)
+        private Dictionary<Ad, AdAcceptance> AddNewOrCreateHistory(List<Ad> ads, ConnectorOptions options, CheckForNewAdsState state, Action<CheckForNewAdsState> stateCallback)
         {
             int historyAcceptanceHours = 5*24;
             var result = new Dictionary<Ad, AdAcceptance>(ads.Count);
@@ -277,7 +277,7 @@ namespace Core.BLL
                 state.Description = string.Format("Analyzing {0}/{1}", ads.Count - i - 1, ads.Count);
                 stateCallback(state);
                 var ad = ads[i];
-                var adForSameObject = Repositories.AdsRepository.GetAdsForTheSameObject(ad).FirstOrDefault();
+                var adForSameObject = Repositories.AdsRepository.GetAdsForTheSameObject(ad, options.IsSupportedIdOnWebSite).FirstOrDefault();
                 if (adForSameObject != null)
                 {
                     var history = Repositories.AdHistoryItemsRepository.GetList(adForSameObject.Id).OrderByDescending(hi => hi.AdCollectDate).FirstOrDefault();
@@ -336,9 +336,11 @@ namespace Core.BLL
             }
         }
 
-        protected bool IsNewOrRepublishedAd(Ad ad, List<Ad> lastAds)
+        protected bool IsNewOrRepublishedAd(Ad ad, List<Ad> lastAds, ConnectorOptions options)
         {
-            return !lastAds.AsParallel().Any(a => a.IsSameAd(ad) && (ad.PublishDate - a.PublishDate).TotalHours < (5*24)/*if difference in time more than 48 hours we consider that this is republished ad*/);
+            return !lastAds.AsParallel().Any(a =>
+                (a.IsSameAd(ad) || (options.IsSupportedIdOnWebSite && a.IdOnWebSite == ad.IdOnWebSite)) && 
+                (ad.PublishDate - a.PublishDate).TotalHours < (5*24)/*if difference in time more than 48 hours we consider that this is republished ad*/);
         }
 	}
 }

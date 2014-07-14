@@ -361,7 +361,7 @@ namespace Core.DAL.MsSql
             return GetList(lastAdQuery).Items;
         }
 
-        public List<AdRealty> GetAdsForTheSameObject(AdRealty adRealty)
+        public List<AdRealty> GetAdsForTheSameObject(AdRealty adRealty, bool isSupportedIdOnWebSite)
         {
             List<AdRealty> result = null;
             ExecuteDbOperation(context =>
@@ -374,7 +374,8 @@ namespace Core.DAL.MsSql
                             a.FloorsCount == adRealty.FloorsCount &&
                             a.LivingSpace == adRealty.LivingSpace &&
                             a.ConnectorId == adRealty.ConnectorId &&
-                            a.RoomsCount == adRealty.RoomsCount)).ToList();
+                            a.RoomsCount == adRealty.RoomsCount ||
+                            (isSupportedIdOnWebSite && a.IdOnWebSite == adRealty.IdOnWebSite))).ToList();
                         
             });
             return result;

@@ -35,11 +35,11 @@ namespace Core.DAL.MsSql
             return new QueryResult<Ad>(result.Items.ToList<Ad>(), result.TotalCount);
         }
 
-        public List<Ad> GetAdsForTheSameObject(Ad ad)
+        public List<Ad> GetAdsForTheSameObject(Ad ad, bool isSupportedIdOnWebSite)
         {
             if (ad.GetType() == typeof(AdRealty))
             {
-                return _realtyRepository.GetAdsForTheSameObject((AdRealty)ad).ToList<Ad>();
+                return _realtyRepository.GetAdsForTheSameObject((AdRealty)ad, isSupportedIdOnWebSite).ToList<Ad>();
             }
             return null;
         }
