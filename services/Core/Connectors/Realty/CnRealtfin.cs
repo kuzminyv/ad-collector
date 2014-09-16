@@ -29,7 +29,7 @@ namespace Core.Connectors
             options.MinAds = 100;
             options.FrameSize = 50;
             options.MinNewAdsInFrame = 0.1;
-            options.IsSupportedIdOnWebSite = true;
+            options.IsSupportIdOnWebSite = true;
             return options;
         }
 

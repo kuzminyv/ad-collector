@@ -277,7 +277,7 @@ namespace Core.BLL
                 state.Description = string.Format("Analyzing {0}/{1}", ads.Count - i - 1, ads.Count);
                 stateCallback(state);
                 var ad = ads[i];
-                var adForSameObject = Repositories.AdsRepository.GetAdsForTheSameObject(ad, options.IsSupportedIdOnWebSite).FirstOrDefault();
+                var adForSameObject = Repositories.AdsRepository.GetAdsForTheSameObject(ad, options.IsSupportIdOnWebSite).FirstOrDefault();
                 if (adForSameObject != null)
                 {
                     var history = Repositories.AdHistoryItemsRepository.GetList(adForSameObject.Id).OrderByDescending(hi => hi.AdCollectDate).FirstOrDefault();
@@ -339,7 +339,7 @@ namespace Core.BLL
         protected bool IsNewOrRepublishedAd(Ad ad, List<Ad> lastAds, ConnectorOptions options)
         {
             return !lastAds.AsParallel().Any(a =>
-                (a.IsSameAd(ad) || (options.IsSupportedIdOnWebSite && a.IdOnWebSite == ad.IdOnWebSite)) && 
+                (a.IsSameAd(ad) || (options.IsSupportIdOnWebSite && a.IdOnWebSite == ad.IdOnWebSite)) && 
                 (ad.PublishDate - a.PublishDate).TotalHours < (5*24)/*if difference in time more than 48 hours we consider that this is republished ad*/);
         }
 	}

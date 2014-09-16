@@ -11,14 +11,14 @@ namespace Core.Connectors
         public int FrameSize { get; set; }
         public int MinAds { get; set;}
         public double MinNewAdsInFrame {get; set;}
-        public bool IsSupportedIdOnWebSite { get; set; }
+        public bool IsSupportIdOnWebSite { get; set; }
 
         public ConnectorOptions()
         {
             FrameSize = 100;
             MinAds = 300;
             MinNewAdsInFrame = 0.05;
-            IsSupportedIdOnWebSite = false;
+            IsSupportIdOnWebSite = false;
         }
     }
 }

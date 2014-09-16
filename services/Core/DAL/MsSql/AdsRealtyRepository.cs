@@ -166,7 +166,8 @@ namespace Core.DAL.MsSql
 	            LivingSpace = (float)reader.GetDouble(13), 
 	            IsNewBuilding = reader.GetBoolean(14),
                 ConnectorId = reader.GetString(15),
-	            HistoryLength = reader.GetInt32(16)
+	            HistoryLength = reader.GetInt32(16),
+                IdOnWebSite = reader.GetString(17)
             };
             return ad;
         }

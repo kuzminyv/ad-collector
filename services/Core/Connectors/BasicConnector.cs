@@ -91,7 +91,7 @@ namespace Core.Connectors
                     string content = WebHelper.GetStringFromUrl(string.Format(pageUrlFormat, i));
                     int errorsCount = 0;
                     var matches = slector.Match(content).ToList();
-                    if (i > 1 && matches.Count != adsCountOnLastPage)
+                    if (i > 1 && Math.Abs(matches.Count - adsCountOnLastPage) > 2)
                     {
                         Managers.LogEntriesManager.AddItem(SeverityLevel.Warning,
                             string.Format("{0} Different ads count on different pages. Last Page: {1}; Current Page: {2}", this.GetType().Name, adsCountOnLastPage, matches.Count));
@@ -114,6 +114,10 @@ namespace Core.Connectors
                                 if (verificationResult != null)
                                 {
                                     throw new Exception(verificationResult);
+                                }
+                                if (GetOptions().IsSupportIdOnWebSite && string.IsNullOrEmpty(ad.IdOnWebSite))
+                                {
+                                    throw new Exception("Connector support identification by Id but Id is empty!");
                                 }
                             }
                             catch (Exception ex)
@@ -163,7 +167,7 @@ namespace Core.Connectors
                     {
                         throw new Exception(verificator.Verify(ad));
                     }
-                    if (GetOptions().IsSupportedIdOnWebSite && string.IsNullOrEmpty(ad.IdOnWebSite))
+                    if (GetOptions().IsSupportIdOnWebSite && string.IsNullOrEmpty(ad.IdOnWebSite))
                     {
                         throw new Exception("Connector support identification by Id but Id is empty!");
                     }
