@@ -38,12 +38,12 @@ namespace UI.Desktop.Views
             }
         }
 
-        private ICommand _copyDetailsToClipboardCommand;
-        public ICommand CopyDetailsToClipboardCommand
+        private ICommand _viewDetailsCommand;
+        public ICommand ViewDetailsCommand
         {
             get
             {
-                return _copyDetailsToClipboardCommand;
+                return _viewDetailsCommand;
             }
         }
 
@@ -53,12 +53,12 @@ namespace UI.Desktop.Views
 		{
 			_model = model;
 
-            _copyDetailsToClipboardCommand = new DelegateCommand(() => CopyDetailsToClipboard());
+            _viewDetailsCommand = new DelegateCommand(() => ViewDetails());
 		}
 
-        private void CopyDetailsToClipboard()
+        private void ViewDetails()
         {
-            Clipboard.SetText(_model.Message + "\n" + _model.Details);
+            AppCommands.ShowLogEntryDetailsCommand.Execute(_model);
         }
 	}
 }

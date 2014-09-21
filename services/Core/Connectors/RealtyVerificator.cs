@@ -26,7 +26,7 @@ namespace Core.Connectors
             if (adRealty.RoomsCount > 0 && (adRealty.RoomsCount > 20))
                 return string.Format("Invalid RoomsCount value '{0}'", adRealty.RoomsCount);
 
-            if (adRealty.LivingSpace > 0 && (adRealty.LivingSpace > 300 || adRealty.LivingSpace < 5))
+            if (adRealty.LivingSpace > 0 && (adRealty.LivingSpace > 500 || adRealty.LivingSpace < 5))
                 return string.Format("Invalid LivingSpace value '{0}'", adRealty.LivingSpace);
 
             if (string.IsNullOrEmpty(adRealty.Address) || adRealty.Address.Length < 3)

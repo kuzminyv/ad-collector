@@ -96,6 +96,17 @@ namespace UI.Desktop.Commands
             {
                 return _showAdHistoryCommand;
             }
-        }        
+        }
+
+        private static Command _showLogEntryDetailsCommand = new ShowLogEntryDetailsCommand();
+        public static Command ShowLogEntryDetailsCommand
+        {
+            get
+            {
+                return _showLogEntryDetailsCommand;
+            }
+        } 
+    
+        
 	}
 }

@@ -107,6 +107,7 @@
     <Compile Include="Commands\ShowLinkedAdsCommand.cs" />
     <Compile Include="Commands\RecreateAutoLinksCommand.cs" />
     <Compile Include="Commands\ShowLogCommand.cs" />
+    <Compile Include="Commands\ShowLogEntryDetailsCommand.cs" />
     <Compile Include="Commands\ShowSettingsCommand.cs" />
     <Compile Include="Commands\DelegateCommand.cs" />
     <Compile Include="Commands\OpenUrlCommand.cs" />
@@ -149,6 +150,10 @@
       <DependentUpon>LinkedAdsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\LinkedAds\LinkedAdsViewModel.cs" />
+    <Compile Include="Views\LogEntryDetails\LogEntryDetailsView.xaml.cs">
+      <DependentUpon>LogEntryDetailsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\LogEntryDetails\LogEntryDetailsViewModel.cs" />
     <Compile Include="Views\LogEntry\LogEntryView.xaml.cs">
       <DependentUpon>LogEntryView.xaml</DependentUpon>
     </Compile>
@@ -199,6 +204,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\LinkedAds\LinkedAdsView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Views\LogEntryDetails\LogEntryDetailsView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

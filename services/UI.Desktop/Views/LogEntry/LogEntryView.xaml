@@ -61,10 +61,10 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Bottom">
 			            <Hyperlink
-						    Command="{Binding CopyDetailsToClipboardCommand}">
+						    Command="{Binding ViewDetailsCommand}">
 				            <TextBlock
 							    FontSize="12"
-							    Text="Copy Details" />
+							    Text="View Details" />
 			            </Hyperlink>
 		            </TextBlock>
                 </StackPanel>

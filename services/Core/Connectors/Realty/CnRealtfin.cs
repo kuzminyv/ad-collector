@@ -70,7 +70,9 @@ namespace Core.Connectors
             {
                 Description = string.Format(match["Details"]),
                 Url = "http://realtfin.com/" + match["Url"],
-                PublishDate = ParsersHelper.ParseDate(match["DateText"].Trim() + " " + DateTime.Now.Year, "d MMMM yyyy", null, CultureInfo.CreateSpecificCulture("ru-Ru")),
+                PublishDate = ParsersHelper.ParseDate(match["DateText"]
+                    .Replace("сент", "сентября")
+                    .Trim() + " " + DateTime.Now.Year, "d MMMM yyyy", null, CultureInfo.CreateSpecificCulture("ru-Ru")),
                 ConnectorId = this.Id,
                 Address = match["Address"],
                 RoomsCount = ParsersHelper.ParseInt(match["Rooms"]),

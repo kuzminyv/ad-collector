@@ -88,8 +88,10 @@ namespace Core.Connectors
 
         protected override int ParseFloors(string floors)
         {
+            int floorsValue;
             //этаж 6/10
-            return int.Parse(floors.Replace("этаж", "").Trim().Split('/')[1]);
+            int.TryParse(floors.Replace("этаж", "").Trim().Split('/')[1], out floorsValue);
+            return floorsValue;
         }
 
         protected override int ParseFloor(string floor)
@@ -105,7 +107,9 @@ namespace Core.Connectors
                 return ParseFloors(floor);
             }
 
-            return int.Parse(floor.Replace("этаж", "").Trim().Split('/')[0].Split(new char[]{',', '-'}, StringSplitOptions.RemoveEmptyEntries).Last().Trim());
+            int floorValue = 0;
+            int.TryParse(floor.Replace("этаж", "").Trim().Split('/')[0].Split(new char[]{',', '-'}, StringSplitOptions.RemoveEmptyEntries).Last().Trim(), out floorValue);
+            return floorValue;
         }
 
         protected override float ParseSize(string size)

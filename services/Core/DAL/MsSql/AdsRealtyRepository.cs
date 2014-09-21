@@ -167,7 +167,7 @@ namespace Core.DAL.MsSql
 	            IsNewBuilding = reader.GetBoolean(14),
                 ConnectorId = reader.GetString(15),
 	            HistoryLength = reader.GetInt32(16),
-                IdOnWebSite = reader.GetString(17)
+                IdOnWebSite = reader.GetNullableString(18)
             };
             return ad;
         }
