@@ -23,10 +23,16 @@ namespace Core.Connectors
             get { return @"http://www.avito.ru/saratov/kvartiry/prodam?p={0}"; }
         }
 
+        public override ConnectorOptions GetOptions()
+        {
+            var options = base.GetOptions();
+            options.IsSupportIdOnWebSite = true;
+            return options;
+        }
 
         public override Selector CreateSelector()
         {
-            return new HtmlPathSelector("Ad", "//div[@class=\"b-catalog-table\"]//div[starts-with(@id, \"i\")]", false,
+            return new HtmlPathSelector("Ad", "//div[@class=\"catalog-list catalog-list_ clearfix\"]//div[starts-with(@id, \"i\")]", false,
                 new HtmlPathSelector("Date", "//div[@class=\"date\"]/text()", true),
                 new HtmlPathSelector("Time", "//span[@class=\"time\"]/text()", true),
                 new HtmlPathSelector("Url", "//h3[@class=\"title\"]/a/@href", true, false, "href"),
@@ -44,8 +50,8 @@ namespace Core.Connectors
 
         public override Selector CreateDetailsSelector()
         {
-            return new HtmlPathSelector("Item", "//div[@class=\"item\"]", false,
-                new HtmlPathSelector("Image", "//div[@id=\"photo\"]//div[@class=\"items\"]/div", true,
+            return new HtmlPathSelector("Item", "//div[@class=\"item-page-content\"]", false,
+                new HtmlPathSelector("Image", "//div[@class=\"gallery-list\"]/div", true,
                     new HtmlPathSelector("Big", "//a/@href", true, false, "href"),
                     new HtmlPathSelector("Small", "//img/@src", true, false, "src")
                 ),
@@ -60,7 +66,7 @@ namespace Core.Connectors
             {
                 ConnectorId = this.Id,
                 CreationDate = DateTime.Now,
-                PublishDate = ParsersHelper.ParseDate(match["Date"].Trim() + " " + match["Time"].Trim(), new string[] { "d MMM.", "d MMMM" }, "HH:mm", CultureInfo.CreateSpecificCulture("ru-Ru"), "сегодня", "вчера"),
+                PublishDate = ParsersHelper.ParseDate(match["Date"].Trim(), new string[] { "d MMM.", "d MMMM" }, "HH:mm", CultureInfo.CreateSpecificCulture("ru-Ru"), "сегодня", "вчера"),
                 Url = "http://www.avito.ru" + match["Url"],
                 RoomsCount = ParsersHelper.ParseInt(match["Title\\Rooms"]),
                 LivingSpace = ParsersHelper.ParseFloat(match["Title\\LivingSpace"], "."),

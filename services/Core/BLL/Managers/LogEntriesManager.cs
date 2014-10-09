@@ -25,7 +25,7 @@ namespace Core.BLL
         {
             Query query = new Query();
             query.AddSort("Time", SortOrder.Descending);
-            query.Limit = 1000;
+            query.Limit = 300;
             return Repositories.LogEntriesRepository.GetList(query).Items;
         }
     }

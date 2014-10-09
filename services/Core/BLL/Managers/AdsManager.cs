@@ -53,21 +53,24 @@ namespace Core.BLL
         protected List<Ad> CheckForNewAds(Action<CheckForNewAdsState> stateChangedCallback, Action<List<Ad>> completedCallback, CancellationToken cancelationToken)
 		{
             var state = new CheckForNewAdsState();
+
+            List<Task> fillDetailsTasks = new List<Task>();
             var result = new List<Ad>();
             int totalProcessed = 0;
 
-            int maxAds = Managers.SettingsManager.GetSettings().CheckForNewAdsMaxAdsCount;
 
-            List<Task> fillDetailsTasks = new List<Task>();
-
-            foreach (var connector in Managers.ConnectorsManager.GetConnectors())
+            Parallel.ForEach(Managers.ConnectorsManager.GetConnectors(), connector =>
             {
+
+                int maxAds = Managers.SettingsManager.GetSettings().CheckForNewAdsMaxAdsCount;
+
+
                 var options = connector.GetOptions() ?? new ConnectorOptions();
                 Managers.LogEntriesManager.AddItem(SeverityLevel.Information, string.Format("Starting download from {0}.", connector.Id));
                 int adsCount = 0;
 
                 List<Ad> connectorResult = new List<Ad>();
-                List<Ad> lastAds = Repositories.AdsRepository.GetLastAds(connector.Id, maxAds*2);
+                List<Ad> lastAds = Repositories.AdsRepository.GetLastAds(connector.Id, maxAds * 2);
                 Ad lastAd = lastAds.FirstOrDefault();
                 DateTime lastCollectionDate = lastAd == null ? DateTime.Now.Date : lastAd.CollectDate.Date;
 
@@ -82,15 +85,18 @@ namespace Core.BLL
                         totalProcessed++;
                         var isNewAd = IsNewOrRepublishedAd(ad, lastAds, options);
 
-                        state.Progress = totalProcessed;
-                        state.SourceUrl = connector.Id;
-                        state.Canceled = cancelationToken.IsCancellationRequested;
-                        state.FrameTotalAds = frame.Count;
-                        state.FrameNewAds = frame.Where(item => item).Count();
-                        state.FrameProgress = state.FrameNewAds > 0 ? (1 - ((double)state.FrameNewAds / (double)state.FrameTotalAds)) / (1 - options.MinNewAdsInFrame) : 0;
+                        lock (state)
+                        {
+                            state.Progress = totalProcessed;
+                            state.SourceUrl = connector.Id;
+                            state.Canceled = cancelationToken.IsCancellationRequested;
+                            state.FrameTotalAds = frame.Count;
+                            state.FrameNewAds = frame.Where(item => item).Count();
+                            state.FrameProgress = state.FrameNewAds > 0 ? (1 - ((double)state.FrameNewAds / (double)state.FrameTotalAds)) / (1 - options.MinNewAdsInFrame) : 0;
 
-                        state.Description = "Processing...";
-                        stateChangedCallback(state);
+                            state.Description = "Processing...";
+                            stateChangedCallback(state);
+                        }
 
                         connectorResult.Add(ad);
                         frame.Enqueue(isNewAd);
@@ -108,8 +114,11 @@ namespace Core.BLL
 
                     ProcessCollectDate(connectorResult, DateTime.Now);
 
-                    state.Description = "Analyzing...";
-                    stateChangedCallback(state);
+                    lock (state)
+                    {
+                        state.Description = "Analyzing...";
+                        stateChangedCallback(state);
+                    }
 
                     var acceptance = AddNewOrCreateHistory(connectorResult, options, state, stateChangedCallback);
                     Managers.LogEntriesManager.AddItem(SeverityLevel.Information,
@@ -122,30 +131,34 @@ namespace Core.BLL
 
                     var adsToFill = acceptance.Where(kvp => (kvp.Value == AdAcceptance.Accepted || kvp.Value == AdAcceptance.History) && kvp.Key.DetailsDownloadStatus == DetailsDownloadStatus.NotDownloaded)
                             .Select(kvp => kvp.Key).ToList();
-                    fillDetailsTasks.Add(Task.Run(() =>
-                    {
-                        FillDetails(
-                            st => { state.Description = st.Description; state.Progress = st.Progress; stateChangedCallback(state); },
-                            () => { },
-                            cancelationToken,
-                            adsToFill);
-                    }));
 
-                    result.AddRange(connectorResult);
+                    lock (fillDetailsTasks)
+                    {
+                        fillDetailsTasks.Add(Task.Run(() =>
+                        {
+                            FillDetails(
+                                st => { lock (state) { state.Description = st.Description; state.Progress = st.Progress; stateChangedCallback(state); } },
+                                () => { },
+                                cancelationToken,
+                                adsToFill);
+                        }));
+                    }
+                    lock (result)
+                    {
+                        result.AddRange(connectorResult);
+                    }
                 }
                 catch (Exception ex)
                 {
                     Managers.LogEntriesManager.AddItem(SeverityLevel.Error,
                         string.Format("{0} Download error. {1}", this.GetType().Name, ex.Message), ex.StackTrace);
-                    state.Description = string.Format("Error {0}", ex.Message);
-                    stateChangedCallback(state);
+                    lock (state)
+                    {
+                        state.Description = string.Format("Error {0}", ex.Message);
+                        stateChangedCallback(state);
+                    }
                 }
-
-                if (cancelationToken.IsCancellationRequested)
-                {
-                    break;
-                }
-            }
+            });
 
             Task.WaitAll(fillDetailsTasks.ToArray());
 
@@ -274,8 +287,11 @@ namespace Core.BLL
             var result = new Dictionary<Ad, AdAcceptance>(ads.Count);
             for (int i = ads.Count - 1; i >= 0; i--)
             {
-                state.Description = string.Format("Analyzing {0}/{1}", ads.Count - i - 1, ads.Count);
-                stateCallback(state);
+                lock (state)
+                {
+                    state.Description = string.Format("Analyzing {0}/{1}", ads.Count - i - 1, ads.Count);
+                    stateCallback(state);
+                }
                 var ad = ads[i];
                 var adForSameObject = Repositories.AdsRepository.GetAdsForTheSameObject(ad, options.IsSupportIdOnWebSite).FirstOrDefault();
                 if (adForSameObject != null)
